@@ -10,6 +10,7 @@
   "description": "",
   "dependencies": {
     "expo": "^51.0.38",
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "firebase": "^11.0.1"
   }
 }

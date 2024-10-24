@@ -1,3 +1,4 @@
+import { app, analytics } from './firebaseconfig.js';
 const http = require('http');
 
 const server = http.createServer((req, res) => {
