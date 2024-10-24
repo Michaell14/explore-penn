@@ -6,8 +6,4 @@ logs
 npm-debug.log*
 
 # Environment Variables
-<<<<<<< HEAD
 .env
-=======
-.env
->>>>>>> 679a41850ae7683c7c4e79c66d8422d9a9718a0c
