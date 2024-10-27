@@ -19,9 +19,11 @@ const Explore: React.FC = () => {
           // penn coords
           latitude: 39.9522,
           longitude: -75.1932,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
+          latitudeDelta: 0.002,
+          longitudeDelta: 0.002,
         }}
+        showsUserLocation={true}
+        followsUserLocation={true}
       >
         <Marker
           coordinate={{ latitude: 39.9522, longitude: -75.1932 }}
