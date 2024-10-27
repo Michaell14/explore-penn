@@ -1,31 +1,69 @@
 import React from 'react';
-import { StyleSheet, Platform, Text, View } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Platform, StatusBar } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
-export default function HomeScreen() {
+const HomeScreen: React.FC = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>My Pins</Text>
-      <Text style={styles.description}>more to come soon...</Text>
+      {/* header section */}
+      <View style={styles.header}>
+        <Text style={styles.title}>Map of Penn</Text>
+        <Text style={styles.description}>explore penn!</Text>
+      </View>
+
+      {/* map section */}
+      <MapView
+        style={styles.map}
+        // mapType="satellite"
+        initialRegion={{
+          // penn coords
+          latitude: 39.9522,
+          longitude: -75.1932,
+          latitudeDelta: 0.002,
+          longitudeDelta: 0.002,
+        }}
+        showsUserLocation={true}
+        followsUserLocation={true}
+      >
+        <Marker
+          coordinate={{ latitude: 39.9522, longitude: -75.1932 }}
+          title="Van Pelt Library"
+          description="where best spark team is working rn"
+        />
+      </MapView>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
+    //padding for weird iphone top bar thing
+    paddingTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight,
+  },
+  header: {
+    padding: 18,
+    backgroundColor: '#f8f9fa',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    paddingTop: Platform.OS === 'ios' ? 40 : 0,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
   },
   title: {
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 8,
     color: '#333',
+    marginBottom: 8,
   },
   description: {
-    fontSize: 18,
+    fontSize: 14,
     color: '#666',
   },
+  map: {
+    width: Dimensions.get('window').width,
+    // uhh this is for my iphone, just hardcoded it for now but might be diff for other phoens
+    height: Dimensions.get('window').height - 140,
+  },
 });
+
+export default HomeScreen;
