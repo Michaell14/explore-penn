@@ -7,7 +7,7 @@ const HomeScreen: React.FC = () => {
     <View style={styles.container}>
       {/* header section */}
       <View style={styles.header}>
-        <Text style={styles.title}>Map of Penn</Text>
+        <Text className = "text-4xl">Map of Penn</Text>
         <Text style={styles.description}>explore penn!</Text>
       </View>
 
