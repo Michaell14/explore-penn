@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Set up Google Sign-In request
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId: '414478752713-6fam2g2c75qhc7ihenps0sbk1b3dqj7g.apps.googleusercontent.com', 
+    clientId: '', 
     redirectUri: makeRedirectUri(),
   });
 
