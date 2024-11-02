@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 require('dotenv').config(); // Load environment variables from .env file
 
 const express = require('express');
@@ -106,3 +107,33 @@ const port = 3001;
 server.listen(port, () => {
     console.log(`Node.js server is running on port ${port}`);
 });
+=======
+import express from 'express';
+import admin from 'firebase-admin';
+import cors from 'cors';
+import fs from 'fs'
+import routes from './routes/index.js';
+
+const serviceAccount = JSON.parse(fs.readFileSync('./firebaseServiceAccount.json', 'utf-8'));
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+const db = admin.firestore();
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.use('/api', routes); 
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+export {db, app}
+
+>>>>>>> 89e05d14b4abb39fbe41ee996e9987e26f77d328
