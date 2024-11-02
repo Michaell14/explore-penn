@@ -5,8 +5,8 @@ import { auth } from '../firebaseConfig';
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import axios from 'axios';
-import { baseURL } from '../config';
-import {webClientId, iosClientId, androidClientId} from '../config';
+import {baseUrl} from '../config.js';
+import {webClientId, iosClientId, androidClientId} from '../config.js';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const createUserIfNotExists = async (user: User) => {
     try {
       await axios.post(
-        `${baseURL}/api/users/register`,
+        `${baseUrl}/api/users/register`,
         { uid: user.uid, name: user.displayName, email: user.email },
         {
           headers: {

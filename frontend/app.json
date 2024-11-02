@@ -15,14 +15,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ericslee1207.explorepenn"
+      "bundleIdentifier": "com.kestelle.explorepenn"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ericslee1207.explorepenn"
+      "package": "com.kestelle.explorepenn"
     },
     "web": {
       "bundler": "metro",
@@ -38,9 +38,6 @@
     "extra": {
       "router": {
         "origin": false
-      },
-      "eas": {
-        "projectId": "8503183b-0b14-4c77-82c0-762fa5dfaa18"
       }
     }
   }
