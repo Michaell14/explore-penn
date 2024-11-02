@@ -68,7 +68,7 @@ const authenticateJWT = async (req, res, next) => {
 };
 
 // API endpoints
-server.get('/locations', authenticateJWT, async (req, res) => {
+server.get('/locations', async (req, res) => {
     try {
         const snapshot = await getDocs(collection(db, "locations"));
         const pins = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
