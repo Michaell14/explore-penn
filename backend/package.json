@@ -8,10 +8,14 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "type": "module",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "expo": "^51.0.38",
     "expo-auth-session": "^5.5.2",
     "express": "^4.21.1",
-    "firebase": "^11.0.1"
+    "firebase": "^11.0.1",
+    "firebase-admin": "^12.7.0"
   }
 }
