@@ -4,7 +4,8 @@ import { Slot, useRouter } from 'expo-router';
 import { useAuth } from '../hooks/useAuth';
 import { View, ActivityIndicator } from 'react-native';
 import { AuthProvider } from '../hooks/useAuth'; // Import AuthProvider
-
+import axios from 'axios'
+import { baseURL } from '@/config';
 export default function Layout() {
   return (
     <AuthProvider>
@@ -26,7 +27,7 @@ function AuthenticatedLayout() {
         router.replace('/'); // Redirect to the home screen if authenticated
       }
     }
-  }, [user, loading]);
+  }, [loading]);
 
   if (loading) {
     // Display a loading indicator while checking authentication state

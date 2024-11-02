@@ -3,6 +3,8 @@ import React from 'react';
 import { View, Button, Text, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../hooks/useAuth';
+import axios from 'axios';
+import {baseURL} from '../../config.js';
 
 const SignInScreen = () => {
   const { signInWithGoogle, user } = useAuth();
@@ -11,13 +13,10 @@ const SignInScreen = () => {
   // Handle Google Sign-In button press
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithGoogle(); // Call Google sign-in
-      if (user) {
-        // Navigate to main screen (or MainStack) if authentication is successful
-        router.replace('/'); 
-      }
-    } catch (error) {
-      console.error('Failed to sign in with Google:', error);
+      await signInWithGoogle(); // Call Google sign-in      
+      router.replace('/')
+    } catch (error:any) {
+      console.log("Can't sign into Google", error)
     }
   };
 
