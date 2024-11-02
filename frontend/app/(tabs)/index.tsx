@@ -5,6 +5,8 @@ import CustomBottomSheet from '@/components/CustomBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 
 interface MarkerData{
+  title: string,
+  description: string,
   longitude: number,
   latitude: number
 }
@@ -17,24 +19,16 @@ const HomeScreen: React.FC = () => {
   const handleMarkerPress = (marker: MarkerData) => {
     console.log(marker.longitude);
     console.log(marker.latitude)
-    setBottomSheetTitle(marker.longitude.toString());
+    setBottomSheetTitle(marker.title);
   };
   
-
   const handleClosePress = () => bottomSheetRef.current?.close();
   const handleOpenPress = () => bottomSheetRef.current?.expand();
   const handleCollapsePress = () => bottomSheetRef.current?.collapse();
   const snapToIndex = (index: number) => bottomSheetRef.current?.snapToIndex(index);
   
-
   return (
     <View style={styles.container}>
-      {/* header section */}
-      <View style={styles.header}>
-        <Text className = "text-4xl">Map of Penn</Text>
-        <Text style={styles.description}>explore penn!</Text>
-      </View>
-
       {/* map section */}
       <MapView
         style={styles.map}
@@ -52,13 +46,23 @@ const HomeScreen: React.FC = () => {
           coordinate={{ latitude: 39.9522, longitude: -75.1932 }}
           title="Van Pelt Library"
           description="where best spark team is working rn"
-          onPress={(e) => handleMarkerPress({longitude: 39.9522, latitude: -75.1932})}
+          onPress={(e) => handleMarkerPress({
+            title: "Van Pelt Library",
+            description: "where best spark team is working rn",
+            longitude: 39.9522, 
+            latitude: -75.1932
+          })}
         />
         <Marker
           coordinate={{ latitude: 39.9509, longitude: -75.1939 }}
-          title="Van Pelt Library"
-          description="where best spark team is working rn"
-          onPress={(e) => handleMarkerPress({longitude: 39.9509, latitude: -75.1939})}
+          title="Houston Hall"
+          description="This is where the ping pong table is"
+          onPress={(e) => handleMarkerPress({
+            title: "Houston Hall", 
+            description: "This is where the ping pong table is", 
+            longitude: 39.9509, 
+            latitude: -75.1939
+          })}
         />
       </MapView>
       
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     //padding for weird iphone top bar thing
-    paddingTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight,
+    //paddingTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight,
   },
   header: {
     padding: 18,
