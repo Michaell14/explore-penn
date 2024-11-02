@@ -1,8 +1,32 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions, Platform, StatusBar } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, Platform, StatusBar, Modal } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import CustomBottomSheet from '@/components/CustomBottomSheet';
+import BottomSheet from '@gorhom/bottom-sheet';
+
+interface MarkerData{
+  longitude: number,
+  latitude: number
+}
 
 const HomeScreen: React.FC = () => {
+
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const [bottomSheetTitle, setBottomSheetTitle] = useState("Nothing Selected");
+
+  const handleMarkerPress = (marker: MarkerData) => {
+    console.log(marker.longitude);
+    console.log(marker.latitude)
+    setBottomSheetTitle(marker.longitude.toString());
+  };
+  
+
+  const handleClosePress = () => bottomSheetRef.current?.close();
+  const handleOpenPress = () => bottomSheetRef.current?.expand();
+  const handleCollapsePress = () => bottomSheetRef.current?.collapse();
+  const snapToIndex = (index: number) => bottomSheetRef.current?.snapToIndex(index);
+  
+
   return (
     <View style={styles.container}>
       {/* header section */}
@@ -23,14 +47,23 @@ const HomeScreen: React.FC = () => {
           longitudeDelta: 0.002,
         }}
         showsUserLocation={true}
-        followsUserLocation={true}
       >
         <Marker
           coordinate={{ latitude: 39.9522, longitude: -75.1932 }}
           title="Van Pelt Library"
           description="where best spark team is working rn"
+          onPress={(e) => handleMarkerPress({longitude: 39.9522, latitude: -75.1932})}
+        />
+        <Marker
+          coordinate={{ latitude: 39.9509, longitude: -75.1939 }}
+          title="Van Pelt Library"
+          description="where best spark team is working rn"
+          onPress={(e) => handleMarkerPress({longitude: 39.9509, latitude: -75.1939})}
         />
       </MapView>
+      
+      <CustomBottomSheet title = {bottomSheetTitle} ref = {bottomSheetRef}/>
+        
     </View>
   );
 };
@@ -63,6 +96,11 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     // uhh this is for my iphone, just hardcoded it for now but might be diff for other phoens
     height: Dimensions.get('window').height - 140,
+  },
+  contentContainer: {
+    flex: 1,
+    padding: 36,
+    alignItems: 'center',
   },
 });
 
