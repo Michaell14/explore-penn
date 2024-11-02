@@ -1,13 +1,28 @@
-const http = require('http');
+import express from 'express';
+import admin from 'firebase-admin';
+import cors from 'cors';
+import fs from 'fs'
+import routes from './routes/index.js';
 
-const server = http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.write('<h1>Hello, Node.js HTTP Server!</h1>');
-    res.end();
+const serviceAccount = JSON.parse(fs.readFileSync('./firebaseServiceAccount.json', 'utf-8'));
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
 });
 
-const port = 3001;
+const db = admin.firestore();
 
-server.listen(port, () => {
-    console.log(`Node.js HTTP server is running on port ${port}`);
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.use('/api', routes); 
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
+export {db, app}
+
