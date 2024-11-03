@@ -53,6 +53,37 @@ export const getPin = async (req, res) => {
     }
 };
 
+export const addPin = async (req, res) => {
+    // Extract parameters from the request body
+    const { description, u_id, coordinate } = req.body;
+
+    // Validate the required fields
+    if (!description || !u_id || !coordinate || !coordinate.lat || !coordinate.lng) {
+        return res.status(400).json({ error: "Missing required fields: description, u_id, or coordinates." });
+    }
+
+    try {
+        // Add the new post document to the "posts" collection
+        const newPost = {
+            description,
+            u_id,
+            coordinate: {
+                lat: coordinate.lat,
+                lng: coordinate.lng
+            },
+            createdAt: admin.firestore.FieldValue.serverTimestamp()
+        };
+
+        const postRef = await db.collection('posts').add(newPost);
+
+        res.status(200).json({ message: "Post successfully added", postId: postRef.id });
+    } catch (error) {
+        console.error("Error adding post:", error);
+        res.status(500).json({ error: "Failed to add post" });
+    }
+};
+
+
 /*
 getting the top 10 posts
 */
