@@ -1,9 +1,8 @@
 import express from 'express'
-// import locationsController from "../controller/locations.controller.js"
+import { getLocation } from "../controller/locations.controller.js"
 
 const router = express.Router();
-
-router.post('/', ()=>{});
+router.get('/getLocation/:location_id', getLocation);
 
 
 export default router;
