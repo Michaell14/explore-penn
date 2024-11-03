@@ -73,20 +73,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const createUserIfNotExists = async (user: User) => {
     try {
-      await axios.post(
-        `${baseURL}/api/users/register`,
-        { uid: user.uid, name: user.displayName, email: user.email },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      console.log('User registered successfully');
-    } catch (error) {
-    
-        console.error("Error registering user:", error);
+      // First, check if the user already exists in your backend
+      const response = await axios.get(`${baseURL}/api/users/${user.uid}`);
       
+      if (response.status === 404) {
+        // If the user doesn't exist, proceed with registration
+        await axios.post(
+          `${baseURL}/api/users/register`,
+          { uid: user.uid, name: user.displayName, email: user.email },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        console.log('User registered successfully');
+      } else {
+        console.log('User already exists');
+      }
+    } catch (error) {
+      console.error("Error registering user:", error);
     }
   };
 
