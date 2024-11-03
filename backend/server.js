@@ -25,5 +25,3 @@ app.listen(PORT, () => {
 });
 
 export {db, app}
-
->>>>>>> 89e05d14b4abb39fbe41ee996e9987e26f77d328

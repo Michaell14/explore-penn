@@ -1,7 +1,6 @@
 const { initializeApp } = require("firebase/app");
 const { getFirestore } = require("firebase/firestore");
 const admin = require("firebase-admin");
-const http = require('http');
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVcPQ18HbuIL6zFc7EMHVSWOwbHHU5U2E",
