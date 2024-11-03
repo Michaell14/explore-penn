@@ -24,4 +24,6 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-export {db, app};
+export {db, app}
+
+>>>>>>> 89e05d14b4abb39fbe41ee996e9987e26f77d328
