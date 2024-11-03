@@ -57,7 +57,6 @@ export const getPin = async (req, res) => {
 getting the top 10 posts
 */
 export const getTopPins = async (req, res) => {
-    console.log("here");
     try {
         const pinsSnapshot = await db.collection('posts').get();
 
@@ -65,8 +64,6 @@ export const getTopPins = async (req, res) => {
             ...doc.data(),
             post_id: doc.id
         }));
-
-        console.log("Fetched pins:", pins);
 
         // count reactions for each pin
         const pinReactionCounts = await Promise.all(
