@@ -20,6 +20,50 @@
     // Add more locations as needed
   ];
 
+  function convertTo24HourFormat(timeString) {
+    if (!timeString || !timeString.includes(':')) {
+      return 'Invalid time';
+    }
+
+    // Normalize special characters (e.g., non-breaking spaces and different dashes)
+    timeString = timeString.replace(/\u202F/g, ' ').replace(/–/g, '-').trim();
+
+    const [time, modifier] = timeString.split(' ');
+    let [hours, minutes] = time.split(':').map(Number);
+
+    if (isNaN(hours) || isNaN(minutes)) {
+      return 'Invalid time';
+    }
+
+    if (modifier === 'PM' && hours !== 12) {
+      hours += 12;
+    } else if (modifier === 'AM' && hours === 12) {
+      hours = 0;
+    }
+
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
+
+  function parseOpeningHours(openingHoursText) {
+    return openingHoursText.map(dayEntry => {
+      const [day, hours] = dayEntry.split(': ');
+      if (!hours || hours.toLowerCase() === 'closed') {
+        return { day, hours: 'Closed' };
+      }
+
+      // Split time ranges (e.g., "09:00 AM – 05:00 PM")
+      const timeRanges = hours.split('–').map(time => convertTo24HourFormat(time.trim()));
+
+      // Check for invalid times
+      if (timeRanges.some(time => time === 'Invalid time')) {
+        console.error(`Invalid time format detected in: ${dayEntry}`);
+        return { day, hours: 'Invalid time format' };
+      }
+
+      return { day, hours: timeRanges };
+    });
+  }
+
   async function getPlaceDetailsByName(name, address) {
     try {
       // Step 1: Use Text Search to find the place by name and get the coordinates
@@ -50,25 +94,21 @@
 
         console.log('Details Response:', detailsResponse.data);
 
-        const openingHours = detailsResponse.data.result.opening_hours?.weekday_text || {};
-        const hoursMap = openingHours.reduce((map, day) => {
-          const [dayName, hours] = day.split(': ');
-          map[dayName] = hours;
-          return map;
-        }, {});
+        const openingHoursText = detailsResponse.data.result.opening_hours?.weekday_text || [];
+        const hoursArray = parseOpeningHours(openingHoursText);
 
         const jsonEntry = {
           address: address,
           coordinate: {
-            lat: latitude.toString(),
-            lng: longitude.toString(),
+            lat: latitude, // Store as number
+            lng: longitude, // Store as number
           },
           facts: [
             'This bench is a great place to sit and relax',
             'It\'s a great place to people watch',
             'It\'s a great place to read a book',
           ],
-          hours: hoursMap,
+          hours: hoursArray,
           name: name,
         };
 

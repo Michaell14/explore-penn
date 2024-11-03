@@ -21,10 +21,10 @@ router.post('/add', async (req, res) => {
             u_id,
             coordinate: [lat, lng]
         });
-        res.status(200).send("Document successfully added");
+        res.status(200).send("Pin successfully added");
     } catch (error) {
-        console.error("Error adding document:", error);
-        res.status(500).send("Error adding document");
+        console.error("Error adding Pin:", error);
+        res.status(500).send("Error adding Pin");
     }
 });
 

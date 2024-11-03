@@ -1,0 +1,124 @@
+[
+  {
+    "address": "526 Market St, Philadelphia, PA 19106",
+    "coordinate": {
+      "lat": 39.9496103,
+      "lng": -75.1502821
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          "09:00",
+          "17:00"
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          "09:00",
+          "17:00"
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          "09:00",
+          "17:00"
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          "09:00",
+          "17:00"
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          "09:00",
+          "17:00"
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": [
+          "09:00",
+          "17:00"
+        ]
+      },
+      {
+        "day": "Sunday",
+        "hours": [
+          "09:00",
+          "17:00"
+        ]
+      }
+    ],
+    "name": "Liberty Bell"
+  },
+  {
+    "address": "2600 Benjamin Franklin Pkwy, Philadelphia, PA 19130",
+    "coordinate": {
+      "lat": 39.9655697,
+      "lng": -75.18096609999999
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          "10:00",
+          "17:00"
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          "10:00",
+          "17:00"
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          "10:00",
+          "20:45"
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": [
+          "10:00",
+          "17:00"
+        ]
+      },
+      {
+        "day": "Sunday",
+        "hours": [
+          "10:00",
+          "17:00"
+        ]
+      }
+    ],
+    "name": "Philadelphia Museum of Art"
+  }
+]
