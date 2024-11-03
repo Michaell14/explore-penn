@@ -5,8 +5,8 @@ const router = express.Router();
 
 //router.post('/', ()=>{});
 router.get('/top-pins', getTopPins);
-// router.get('/:pin_id', getPin);
-// router.get('/:pin_id/getReactions', getReactions);
-// router.post('/:pin_id/postReactions', postReaction);
+router.get('/:pin_id', getPin);
+router.get('/:pin_id/getReactions', getReactions);
+router.post('/:pin_id/postReactions', postReaction);
 
 export default router;
