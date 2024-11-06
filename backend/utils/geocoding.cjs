@@ -8,26 +8,40 @@
 
   const options = {
     provider: 'google',
-    apiKey: process.env.GOOGLE_API_KEY,
+    apiKey: process.env.GOOGLE_API_KEY, // Ensure this uses your environment variable
     formatter: null,
   };
 
   const geocoder = NodeGeocoder(options);
 
   const locations = [
-    { name: 'Liberty Bell', address: '526 Market St, Philadelphia, PA 19106' },
-    { name: 'Philadelphia Museum of Art', address: '2600 Benjamin Franklin Pkwy, Philadelphia, PA 19130' },
-    // Add more locations as needed
+    { name: 'Kings Court English College House (KCECH)', address: '3465 Sansom Street, Philadelphia, PA 19104' },
+    { name: 'Lauder College House', address: '3335 Woodland Walk, Philadelphia, PA 19104' },
+    { name: 'Hill College House', address: '3333 Walnut Street, Philadelphia, PA 19104' },
+    { name: 'Harnwell College House', address: '3820 Locust Walk, Philadelphia, PA 19104' },
+    { name: 'Harrison College House', address: '3910 Irving Street, Philadelphia, PA 19104' },
+    { name: 'Gutmann College House', address: '3901 Walnut Street, Philadelphia, PA 19104' },
+    { name: 'Rodin College House', address: '3901 Locust Walk, Philadelphia, PA 19104' },
+    { name: 'The Radian Apartments', address: '3925 Walnut Street, Philadelphia, PA 19104' },
+    { name: 'The Button (Split Button Sculpture)', address: '3420 Walnut Street, Philadelphia, PA 19104' },
+    { name: 'LOVE Statue', address: '36th Street and Locust Walk, Philadelphia, PA 19104' },
+    { name: 'The Bench (The Covenant)', address: '36th Street and Locust Walk, Philadelphia, PA 19104' },
+    { name: 'The Compass', address: '37th Street and Locust Walk, Philadelphia, PA 19104' },
+    { name: 'Tampons (We Lost)', address: '3420 Walnut Street, Philadelphia, PA 19104' },
+    { name: 'Van Pelt-Dietrich Library Center (VP)', address: '3420 Walnut Street, Philadelphia, PA 19104' },
+    { name: 'Jon M. Huntsman Hall', address: '3730 Walnut Street, Philadelphia, PA 19104' },
+    { name: 'Towne Building (Engineering Quad)', address: '220 South 33rd Street, Philadelphia, PA 19104' },
+    { name: 'Williams Hall', address: '255 South 36th Street, Philadelphia, PA 19104' },
+    { name: 'Houston Hall', address: '3417 Spruce Street, Philadelphia, PA 19104' },
+    { name: 'Claire M. Fagin Hall', address: '418 Curie Boulevard, Philadelphia, PA 19104' },
+    { name: 'Meyerson Hall', address: '210 South 34th Street, Philadelphia, PA 19104' }
   ];
 
   function convertTo24HourFormat(timeString) {
     if (!timeString || !timeString.includes(':')) {
       return 'Invalid time';
     }
-
-    // Normalize special characters (e.g., non-breaking spaces and different dashes)
     timeString = timeString.replace(/\u202F/g, ' ').replace(/–/g, '-').trim();
-
     const [time, modifier] = timeString.split(' ');
     let [hours, minutes] = time.split(':').map(Number);
 
@@ -50,26 +64,20 @@
       if (!hours || hours.toLowerCase() === 'closed') {
         return { day, hours: 'Closed' };
       }
-
-      // Split time ranges (e.g., "09:00 AM – 05:00 PM")
       const timeRanges = hours.split('–').map(time => convertTo24HourFormat(time.trim()));
-
-      // Check for invalid times
       if (timeRanges.some(time => time === 'Invalid time')) {
         console.error(`Invalid time format detected in: ${dayEntry}`);
         return { day, hours: 'Invalid time format' };
       }
-
       return { day, hours: timeRanges };
     });
   }
 
   async function getPlaceDetailsByName(name, address) {
     try {
-      // Step 1: Use Text Search to find the place by name and get the coordinates
       const response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
         params: {
-          query: name,
+          query: `${name}, ${address}`,
           key: process.env.GOOGLE_API_KEY,
         },
       });
@@ -83,7 +91,6 @@
         console.log('Retrieved Place ID:', placeId);
         console.log('Coordinates:', latitude, longitude);
 
-        // Step 2: Use Place Details API to get more information
         const detailsResponse = await axios.get('https://maps.googleapis.com/maps/api/place/details/json', {
           params: {
             place_id: placeId,
@@ -92,16 +99,14 @@
           },
         });
 
-        console.log('Details Response:', detailsResponse.data);
-
         const openingHoursText = detailsResponse.data.result.opening_hours?.weekday_text || [];
         const hoursArray = parseOpeningHours(openingHoursText);
 
         const jsonEntry = {
           address: address,
           coordinate: {
-            lat: latitude, // Store as number
-            lng: longitude, // Store as number
+            lat: latitude,
+            lng: longitude,
           },
           facts: [
             'This bench is a great place to sit and relax',
@@ -131,7 +136,7 @@
       }
     }
 
-    fs.writeFileSync('locations.json', JSON.stringify(results, null, 2));
+    fs.writeFileSync('./locations.json', JSON.stringify(results, null, 2));
     console.log('JSON file created: locations.json');
   }
 
