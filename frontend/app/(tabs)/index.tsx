@@ -4,7 +4,7 @@ import MapView, { Marker } from 'react-native-maps';
 import CustomBottomSheet from '@/components/CustomBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 
-interface MarkerData{
+interface MarkerData {
   title: string,
   description: string,
   longitude: number,
@@ -12,7 +12,6 @@ interface MarkerData{
 }
 
 const HomeScreen: React.FC = () => {
-
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [bottomSheetTitle, setBottomSheetTitle] = useState("Nothing Selected");
 
@@ -21,14 +20,14 @@ const HomeScreen: React.FC = () => {
     console.log(marker.latitude)
     setBottomSheetTitle(marker.title);
   };
-  
+
   const handleClosePress = () => bottomSheetRef.current?.close();
   const handleOpenPress = () => bottomSheetRef.current?.expand();
   const handleCollapsePress = () => bottomSheetRef.current?.collapse();
   const snapToIndex = (index: number) => bottomSheetRef.current?.snapToIndex(index);
-  
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
       {/* map section */}
       <MapView
         style={styles.map}
@@ -49,7 +48,7 @@ const HomeScreen: React.FC = () => {
           onPress={(e) => handleMarkerPress({
             title: "Van Pelt Library",
             description: "where best spark team is working rn",
-            longitude: 39.9522, 
+            longitude: 39.9522,
             latitude: -75.1932
           })}
         />
@@ -58,16 +57,16 @@ const HomeScreen: React.FC = () => {
           title="Houston Hall"
           description="This is where the ping pong table is"
           onPress={(e) => handleMarkerPress({
-            title: "Houston Hall", 
-            description: "This is where the ping pong table is", 
-            longitude: 39.9509, 
+            title: "Houston Hall",
+            description: "This is where the ping pong table is",
+            longitude: 39.9509,
             latitude: -75.1939
           })}
         />
       </MapView>
-      
-      <CustomBottomSheet title = {bottomSheetTitle} ref = {bottomSheetRef}/>
-        
+
+      <CustomBottomSheet title={bottomSheetTitle} ref={bottomSheetRef} />
+
     </View>
   );
 };
@@ -79,6 +78,7 @@ const styles = StyleSheet.create({
     //padding for weird iphone top bar thing
     //paddingTop: Platform.OS === 'ios' ? 40 : StatusBar.currentHeight,
   },
+
   header: {
     padding: 18,
     backgroundColor: '#f8f9fa',
