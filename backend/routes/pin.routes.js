@@ -1,9 +1,10 @@
 import express from 'express'
-// import pinController from "../controller/pin.controller.js"
+import { getPinsByLocation } from '../controller/pin.controller.js';
 
 const router = express.Router();
 
 router.post('/', ()=>{});
+router.post('/location', getPinsByLocation);
 
 
 export default router;
