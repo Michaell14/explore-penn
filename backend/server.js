@@ -3,6 +3,7 @@ import admin from 'firebase-admin';
 import cors from 'cors';
 import fs from 'fs'
 import routes from './routes/index.js';
+import { startPeriodicUpdates } from './utils/openingTimeUpdates.js';
 
 export const serviceAccount = JSON.parse(fs.readFileSync('./firebaseServiceAccount.json', 'utf-8'));
 export const notifServiceAccount = JSON.parse(fs.readFileSync('./firebaseNotifServiceAccount.json', 'utf-8'));
@@ -20,6 +21,7 @@ app.use(express.json());
 
 app.use('/api', routes); 
 
+startPeriodicUpdates();
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
@@ -27,4 +29,3 @@ app.listen(PORT, () => {
 });
 
 export {db, app}
-
