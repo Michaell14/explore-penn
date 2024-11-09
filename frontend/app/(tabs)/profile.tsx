@@ -1,142 +1,69 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image, Platform } from 'react-native';
+import { View, Text, TextInput, Keyboard, TouchableWithoutFeedback, StyleSheet, TouchableOpacity, Image, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function ProfileScreen() {
     //edit mode toggle
-    const [isEditable, setIsEditable] = useState(false);
+    const [isEditable, setIsEditable] = useState(true);
 
     return (
-        <View style={styles.container}>
-            {/* header section */}
-            <View style={styles.header}>
-                <Text style={styles.headerText}>Profile</Text>
-                <View style={styles.profilePicContainer}>
-                    <Image
-                        // placeholder until dslaysigners mary and ruth cook
-                        source={{ uri: 'https://via.placeholder.com/100' }}
-                        style={styles.profilePic}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View className = "flex-1 bg-[#1B1B1B]">
+                {/* header section */}
+                <View className = "bg-[#0F0E0E] pb-16  items-center rounded-b-[40px]"  style={styles.header}>
+                    <View className = "relative">
+                        <Image
+                            // placeholder until dslaysigners mary and ruth cook
+                            source={{ uri: 'https://via.placeholder.com/100' }}
+                            className = "w-[100px] h-[100px] rounded-full bg-slate-300"
+                        />
+                        <TouchableOpacity className = "absolute bottom-0 right-0 bg-white rounded-lg p-2">
+                            <Icon name="pencil" size={16} color="#333" />
+                        </TouchableOpacity>
+                    </View>
+                    <Text className = "text-2xl font-semibold mt-8 text-[#ECEEF2]">Hungry Hippo</Text>
+                    <Text style={{
+            fontSize: 16,
+            color: '#666',
+        }}>email@school.upenn.edu</Text>
+                </View>
+
+                {/* account section */}
+                <View className = "flex-1 p-6">
+                    <View className = "flex-row justify-between mb-4">
+                        <Text className = "text-lg font-bold text-[#CEF7A0]">My Account</Text>
+                        {/*}
+                        <TouchableOpacity onPress={() => setIsEditable(!isEditable)}>
+                            <Text className = "text-lg color-[#007bff]">Edit</Text>
+                        </TouchableOpacity>*/}
+                    </View>
+
+                    <TextInput
+                        className = "h-10 border-black border rounded-[20px] px-3 mb-4 text-[#ECEEF280]"
+                        placeholder="Email"
+                        editable={isEditable}
+                        clearButtonMode="while-editing"
                     />
-                    <TouchableOpacity style={styles.editIcon}>
-                        <Icon name="pencil" size={16} color="#333" />
+                    <TextInput
+                        className = "h-10 border-black border rounded-[20px] px-3 mb-4 text-[#ECEEF280]"
+                        placeholder="Password"
+                        secureTextEntry={true}
+                        editable={isEditable}
+                        clearButtonMode="while-editing"
+                    />
+
+                    <TouchableOpacity className = "bg-[#d3d3d3] rounded-[20px] py-3 mt-4 items-center">
+                        <Text className = "text-lg font-bold text-[#333]">Log out</Text>
                     </TouchableOpacity>
                 </View>
-                <Text style={styles.profileName}>michael meowli</Text>
-                <Text style={styles.profileEmail}>email@school.upenn.edu</Text>
             </View>
-
-            {/* account section */}
-            <View style={styles.accountContainer}>
-                <View style={styles.accountHeader}>
-                    <Text style={styles.accountTitle}>My Account</Text>
-                    <TouchableOpacity onPress={() => setIsEditable(!isEditable)}>
-                        <Text style={styles.editButton}>Edit</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Email"
-                    editable={isEditable}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Password"
-                    secureTextEntry={true}
-                    editable={isEditable}
-                />
-
-                <TouchableOpacity style={styles.logoutButton}>
-                    <Text style={styles.logoutButtonText}>Log out</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 }
 
 // im leaving the stylesheet in the same file unless we wanna make a separate styles folder !
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
     header: {
-        backgroundColor: '#d3d3d3',
-        paddingBottom: 32,
-        alignItems: 'center',
-        borderBottomLeftRadius: 40,
-        borderBottomRightRadius: 40,
-        paddingTop: Platform.OS === 'ios' ? 60 : 40,
-    },
-    headerText: {
-        fontSize: 32,
-        fontWeight: 'bold',
-        marginBottom: 16,
-    },
-    profilePicContainer: {
-        position: 'relative',
-    },
-    profilePic: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        backgroundColor: '#aaa',
-    },
-    editIcon: {
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-        backgroundColor: '#fff',
-        borderRadius: 12,
-        padding: 4,
-    },
-    editIconText: {
-        fontSize: 16,
-    },
-    profileName: {
-        fontSize: 24,
-        fontWeight: '600',
-        marginTop: 8,
-    },
-    profileEmail: {
-        fontSize: 16,
-        color: '#666',
-    },
-    accountContainer: {
-        flex: 1,
-        padding: 24,
-    },
-    accountHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 16,
-    },
-    accountTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    editButton: {
-        fontSize: 16,
-        color: '#007bff',
-    },
-    input: {
-        height: 40,
-        borderColor: '#000',
-        borderWidth: 1,
-        borderRadius: 20,
-        paddingHorizontal: 12,
-        marginBottom: 16,
-    },
-    logoutButton: {
-        backgroundColor: '#d3d3d3',
-        borderRadius: 20,
-        paddingVertical: 12,
-        alignItems: 'center',
-        marginTop: 16,
-    },
-    logoutButtonText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#333',
-    },
+        paddingTop: Platform.OS === 'ios' ? 80 : 60,
+    }
 });
