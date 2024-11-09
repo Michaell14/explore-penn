@@ -5,8 +5,8 @@ import { auth } from '../firebaseConfig';
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import axios from 'axios';
-import {baseUrl} from '../config.js';
-import {webClientId, iosClientId, androidClientId} from '../config.js';
+import { baseURL } from '../config';
+import {webClientId, iosClientId, androidClientId} from '../config';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -73,20 +73,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const createUserIfNotExists = async (user: User) => {
     try {
-      await axios.post(
-        `${baseUrl}/api/users/register`,
-        { uid: user.uid, name: user.displayName, email: user.email },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      console.log('User registered successfully');
-    } catch (error) {
-    
-        console.error("Error registering user:", error);
+      // First, check if the user already exists in your backend
+      const response = await axios.get(`${baseURL}/api/users/${user.uid}`);
       
+      if (response.status === 404) {
+        // If the user doesn't exist, proceed with registration
+        await axios.post(
+          `${baseURL}/api/users/register`,
+          { uid: user.uid, name: user.displayName, email: user.email },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        console.log('User registered successfully');
+      } else {
+        console.log('User already exists');
+      }
+    } catch (error) {
+      console.error("Error registering user:", error);
     }
   };
 
