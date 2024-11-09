@@ -1,3 +1,13 @@
 node_modules/
 firebaseServiceAccount.json
 firebaseNotifServiceAccount.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Environment Variables
+.env
+
+firebaseServiceAccount.json
