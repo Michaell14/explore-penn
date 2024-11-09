@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ericslee1207.explorepenn",
+      "bundleIdentifier": "com.kestelle.explorepenn",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Your custom message explaining why the app needs location access while in use.",
@@ -28,7 +28,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ericslee1207.explorepenn"
+      "package": "com.kestelle.explorepenn"
     },
     "web": {
       "bundler": "metro",
