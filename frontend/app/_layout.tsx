@@ -33,6 +33,7 @@ export default function RootLayout() {
   }
 
   // Show the LandingPage initially, then render the main tabs layout after dismissing it
+  
   if (showLandingPage) {
     return <LandingPage onDismiss={() => setShowLandingPage(false)} />;
   }
@@ -41,6 +42,7 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Stack>
+          <Stack.Screen name="landing" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
         </Stack>
