@@ -18,7 +18,9 @@ export default function LandingPage({ onDismiss }: LandingPageProps) {
   const loginSheetRef = useRef<BottomSheet>(null);
 
   const onOpenSignUp = () => signUpSheetRef.current?.expand();
+  const onCloseSignUp = () => signUpSheetRef.current?.close();
   const onOpenLogin = () => loginSheetRef.current?.expand();
+  const onCloseLogin = () => loginSheetRef.current?.close();
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -30,7 +32,7 @@ export default function LandingPage({ onDismiss }: LandingPageProps) {
         if (router.canDismiss()) {
           router.dismissAll();
         }
-        
+
         router.push("/(tabs)/")
       }
     } else {
@@ -48,21 +50,29 @@ export default function LandingPage({ onDismiss }: LandingPageProps) {
               style={styles.background}
             />
 
-            <TouchableOpacity onPress={onOpenLogin}>
-              <View className="rounded-[10px] border border-solid border-[#CEF7A0] w-[261px] items-center mb-4">
-                <Text className="text-lg font-semibold py-3 text-[#CEF7A0]">Log In with Email</Text>
+            <Image
+              // placeholder until dslaysigners mary and ruth cook
+              source={require("./../assets/images/pin.png")}
+              style={styles.pinImage}
+            />
+
+            <TouchableOpacity onPress={() => { onCloseSignUp(); onOpenLogin() }} className = "mt-20">
+              <View className="rounded-[10px] border border-solid border-[#CEF7A0] w-[261px] items-center mb-4 flex-row justify-center">
+                <Image source={require("./../assets/images/mail-icon.png")} style={styles.mailIcon}/>
+                <Text className="text-lg font-semibold py-3 text-[#CEF7A0]">Login with Email</Text>
               </View>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => { }}>
-              <View className="rounded-[10px] border border-solid border-[#CEF7A0] w-[261px] items-center mb-4">
-                <Text className="text-lg font-semibold py-3 text-[#CEF7A0]">Log In with Google</Text>
+              <View className="rounded-[10px] border border-solid border-[#CEF7A0] w-[261px] items-center mb-4 flex-row justify-center">
+                <Image source={require("./../assets/images/google-icon.png")} style={styles.googleIcon}/>
+                <Text className="text-lg font-semibold py-3 text-[#CEF7A0]">Login with Google</Text>
               </View>
             </TouchableOpacity>
 
             <View className="flex-row">
               <Text className="text-slate-300">Don't have an account? </Text>
-              <Text className="text-[#CEF7A0]" onPress={onOpenSignUp}>Sign Up</Text>
+              <Text className="text-[#CEF7A0]" onPress={() => { onCloseLogin(); onOpenSignUp() }}>Sign Up</Text>
             </View>
           </View>
 
@@ -85,4 +95,21 @@ const styles = StyleSheet.create({
     top: 0,
     height: "100%",
   },
+  pinImage: {
+    width: 260,
+    height: 260,
+    objectFit: "contain",
+  },
+  googleIcon: {
+    width: 24,
+    height: 24,
+    marginRight: 8,
+    objectFit: "cover"
+  },
+  mailIcon: {
+    width: 19.5,
+    height: 15,
+    marginRight: 8,
+    objectFit: "cover"
+  }
 });

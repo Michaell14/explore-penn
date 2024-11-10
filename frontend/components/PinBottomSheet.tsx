@@ -2,14 +2,23 @@ import { Text, StyleSheet } from 'react-native'
 import React, { forwardRef, useMemo, useCallback } from 'react';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
+interface PinData {
+    title: string,
+    description: string,
+    longitude: number,
+    latitude: number
+  }
+
 interface Props {
-    title: string;
+    pin: PinData;
 }
 
 type Ref = BottomSheet;
 
-const CustomBottomSheet = forwardRef<Ref, Props>((props, ref) => {
+const PinBottomSheet = forwardRef<Ref, Props>((props, ref) => {
 
+    const pin = props.pin;
+    
     const snapPoints = useMemo(() => ["25%", "50%", "70%", "100%"], [])
 
     // callbacks
@@ -25,7 +34,8 @@ const CustomBottomSheet = forwardRef<Ref, Props>((props, ref) => {
             index = {1}
             >
             <BottomSheetView style={styles.contentContainer}>
-                <Text>{props.title}</Text>
+                <Text>{pin?.title}</Text>
+                <Text>{pin?.description}</Text>
             </BottomSheetView>
         </BottomSheet>
     )
@@ -40,4 +50,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CustomBottomSheet
+export default PinBottomSheet;

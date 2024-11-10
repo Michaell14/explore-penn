@@ -50,7 +50,6 @@ const LoginBottomSheet = forwardRef<Ref, Props>((props, ref) => {
 
     return (
         <>
-
             <BottomSheet
                 ref={ref}
                 snapPoints={snapPoints}
@@ -60,7 +59,7 @@ const LoginBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                 backgroundStyle={{ backgroundColor: "#F2F0EF" }}
             >
                 <BottomSheetView className="items-center flex-1" style={styles.contentContainer}>
-                    <Text className="text-4xl">Login with Email</Text>
+                    <Text style = {styles.headingText}>Login with Email</Text>
 
                     <View style={styles.inputContent}>
                         <Text className="text-4xl">Enter Email</Text>
@@ -78,6 +77,7 @@ const LoginBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                                     onBlur={onBlur}
                                     onChangeText={onChange}
                                     value={value}
+                                    autoCorrect={false}
                                 />
                             )}
                             name="email"
@@ -101,6 +101,7 @@ const LoginBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                                     onChangeText={onChange}
                                     value={value}
                                     secureTextEntry={true}
+                                    autoCorrect={false}
                                 />
                             )}
                             name="password"
@@ -133,13 +134,18 @@ const styles = StyleSheet.create({
     textInput: {
         borderColor: "black",
         borderWidth: 1,
-        borderRadius: 20,
-        padding: 5,
+        borderRadius: 10,
+        padding: 12,
         width: "100%",
     },
     inputContent: {
         marginBottom: 16,
         width: "100%"
+    },
+    headingText: {
+        fontSize: 24,
+        fontWeight: 600,
+        marginBottom: 10
     }
 });
 

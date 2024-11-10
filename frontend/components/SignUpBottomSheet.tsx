@@ -68,10 +68,10 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                 backgroundStyle={{ backgroundColor: "#F2F0EF" }}
             >
                 <BottomSheetView className="items-center flex-1" style={styles.contentContainer}>
-                    <Text className="text-4xl">Sign Up with Email</Text>
+                    <Text style={styles.headingText}>Sign Up with Email</Text>
 
                     <View style={styles.inputContent}>
-                        <Text className="text-4xl">Enter Username</Text>
+                        <Text>Enter Username</Text>
                         <Controller
                             control={control}
                             rules={{
@@ -85,6 +85,7 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                                     onBlur={onBlur}
                                     onChangeText={onChange}
                                     value={value}
+                                    autoCorrect={false}
                                 />
                             )}
                             name="username"
@@ -108,6 +109,7 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                                     onBlur={onBlur}
                                     onChangeText={onChange}
                                     value={value}
+                                    autoCorrect={false}
                                 />
                             )}
                             name="email"
@@ -131,6 +133,7 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                                     onChangeText={onChange}
                                     value={value}
                                     secureTextEntry={true}
+                                    autoCorrect={false}
                                 />
                             )}
                             name="password"
@@ -154,6 +157,7 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                                     onChangeText={onChange}
                                     value={value}
                                     secureTextEntry={true}
+                                    autoCorrect={false}
                                 />
                             )}
                             name="confirmPassword"
@@ -170,7 +174,6 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
 });
 
 const styles = StyleSheet.create({
-
     contentContainer: {
         padding: 36,
         backgroundColor: "#F2F0EF"
@@ -192,6 +195,11 @@ const styles = StyleSheet.create({
     inputContent: {
         marginBottom: 16,
         width: "100%"
+    },
+    headingText: {
+        fontSize: 24,
+        fontWeight: 600,
+        marginBottom: 10
     }
 });
 

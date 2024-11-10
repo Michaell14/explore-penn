@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, Platform, StatusBar, Modal } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import CustomBottomSheet from '@/components/CustomBottomSheet';
+import PinBottomSheet from '@/components/PinBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 
-interface MarkerData {
+interface PinData {
   title: string,
   description: string,
   longitude: number,
@@ -13,12 +13,12 @@ interface MarkerData {
 
 const HomeScreen: React.FC = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const [bottomSheetTitle, setBottomSheetTitle] = useState("Nothing Selected");
+  const [pin, setPin] = useState<PinData>();
 
-  const handleMarkerPress = (marker: MarkerData) => {
-    console.log(marker.longitude);
-    console.log(marker.latitude)
-    setBottomSheetTitle(marker.title);
+  const handleMarkerPress = (pin: PinData) => {
+    console.log(pin.longitude);
+    console.log(pin.latitude)
+    setPin(pin);
   };
 
   const handleClosePress = () => bottomSheetRef.current?.close();
@@ -65,7 +65,7 @@ const HomeScreen: React.FC = () => {
         />
       </MapView>
 
-      <CustomBottomSheet title={bottomSheetTitle} ref={bottomSheetRef} />
+      <PinBottomSheet pin={pin} ref={bottomSheetRef} />
 
     </View>
   );
