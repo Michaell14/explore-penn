@@ -40,6 +40,7 @@ export const getAllLocations = async (req, res) => {
   }
 };
 
+// Parking Lot
 export const getRandomFunFact = async (req, res) => {
   const { location_id } = req.params;
 

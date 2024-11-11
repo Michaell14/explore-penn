@@ -1,7 +1,7 @@
 import {auth} from 'google-auth-library';
 import axios from 'axios'
 import fs from 'fs'
-import { getNearbyPins } from './pin.controller.js';
+import { getNearbyPins } from './socialPin.controller.js';
 import { notifServiceAccount } from '../server.js';
 
 const sendPushNotification = async (expoPushToken, title, body) => {

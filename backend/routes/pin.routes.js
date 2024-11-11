@@ -1,5 +1,5 @@
 import express from 'express'
-import { getPin, addPin, getTopPins, getReactions, postReaction, getPinsByLocation } from "../controller/pin.controller.js"
+import { getPin, addPin, getTopPins, getReactions, postReaction, getPinsByLocation } from "../controller/socialPin.controller.js"
 
 const router = express.Router();
 
