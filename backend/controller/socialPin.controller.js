@@ -1,11 +1,11 @@
 import {db} from "../server.js"
 import admin from 'firebase-admin';
 
-const socialPinRef = db.collection('socialPins')
 
 export const getPinsByLocation = async(req, res) => {
     const { latitude, longitude, radius } = req.body;
     try {
+        const socialPinRef = db.collection('socialPins')
         const pinsWithinRadius = await getNearbyPins(latitude, longitude, radius);
         res.status(200).json(pinsWithinRadius);
     } catch (error) {
@@ -16,6 +16,7 @@ export const getPinsByLocation = async(req, res) => {
 }
 
 export const getNearbyPins = async(latitude, longitude, radius) => {
+    const socialPinRef = db.collection('socialPins')
     const snapshot = await socialPinRef.get();
     const pinsWithinRadius =snapshot.docs
             .map(doc => ({ id: doc.id, ...doc.data() }))
@@ -35,6 +36,7 @@ const calculateDistance = (pin, latitude, longitude) => {
 export const getPin = async (req, res) => {
     const { pin_id } = req.params;
     try {
+        const socialPinRef = db.collection('socialPins')
         const pinDoc = await socialPinRef.doc(pin_id).get();
 
         if (!pinDoc.exists) {
@@ -78,6 +80,7 @@ export const addPin = async (req, res) => {
     }
 
     try {
+        const socialPinRef = db.collection('socialPins')
         const newPost = {
             description,
             u_id,
