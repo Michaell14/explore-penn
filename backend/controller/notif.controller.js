@@ -1,7 +1,7 @@
 import {auth} from 'google-auth-library';
 import axios from 'axios'
 import fs from 'fs'
-import { getNearbyPins } from './eventPin.controller.js';
+import { getPinsByLocation } from './eventPin.controller.js';
 import { notifServiceAccount } from '../server.js';
 
 const sendPushNotification = async (expoPushToken, title, body) => {
@@ -24,7 +24,7 @@ export const notify = async(req, res) => {
   
     try {
       // Get nearby pins based on user's location
-      const nearbyPins = await getNearbyPins(latitude, longitude, radius);
+      const nearbyPins = await getPinsByLocation(latitude, longitude, radius);
   
       if (nearbyPins.length > 0) {
         // Send a push notification if there are nearby pins
