@@ -10,6 +10,7 @@ import { baseURL } from '@/config';
 import { getExpoPushToken, saveExpoPushToken } from '@/hooks/pushToken';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
+import { startBackgroundUpdate } from '@/hooks/registerBackground';
 
 interface PinData {
   title: string,
@@ -85,6 +86,7 @@ const HomeScreen: React.FC = () => {
           console.log(storedToken)
         } else {
           const token = await registerForPushNotificationsAsync();
+          console.log(token)
           if (token) {
             setExpoPushToken(token);
             await saveExpoPushToken(token);
@@ -92,7 +94,7 @@ const HomeScreen: React.FC = () => {
         }
 
         // Register background fetch task
-        // await startBackgroundUpdate();
+        await startBackgroundUpdate();
       }
     };
 

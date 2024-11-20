@@ -40,8 +40,9 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <AuthProvider>
+
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Stack>
           <Stack.Screen name="landing" options={{ headerShown: false }} />
@@ -49,8 +50,9 @@ export default function RootLayout() {
           <Stack.Screen name="+not-found" />
         </Stack>
       </GestureHandlerRootView>
+      </AuthProvider>
+
     </ThemeProvider>
-    </AuthProvider>
   );
 }
 

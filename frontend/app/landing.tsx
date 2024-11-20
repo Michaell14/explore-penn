@@ -8,12 +8,14 @@ import SignUpBottomSheet from '@/components/SignUpBottomSheet';
 import LoginBottomSheet from '@/components/LoginBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useAuth } from '@/hooks/useAuth';
 
 type LandingPageProps = {
   onDismiss: () => void;
 };
 
 export default function LandingPage({ onDismiss }: LandingPageProps) {
+  // const {signInWithGoogle} = useAuth();
   const signUpSheetRef = useRef<BottomSheet>(null);
   const loginSheetRef = useRef<BottomSheet>(null);
 
@@ -63,7 +65,7 @@ export default function LandingPage({ onDismiss }: LandingPageProps) {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => { }}>
+            <TouchableOpacity onPress={() => { signInWithGoogle() }}>
               <View className="rounded-[10px] border border-solid border-[#CEF7A0] w-[261px] items-center mb-4 flex-row justify-center">
                 <Image source={require("./../assets/images/google-icon.png")} style={styles.googleIcon}/>
                 <Text className="text-lg font-semibold py-3 text-[#CEF7A0]">Login with Google</Text>
