@@ -118,7 +118,8 @@ export const addPin = async (req, res) => {
       time_posted: admin.firestore.FieldValue.serverTimestamp(),
       loc_description,
       photo,
-      isActive: True,
+      isActive: true,
+      maxZIndex: 0,
     };
 
     const pinRef = await eventPinRef.add(newPin);
@@ -215,7 +216,8 @@ export const addPost = async (req, res) => {
     }
   
     try {
-      const postsRef = db.collection("eventPins").doc(pin_id).collection("posts");
+      const pinRef = db.collection("eventPins").doc(pin_id);
+      const postsRef = pinRef.collection("posts");
       const newPost = {
         x,
         y,
@@ -226,6 +228,7 @@ export const addPost = async (req, res) => {
       };
   
       const postRef = await postsRef.add(newPost);
+      doc.pinRef.update({ [maxZIndex]: FieldValue.increment(1)});
       res.status(200).json({ message: "Post successfully added", postId: postRef.id });
     } catch (error) {
       console.error("Error adding post:", error);
@@ -271,7 +274,8 @@ export const deletePost = async (req, res) => {
     const { pin_id, post_id } = req.params;
   
     try {
-      const postRef = db.collection("eventPins").doc(pin_id).collection("posts").doc(post_id);
+      const pinRef = db.collection("eventPins").doc(pin_id);
+      const postRef = pinRef.collection("posts").doc(post_id);
       const postDoc = await postRef.get();
   
       if (!postDoc.exists) {
@@ -279,6 +283,7 @@ export const deletePost = async (req, res) => {
       }
   
       await postRef.delete();
+      doc.pinRef.update({ [maxZIndex]: FieldValue.increment(-1)});
       res.status(200).json({ message: "Post successfully deleted" });
     } catch (error) {
       console.error("Error deleting post:", error);
