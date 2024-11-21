@@ -120,6 +120,7 @@ export const addPin = async (req, res) => {
       photo,
       isActive: true,
       maxZIndex: 0,
+      reactionCount: 0
     };
 
     const pinRef = await eventPinRef.add(newPin);
@@ -302,6 +303,7 @@ export const getStickers = async (req, res) => {
   const { pin_id } = req.params;
 
   try {
+
     const stickersRef = db.collection("eventPins").doc(pin_id).collection("stickers");
     const stickersSnapshot = await stickersRef.get();
     const stickers = stickersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -325,7 +327,8 @@ export const addSticker = async (req, res) => {
   }
 
   try {
-    const stickersRef = db.collection("eventPins").doc(pin_id).collection("stickers");
+    const pinRef = db.collection("eventPins").doc(pin_id);
+    const stickersRef = pinRef.collection("stickers");
     const newSticker = {
       x,
       y,
@@ -333,7 +336,7 @@ export const addSticker = async (req, res) => {
       type,
       time_posted: admin.firestore.FieldValue.serverTimestamp(),
     };
-
+    doc.pinRef.update({ [reactionCount]: FieldValue.increment(1)});
     const stickerRef = await stickersRef.add(newSticker);
     res.status(200).json({ message: "Sticker successfully added", stickerId: stickerRef.id });
   } catch (error) {
@@ -376,13 +379,14 @@ export const deleteSticker = async (req, res) => {
   const { pin_id, sticker_id } = req.params;
 
   try {
-    const stickerRef = db.collection("eventPins").doc(pin_id).collection("stickers").doc(sticker_id);
+    const pinRef = db.collection("eventPins").doc(pin_id);
+    const stickerRef = pinRef.collection("stickers").doc(sticker_id);
     const stickerDoc = await stickerRef.get();
 
     if (!stickerDoc.exists) {
       return res.status(404).json({ error: "Sticker not found" });
     }
-
+    doc.pinRef.update({ [reactionCount]: FieldValue.increment(-1)});
     await postRef.delete();
     res.status(200).json({ message: "Sticker successfully deleted" });
   } catch (error) {
