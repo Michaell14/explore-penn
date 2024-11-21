@@ -5,6 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import routes from './routes/index.js';
 import { startPeriodicUpdates } from './utils/openingTimeUpdates.js';
+import { startPinUpdates } from './utils/currentPinUpdates.js';
 
 // Resolve paths for service account files
 const serviceAccountPath = path.resolve('./firebaseServiceAccount.json');
@@ -36,6 +37,7 @@ app.use(express.json());
 app.use('/api', routes);
 
 startPeriodicUpdates();
+startPinUpdates();
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

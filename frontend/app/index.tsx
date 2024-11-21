@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import { View, Text, Button, Platform } from 'react-native';
 import { useAuth } from '../hooks/useAuth';
 import { useRouter } from 'expo-router';
-import { baseURL } from '../config';
+import { baseURL } from '../config.js';
 import axios from 'axios'
 import { getExpoPushToken, saveExpoPushToken } from '@/hooks/pushToken';
 import * as Location from 'expo-location';

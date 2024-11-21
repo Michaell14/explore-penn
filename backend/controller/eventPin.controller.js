@@ -57,7 +57,7 @@ export const getPinsByLocation = async (req, res) => {
  */
 export const getHistoricalPins = async (req, res) => {
   try {
-    const historicalEventPinRef = db.collection("historicalEventPins");
+    const historicalEventPinRef = db.collection("eventPins").where("isActive", "==", false);
     const snapshot = await historicalEventPinRef.get();
     const pins = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     res.status(200).json(pins);
@@ -118,6 +118,7 @@ export const addPin = async (req, res) => {
       time_posted: admin.firestore.FieldValue.serverTimestamp(),
       loc_description,
       photo,
+      isActive: True,
     };
 
     const pinRef = await eventPinRef.add(newPin);
@@ -161,24 +162,19 @@ export const deletePin = async (req, res) => {
 export const archivePin = async (req, res) => {
   const { pin_id } = req.params;
   try {
-    const eventPinRef = db.collection("eventPins");
-    const pinRef = eventPinRef.doc(pin_id);
+    const pinRef = db.collection("eventPins").doc(pin_id);
     const pinDoc = await pinRef.get();
+
     if (!pinDoc.exists) {
       return res.status(404).json({ error: "Pin not found" });
     }
 
-    const postsQuery = await db.collection("posts").where("pin_id", "==", pin_id).get();
-    const batch = db.batch();
+    await pinRef.update({ isActive: false });
 
-    postsQuery.docs.forEach((post) => batch.delete(post.ref));
-    batch.delete(pinRef);
-    await batch.commit();
-
-    res.status(200).json({ message: "Pin and associated posts successfully deleted" });
+    res.status(200).json({ message: "Pin successfully archived" });
   } catch (error) {
-    console.error("Error deleting pin:", error);
-    res.status(500).json({ error: "Failed to delete pin" });
+    console.error("Error archiving pin:", error);
+    res.status(500).json({ error: "Failed to archive pin" });
   }
 };
 

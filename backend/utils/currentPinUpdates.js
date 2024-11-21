@@ -22,43 +22,51 @@ export const listenForOpenStatusUpdates = (callback) => {
 export const updateCurrentPins = async () => {
     const currentDay = new Date().toLocaleString('en-US', { weekday: 'long' });
     const currentTime = parseInt(new Date().toTimeString().slice(0, 5).replace(':', ''), 10); // Convert current time to a number format HHMM
-  
+    
     try {
-      const locationsSnapshot = await db.collection('locations').get();
-      locationsSnapshot.forEach(async (doc) => {
-        const locationData = doc.data();
-        const hours = locationData.hours || [];
+      // Fetch only active pins from Firestore
+      const eventPinsSnapshot = await db.collection('eventPins').where('isActive', '==', true).get();
+      
+      eventPinsSnapshot.forEach(async (doc) => {
+        const pinsData = doc.data();
+        const isActive = pinsData.isActive || false;
+  
+        // Skip inactive pins
+        if (!isActive) {
+          return;
+        }
   
         // Check if there are no hours defined (empty array)
-        if (hours.length === 0) {
+        if (pinsData.hours?.length === 0) {
           // If no hours are defined, set `isOpen` to true and update if necessary
-          if (locationData.isOpen !== true) {
+          if (pinsData.isOpen !== true) {
             await doc.ref.update({ isOpen: true });
           }
           return; // Skip further processing for this location
         }
   
         // Find today's schedule
-        const todaySchedule = hours.find(day => day.day === currentDay);
+        const todaySchedule = pinsData.hours.find(day => day.day === currentDay);
         let isOpen = false;
-  
+    
         // Check if `todaySchedule.hours` is a valid array
         if (todaySchedule && Array.isArray(todaySchedule.hours)) {
           for (const timeRange of todaySchedule.hours) {
             const { open, close } = timeRange;
-  
+    
             // Ensure `open` and `close` exist and are numbers
             if (typeof open === 'number' && typeof close === 'number') {
+              // Check if current time is between open and close time (inclusive of close time)
               if (currentTime >= open && currentTime <= close) {
                 isOpen = true;
-                break;
+                break; // No need to check further if already open
               }
             }
           }
         }
   
         // Update `isOpen` status only if changed
-        if (locationData.isOpen !== isOpen) {
+        if (pinsData.isOpen !== isOpen) {
           await doc.ref.update({ isOpen });
         }
       });
@@ -68,63 +76,57 @@ export const updateCurrentPins = async () => {
       console.error('Error updating open status:', error);
     }
   };
+  
   
   export const updateHistoricalPins = async () => {
-    const currentDay = new Date().toLocaleString('en-US', { weekday: 'long' });
-    const currentTime = parseInt(new Date().toTimeString().slice(0, 5).replace(':', ''), 10); // Convert current time to a number format HHMM
+    const currentDate = new Date();
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(currentDate.getMonth() - 1); // Set the date to one month ago
   
     try {
-      const locationsSnapshot = await db.collection('locations').get();
-      locationsSnapshot.forEach(async (doc) => {
-        const locationData = doc.data();
-        const hours = locationData.hours || [];
+      // Fetch only active pins that have a start_time
+      const eventPinsSnapshot = await db.collection('eventPins').where('isActive', '==', true).get();
+      
+      eventPinsSnapshot.forEach(async (doc) => {
+        const pinsData = doc.data();
+        const isActive = pinsData.isActive || false;
+        const startTime = pinsData.start_time.toDate(); // Firestore Timestamp to JavaScript Date
   
-        // Check if there are no hours defined (empty array)
-        if (hours.length === 0) {
-          // If no hours are defined, set `isOpen` to true and update if necessary
-          if (locationData.isOpen !== true) {
-            await doc.ref.update({ isOpen: true });
+        // Check if the pin is older than one month
+        if (isActive && startTime < oneMonthAgo) {
+          // If pin is older than one month, delete it
+          try {
+            await doc.ref.delete();
+            console.log(`Pin with ID ${doc.id} has been deleted due to expiration.`);
+          } catch (error) {
+            console.error(`Error deleting pin with ID ${doc.id}:`, error);
           }
-          return; // Skip further processing for this location
-        }
-  
-        // Find today's schedule
-        const todaySchedule = hours.find(day => day.day === currentDay);
-        let isOpen = false;
-  
-        // Check if `todaySchedule.hours` is a valid array
-        if (todaySchedule && Array.isArray(todaySchedule.hours)) {
-          for (const timeRange of todaySchedule.hours) {
-            const { open, close } = timeRange;
-  
-            // Ensure `open` and `close` exist and are numbers
-            if (typeof open === 'number' && typeof close === 'number') {
-              if (currentTime >= open && currentTime <= close) {
-                isOpen = true;
-                break;
-              }
-            }
-          }
-        }
-  
-        // Update `isOpen` status only if changed
-        if (locationData.isOpen !== isOpen) {
-          await doc.ref.update({ isOpen });
         }
       });
   
-      console.log('Open status updated for all locations.');
+      console.log('Checked all pins for expiration.');
     } catch (error) {
-      console.error('Error updating open status:', error);
+      console.error('Error updating historical pins:', error);
     }
   };
-   
   
 /**
  * Function to start a periodic update of the `isOpen` field.
  * @param {number} interval - The interval in milliseconds to run the updates (default is 5 minutes).
  */
-export const startPeriodicUpdates = (interval = 300000) => {
-  updateOpenStatus();
-  setInterval(updateOpenStatus, interval);
-};
+export const startPinUpdates = (interval = 300000) => {
+    // Update current pins at the specified interval (default is every 5 minutes)
+    updateCurrentPins();
+    
+    // Update historical pins once every day (86,400,000 ms = 24 hours)
+    updateHistoricalPins(); // Call immediately when the service starts
+    
+    setInterval(() => {
+      updateCurrentPins();
+    }, interval);
+  
+    // Set an interval for historical pins to run once per day
+    setInterval(() => {
+      updateHistoricalPins();
+    }, 86400000); // 86,400,000 ms = 24 hours
+  };
