@@ -1,14 +1,13 @@
-// import express from 'express';
-// import {
-//     getPinsByLocation,
-//     getPin,
-//     addPin
-// } from '../controllers/socialPinsController.js';
+import express from 'express';
+import { getPinsByLocation, getPin, addPin } from "../controller/socialPin.controller.js";
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.post('/location', getPinsByLocation);
-// router.get('/:pin_id', getPin);
-// router.post('/', addPin);
+// Main routes
+router.post('/nearby', getPinsByLocation); // pins in last month
 
-// export default router;
+router.post('/', addPin);
+router.get('/:pin_id', getPin);
+
+export default router;
+
