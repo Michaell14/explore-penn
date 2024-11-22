@@ -12,7 +12,6 @@ export const getPinsByLocation = async(req, res) => {
         console.error("Error fetching pins by location:", error);
         res.status(500).send("Internal Server Error");
     }
-
 }
 
 export const getNearbyPins = async(latitude, longitude, radius) => {

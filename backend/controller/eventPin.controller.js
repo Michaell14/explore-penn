@@ -98,18 +98,19 @@ export const getPin = async (req, res) => {
 
 /** add pin
  * @route POST /pins
- * @body { description, loc_description, org_id, coordinate, start_time, end_time, photo }
+ * @body { header, description, loc_description, org_id, coordinate, start_time, end_time, photo }
  */
 export const addPin = async (req, res) => {
-  const { description, loc_description, org_id, coordinate, start_time, end_time, photo } = req.body;
+  const { header, description, loc_description, org_id, coordinate, start_time, end_time, photo } = req.body;
 
-  if (!description || !org_id || !start_time || !end_time || !coordinate?.lat || !coordinate?.lng) {
+  if (!header || !description || !org_id || !start_time || !end_time || !coordinate?.lat || !coordinate?.lng) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
   try {
     const eventPinRef = db.collection("eventPins");
     const newPin = {
+      header,
       description,
       org_id,
       coords: [coordinate.lat, coordinate.lng],
@@ -117,7 +118,7 @@ export const addPin = async (req, res) => {
       end_time: admin.firestore.Timestamp.fromDate(new Date(end_time)),
       time_posted: admin.firestore.FieldValue.serverTimestamp(),
       loc_description,
-      photo,
+      photo: null,
       isActive: true,
       maxZIndex: 0,
       reactionCount: 0
@@ -180,6 +181,93 @@ export const archivePin = async (req, res) => {
   }
 };
 
+//frontend needs to upload image to cloud firestore and send urls to backend
+//frontend also needs to send image id to backend to delete it
+/** Add images to a pin
+ * @route POST /pins/:pin_id/images
+ * @body { images: [string], uploadedBy: string }
+ */
+export const addPinImages = async (req, res) => {
+  const { pin_id } = req.params;
+  const { images, uploadedBy } = req.body;
+
+  if (!images || images.length === 0) {
+    return res.status(400).json({ error: "No images provided" });
+  }
+
+  try {
+    const pinRef = db.collection("eventPins").doc(pin_id);
+    const pinDoc = await pinRef.get();
+
+    if (!pinDoc.exists) {
+      return res.status(404).json({ error: "Pin not found" });
+    }
+
+    const batch = db.batch();
+    const imagesRef = pinRef.collection("images");
+
+    images.forEach((imageUrl) => {
+      const imageDoc = imagesRef.doc();
+      batch.set(imageDoc, {
+        imageUrl,
+        uploadedBy,
+        timestamp: admin.firestore.FieldValue.serverTimestamp(),
+      });
+    });
+
+    await batch.commit();
+    res.status(200).json({ message: "Images successfully added to pin" });
+  } catch (error) {
+    console.error("Error adding images to pin:", error);
+    res.status(500).json({ error: "Failed to add images to pin" });
+  }
+};
+
+/** Delete an image from a pin
+ * @route DELETE /pins/:pin_id/images/:image_id
+ */
+export const deletePinImage = async (req, res) => {
+  const { pin_id, image_id } = req.params;
+
+  try {
+    const imageRef = db.collection("eventPins").doc(pin_id).collection("images").doc(image_id);
+    const imageDoc = await imageRef.get();
+
+    if (!imageDoc.exists) {
+      return res.status(404).json({ error: "Image not found" });
+    }
+
+    await imageRef.delete();
+    res.status(200).json({ message: "Image successfully deleted from pin" });
+  } catch (error) {
+    console.error("Error deleting image from pin:", error);
+    res.status(500).json({ error: "Failed to delete image from pin" });
+  }
+};
+
+/** Get all images for a pin
+ * @route GET /pins/:pin_id/images
+ */
+export const getPinImages = async (req, res) => {
+  const { pin_id } = req.params;
+
+  try {
+    const imagesRef = db.collection("eventPins").doc(pin_id).collection("images");
+    const snapshot = await imagesRef.get();
+
+    const images = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    res.status(200).json(images);
+  } catch (error) {
+    console.error("Error fetching images for pin:", error);
+    res.status(500).json({ error: "Failed to fetch images for pin" });
+  }
+};
+
+
 // =====================
 // Posts APIs
 // =====================
@@ -212,7 +300,7 @@ export const addPost = async (req, res) => {
     const { pin_id } = req.params;
     const { x, y, rotation, words, picture } = req.body;
   
-    if (!x || !y || !rotation || !words) {
+    if (x === undefined || y === undefined || rotation === undefined || !words) {
       return res.status(400).json({ error: "Missing required fields" });
     }
   
@@ -224,12 +312,14 @@ export const addPost = async (req, res) => {
         y,
         rotation,
         words,
-        picture,
+        picture: picture || null,
         time_posted: admin.firestore.FieldValue.serverTimestamp(),
       };
   
       const postRef = await postsRef.add(newPost);
-      doc.pinRef.update({ [maxZIndex]: FieldValue.increment(1)});
+      await pinRef.update({
+        maxZIndex: admin.firestore.FieldValue.increment(1),
+      });
       res.status(200).json({ message: "Post successfully added", postId: postRef.id });
     } catch (error) {
       console.error("Error adding post:", error);
@@ -245,7 +335,7 @@ export const addPost = async (req, res) => {
 export const movePost = async (req, res) => {
     const { pin_id, post_id, x, y, rotation } = req.body;
   
-    if (!pin_id || !post_id || !x || !y || !rotation) {
+    if (!pin_id || !post_id || x=== undefined || y === undefined || rotation === undefined) {
       return res.status(400).json({ error: "Missing required fields" });
     }
   
@@ -284,7 +374,9 @@ export const deletePost = async (req, res) => {
       }
   
       await postRef.delete();
-      doc.pinRef.update({ [maxZIndex]: FieldValue.increment(-1)});
+      await pinRef.update({
+        maxZIndex: admin.firestore.FieldValue.increment(1),
+      });
       res.status(200).json({ message: "Post successfully deleted" });
     } catch (error) {
       console.error("Error deleting post:", error);
@@ -322,7 +414,7 @@ export const addSticker = async (req, res) => {
   const { pin_id } = req.params;
   const { x, y, rotation, type } = req.body;
 
-  if (!x || !y || !rotation || !type) {
+  if (x === undefined || y === undefined || rotation === undefined || type === undefined) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
@@ -336,7 +428,9 @@ export const addSticker = async (req, res) => {
       type,
       time_posted: admin.firestore.FieldValue.serverTimestamp(),
     };
-    doc.pinRef.update({ [reactionCount]: FieldValue.increment(1)});
+    await pinRef.update({
+      reactionCount: admin.firestore.FieldValue.increment(1),
+    });
     const stickerRef = await stickersRef.add(newSticker);
     res.status(200).json({ message: "Sticker successfully added", stickerId: stickerRef.id });
   } catch (error) {
@@ -352,7 +446,7 @@ export const addSticker = async (req, res) => {
 export const moveSticker = async (req, res) => {
   const { pin_id, sticker_id, x, y, rotation } = req.body;
 
-  if (!pin_id || !sticker_id || !x || !y || !rotation) {
+  if (!pin_id || !sticker_id || x === undefined || y === undefined || rotation === undefined) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
@@ -386,8 +480,10 @@ export const deleteSticker = async (req, res) => {
     if (!stickerDoc.exists) {
       return res.status(404).json({ error: "Sticker not found" });
     }
-    doc.pinRef.update({ [reactionCount]: FieldValue.increment(-1)});
-    await postRef.delete();
+    await stickerRef.delete();
+    await pinRef.update({
+      reactionCount: admin.firestore.FieldValue.increment(-1),
+    });
     res.status(200).json({ message: "Sticker successfully deleted" });
   } catch (error) {
     console.error("Error deleting sticker:", error);

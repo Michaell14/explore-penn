@@ -2,14 +2,19 @@ import express from 'express';
 import {
   getPins,
   getHistoricalPins,
+  getPinsByLocation,
   addPin,
   getPin,
+  deletePin,
+
+  addPinImages,
+  getPinImages,
+  deletePinImage,
+
   getPosts,
   addPost,
   movePost,
-  getPinsByLocation,
   deletePost,
-  deletePin,
 
   getStickers,
   addSticker,
@@ -27,6 +32,11 @@ router.post('/', addPin);
 router.delete('/:pin_id', deletePin);
 router.get('/:pin_id', getPin);
 router.post('/location', getPinsByLocation);
+
+/*images inside pins*/
+router.post('/:pin_id/images', addPinImages);
+router.get('/:pin_id/images', getPinImages); 
+router.delete('/:pin_id/images/:image_id', deletePinImage);
 
 /*Posts: subcollection inside each pin*/
 router.get('/:pin_id/posts', getPosts);

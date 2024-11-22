@@ -20,62 +20,35 @@ export const listenForOpenStatusUpdates = (callback) => {
  * Utility function to update the `isOpen` field in Firestore documents periodically.
  */
 export const updateCurrentPins = async () => {
-    const currentDay = new Date().toLocaleString('en-US', { weekday: 'long' });
-    const currentTime = parseInt(new Date().toTimeString().slice(0, 5).replace(':', ''), 10); // Convert current time to a number format HHMM
-    
-    try {
-      // Fetch only active pins from Firestore
-      const eventPinsSnapshot = await db.collection('eventPins').where('isActive', '==', true).get();
-      
-      eventPinsSnapshot.forEach(async (doc) => {
-        const pinsData = doc.data();
-        const isActive = pinsData.isActive || false;
-  
-        // Skip inactive pins
-        if (!isActive) {
-          return;
-        }
-  
-        // Check if there are no hours defined (empty array)
-        if (pinsData.hours?.length === 0) {
-          // If no hours are defined, set `isOpen` to true and update if necessary
-          if (pinsData.isOpen !== true) {
-            await doc.ref.update({ isOpen: true });
-          }
-          return; // Skip further processing for this location
-        }
-  
-        // Find today's schedule
-        const todaySchedule = pinsData.hours.find(day => day.day === currentDay);
-        let isOpen = false;
-    
-        // Check if `todaySchedule.hours` is a valid array
-        if (todaySchedule && Array.isArray(todaySchedule.hours)) {
-          for (const timeRange of todaySchedule.hours) {
-            const { open, close } = timeRange;
-    
-            // Ensure `open` and `close` exist and are numbers
-            if (typeof open === 'number' && typeof close === 'number') {
-              // Check if current time is between open and close time (inclusive of close time)
-              if (currentTime >= open && currentTime <= close) {
-                isOpen = true;
-                break; // No need to check further if already open
-              }
-            }
-          }
-        }
-  
-        // Update `isOpen` status only if changed
-        if (pinsData.isOpen !== isOpen) {
-          await doc.ref.update({ isOpen });
-        }
-      });
-  
-      console.log('Open status updated for all locations.');
-    } catch (error) {
-      console.error('Error updating open status:', error);
-    }
-  };
+  const currentTime = new Date(); // Get the current date and time
+
+  try {
+    // Fetch only active pins from Firestore
+    const eventPinsSnapshot = await db.collection('eventPins').where('isActive', '==', true).get();
+
+    eventPinsSnapshot.forEach(async (doc) => {
+      const pinsData = doc.data();
+      const endTime = pinsData.end_time?.toDate(); // Convert Firestore Timestamp to JavaScript Date
+
+      // Determine the new `isActive` status
+      let isActive = true;
+      if (endTime && currentTime > endTime) {
+        isActive = false; // Pin should be marked inactive if `end_time` has passed
+      }
+
+      // Update `isActive` status only if it has changed
+      if (pinsData.isActive !== isActive) {
+        await doc.ref.update({ isActive });
+      }
+    });
+
+    console.log('Async: Active status updated for all pins.');
+  } catch (error) {
+    console.error('Error updating active pins:', error);
+  }
+};
+
+
   
   
   export const updateHistoricalPins = async () => {
@@ -104,7 +77,7 @@ export const updateCurrentPins = async () => {
         }
       });
   
-      console.log('Checked all pins for expiration.');
+      console.log('asyc: checked all pins for expiration.');
     } catch (error) {
       console.error('Error updating historical pins:', error);
     }
