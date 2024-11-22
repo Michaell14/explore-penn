@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pins Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .pin, .form-container {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Location Pins</h1>
+    <div id="pinsContainer"></div>
+
+    <h2>Add a Location</h2>
+    <div class="form-container">
+        <form id="locationForm">
+            <input type="text" id="name" placeholder="Location Name" required>
+            <input type="text" id="coords" placeholder="Coordinates (lat,lng)" required>
+            <input type="text" id="address" placeholder="Address" required>
+            <textarea id="hours" placeholder="Hours (e.g., Monday: 08:30-21:00)" required></textarea>
+            <textarea id="facts" placeholder="Facts (comma-separated)" required></textarea>
+            <button type="submit">Add Location</button>
+        </form>
+    </div>
+
+    <h2>Add a Post</h2>
+    <div class="form-container">
+        <form id="postForm">
+            <input type="text" id="description" placeholder="Description" required>
+            <input type="text" id="u_id" placeholder="User ID" required>
+            <input type="text" id="lat" placeholder="Latitude" required>
+            <input type="text" id="lng" placeholder="Longitude" required>
+            <button type="submit">Add Post</button>
+        </form>
+    </div>
+
+    <script>
+        const fetchPins = async () => {
+            const response = await fetch('/locations');
+            const pins = await response.json();
+            const pinsContainer = document.getElementById('pinsContainer');
+
+            pins.forEach(pin => {
+                const pinElement = document.createElement('div');
+                pinElement.className = 'pin';
+                pinElement.innerHTML = `
+                    <strong>Name:</strong> ${pin.name}<br>
+                    <strong>Coordinates:</strong> ${pin.coords}<br>
+                    <strong>Address:</strong> ${pin.address}
+                `;
+                pinsContainer.appendChild(pinElement);
+            });
+        };
+
+        document.getElementById('locationForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const coords = document.getElementById('coords').value.split(',').map(Number);
+            const address = document.getElementById('address').value;
+            const hoursArray = document.getElementById('hours').value.split('\n').reduce((acc, curr) => {
+                const [day, hours] = curr.split(': ');
+                acc[day] = hours;
+                return acc;
+            }, {});
+            const facts = document.getElementById('facts').value.split(',');
+
+            const response = await fetch('/locations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, coords, address, hours: hoursArray, facts })
+            });
+
+            if (response.ok) {
+                alert("Location added successfully!");
+                fetchPins(); // Refresh the pins list
+            } else {
+                alert("Error adding location.");
+            }
+        });
+
+        document.getElementById('postForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const description = document.getElementById('description').value;
+            const u_id = document.getElementById('u_id').value;
+            const lat = document.getElementById('lat').value;
+            const lng = document.getElementById('lng').value;
+
+            const response = await fetch('/posts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    description,
+                    u_id,
+                    coordinate: { lat: parseFloat(lat), lng: parseFloat(lng) }
+                })
+            });
+
+            if (response.ok) {
+                alert("Post added successfully!");
+            } else {
+                alert("Error adding post.");
+            }
+        });
+
+        // Fetch pins when the page loads
+        window.onload = fetchPins;
+    </script>
+</body>
+</html>

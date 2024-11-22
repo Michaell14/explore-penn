@@ -1,37 +1,42 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+// app/_layout.tsx
+import React, { useEffect } from 'react';
+import { Slot, useRouter } from 'expo-router';
+import { useAuth } from '../hooks/useAuth';
+import { View, ActivityIndicator } from 'react-native';
+import { AuthProvider } from '../hooks/useAuth'; // Import AuthProvider
+import axios from 'axios'
+import { baseURL } from '@/config';
+export default function Layout() {
+  return (
+    <AuthProvider>
+      <AuthenticatedLayout />
+    </AuthProvider>
+  );
+}
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+// Separate layout component to use AuthProvider properly
+function AuthenticatedLayout() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    if (!loading) { // Only proceed if loading is false
+      if (!user) {
+        router.replace('/auth/sign-in'); // Redirect to the sign-in screen if not authenticated
+      } else {
+        router.replace('/'); // Redirect to the home screen if authenticated
+      }
     }
-  }, [loaded]);
+  }, [loading]);
 
-  if (!loaded) {
-    return null;
+  if (loading) {
+    // Display a loading indicator while checking authentication state
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
   }
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
-  );
+  return <Slot />; // Slot renders the current route (either main or auth)
 }
