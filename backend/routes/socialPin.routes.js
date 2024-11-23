@@ -4,7 +4,7 @@ import { getPinsByLocation, getPin, addPin } from "../controller/socialPin.contr
 const router = express.Router();
 
 // Main routes
-router.post('/nearby', getPinsByLocation); // pins in last month
+router.post('/loc', getPinsByLocation); // pins in last month
 
 router.post('/', addPin);
 router.get('/:pin_id', getPin);

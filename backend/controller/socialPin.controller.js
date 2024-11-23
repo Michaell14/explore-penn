@@ -2,35 +2,33 @@ import {db} from "../server.js"
 import admin from 'firebase-admin';
 
 
-export const getPinsByLocation = async(req, res) => {
+/** for location notifs - pins within a radius
+ * @route POST /pins/location
+ * @body { latitude: number, longitude: number, radius: number }
+ */
+export const getPinsByLocation = async (req, res) => {
     const { latitude, longitude, radius } = req.body;
     try {
-        const socialPinRef = db.collection('socialPins')
-        const pinsWithinRadius = await getNearbyPins(latitude, longitude, radius);
-        res.status(200).json(pinsWithinRadius);
+      const socialPinRef = db.collection("socialPins");
+      const snapshot = await socialPinRef.get();
+      const pinsWithinRadius = snapshot.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .filter((pin) => calculateDistance(pin, latitude, longitude) <= radius);
+      res.status(200).json(pinsWithinRadius);
     } catch (error) {
-        console.error("Error fetching pins by location:", error);
-        res.status(500).send("Internal Server Error");
+      console.error("Error fetching pins by location:", error);
+      res.status(500).json({ error: "Internal Server Error" });
     }
-}
+  };
 
-export const getNearbyPins = async(latitude, longitude, radius) => {
-    const socialPinRef = db.collection('socialPins')
-    const snapshot = await socialPinRef.get();
-    const pinsWithinRadius =snapshot.docs
-            .map(doc => ({ id: doc.id, ...doc.data() }))
-            .filter(pin => calculateDistance(pin, latitude, longitude) <= radius);
-    return pinsWithinRadius;
-}
-
+/**
+ * Calculate the Euclidean distance between a pin and a given location.
+ */
 const calculateDistance = (pin, latitude, longitude) => {
-    let xDist2 = ((pin.coordinate.lat) - latitude)
-    xDist2 = xDist2 * xDist2
-    let yDist2 = ((pin.coordinate.lng) - longitude)
-    yDist2 = yDist2 * yDist2
-    console.log(Math.sqrt(xDist2 + yDist2))
+    const xDist2 = Math.pow(pin.coords.lat - latitude, 2);
+    const yDist2 = Math.pow(pin.coords.lng - longitude, 2);
     return Math.sqrt(xDist2 + yDist2);
-}
+  };
 
 export const getPin = async (req, res) => {
     const { pin_id } = req.params;
@@ -83,10 +81,10 @@ export const addPin = async (req, res) => {
         const newPost = {
             description,
             u_id,
-            coords: [
-                coordinate.lat,
-                coordinate.lng
-            ],
+            coords: {
+                lat: coordinate.lat,
+                lng: coordinate.lng,
+            },
             time_posted: admin.firestore.FieldValue.serverTimestamp(),
             //optional?
             loc_description,
