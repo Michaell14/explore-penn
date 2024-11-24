@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kestelle.explorepenn",
+      "bundleIdentifier": "com.ericslee1207.explorepenn",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Your custom message explaining why the app needs location access while in use.",

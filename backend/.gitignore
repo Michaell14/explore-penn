@@ -1,9 +1,6 @@
 node_modules/
-<<<<<<< HEAD
 firebaseServiceAccount.json
 firebaseNotifServiceAccount.json
-=======
->>>>>>> backend-branch
 
 # Logs
 logs
@@ -12,8 +9,3 @@ npm-debug.log*
 
 # Environment Variables
 .env
-<<<<<<< HEAD
-
-firebaseServiceAccount.json
-=======
->>>>>>> backend-branch
