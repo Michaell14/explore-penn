@@ -1,42 +1,59 @@
-// app/_layout.tsx
-import React, { useEffect } from 'react';
-import { Slot, useRouter } from 'expo-router';
-import { useAuth } from '../hooks/useAuth';
-import { View, ActivityIndicator } from 'react-native';
-import { AuthProvider } from '../hooks/useAuth'; // Import AuthProvider
-import axios from 'axios'
-import { baseURL } from '@/config';
-export default function Layout() {
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect, useState } from 'react';
+import 'react-native-reanimated';
+import './../global.css';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+import { useColorScheme } from '@/hooks/useColorScheme';
+import LandingPage from './landing';
+import React from 'react';
+import { AuthProvider } from '@/hooks/useAuth';
+
+// Prevent the splash screen from auto-hiding before asset loading is complete.
+SplashScreen.preventAutoHideAsync();
+
+export default function RootLayout() {
+  const colorScheme = useColorScheme();
+  const [loaded] = useFonts({
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  });
+
+  const [showLandingPage, setShowLandingPage] = useState(true);
+
+  useEffect(() => {
+    if (loaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded]);
+
+  if (!loaded) {
+    return null;
+  }
+
+  // Show the LandingPage initially, then render the main tabs layout after dismissing it
+  
+  if (showLandingPage) {
+    return <LandingPage onDismiss={() => setShowLandingPage(false)} />;
+  }
+
   return (
-    <AuthProvider>
-      <AuthenticatedLayout />
-    </AuthProvider>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <AuthProvider>
+
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Stack>
+          <Stack.Screen name="landing" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </GestureHandlerRootView>
+      </AuthProvider>
+
+    </ThemeProvider>
   );
 }
 
 // Separate layout component to use AuthProvider properly
-function AuthenticatedLayout() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading) { // Only proceed if loading is false
-      if (!user) {
-        router.replace('/auth/sign-in'); // Redirect to the sign-in screen if not authenticated
-      } else {
-        router.replace('/'); // Redirect to the home screen if authenticated
-      }
-    }
-  }, [loading]);
-
-  if (loading) {
-    // Display a loading indicator while checking authentication state
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
-
-  return <Slot />; // Slot renders the current route (either main or auth)
-}

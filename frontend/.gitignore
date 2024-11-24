@@ -2,7 +2,6 @@ node_modules/
 .expo/
 dist/
 config.js
-GoogleService-Info.plist
 firebaseConfig.js
 npm-debug.*
 *.jks

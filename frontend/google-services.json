@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "414478752713",
+    "project_id": "explore-penn-f67e6",
+    "storage_bucket": "explore-penn-f67e6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414478752713:android:3b3879ff5556cc66efa618",
+        "android_client_info": {
+          "package_name": "com.ericslee1207.explorepenn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414478752713-gom4c51ga20us1jc9vmjgm65g68t0g8l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyn4W8_hDEtYXNieGSV_lL_lrhG4aVlb0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414478752713-32g3fp5u83cfstkap2kpglnlhkfhatqe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "414478752713-9d62kui1lsk20lak5rja2s0unpoods1j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.michaell19.explorepenn"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

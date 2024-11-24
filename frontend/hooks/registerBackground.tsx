@@ -12,6 +12,7 @@ const BACKGROUND_FETCH_TASK = 'background-fetch-task';
 
 // Define the background fetch task
 TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
+  console.log("why is this part not printing bruh")
   const now = Date.now();
   console.log(`Background fetch task executed at: ${new Date(now).toISOString()}`);
 
@@ -63,9 +64,13 @@ const startBackgroundUpdate = async () => {
   const status = await BackgroundFetch.getStatusAsync();
   const isRegistered = await TaskManager.isTaskRegisteredAsync(BACKGROUND_FETCH_TASK);
 
+  console.log("status is", status)
+  console.log(BackgroundFetch.BackgroundFetchStatus.Available)
+  console.log(isRegistered)
+
   if (status === BackgroundFetch.BackgroundFetchStatus.Available && !isRegistered) {
     await BackgroundFetch.registerTaskAsync(BACKGROUND_FETCH_TASK, {
-      minimumInterval: 60, // 15 minutes
+      minimumInterval: 60, // 1 minute
       stopOnTerminate: false,
       startOnBoot: true,
     });

@@ -9,7 +9,7 @@
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/landing.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -28,7 +28,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.kestelle.explorepenn"
+      "package": "com.ericslee1207.explorepenn",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
