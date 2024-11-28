@@ -5,11 +5,11 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
-      backgroundImage: {
-        'dotted-pattern': 'radial-gradient(circle, rgba(0,0,0,0.2) 1px, transparent 1px)',
+      fontFamily: {
+        sf: ['"SF UI Display"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
       },
-      backgroundSize: {
-        'dotted-pattern': '10px 10px',
+      colors: {
+        customBlack: 'rgba(0, 0, 0, 0.20)', // for swipeup bars
       },
     },
   },
