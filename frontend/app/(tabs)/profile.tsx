@@ -51,11 +51,7 @@ export default function ProfileScreen() {
                         fontSize: 40,
                         color: '#3D00B8',
                     }} >Hungry Hippo</Text>
-                    <Text style={{
-                        fontFamily: 'SF UI Display',
-                        fontSize: 18,
-                        color: '#3D00B8',
-                    }}>email@school.upenn.edu</Text>
+                    <Text className="text-md text-[#3D00B8]">email@school.upenn.edu</Text>
                 </View>
 
                 {/* status section */}
@@ -85,14 +81,14 @@ export default function ProfileScreen() {
                     <TouchableOpacity className="bg-[#F0EFFD] py-3 items-left" onPress={onResetPasswords}>
                         <View className="flex-row">
                             <Image source={require("../../assets/images/reset-password-icon.png")} style={styles.resetpasswordIcon} />
-                            <Text className="text-lg text-[#50F]">Reset Passwords</Text>
+                            <Text className="text-lg text-[#50F]">Reset password</Text>
                             <Image source={require("../../assets/images/reset-password-rightarrow.png")} style={styles.resetpasswordArrowIcon} />
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity className="bg-[#F0EFFD] py-3 items-left" onPress={onPushNotifications}>
                         <View className="flex-row">
                             <Image source={require("../../assets/images/push-notification-bell.png")} style={styles.resetpasswordIcon} />
-                            <Text className="text-lg text-[#50F]">Push notificaitons</Text>
+                            <Text className="text-lg text-[#50F]">Push notifications</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity className="bg-[#F0EFFD] py-3 items-left" onPress={onPressLogout}>
