@@ -47,6 +47,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon name={focused ? 'square' : 'square-outline'} color={focused ? 'white' : '#771FD6'} />
             ),
+            tabBarStyle: { display: 'none' },
           }}
         />
         <Tabs.Screen
@@ -60,14 +61,14 @@ export default function TabLayout() {
         />
       </Tabs>
 
-      {/* pin button */}
+      {/* pin button
       <TouchableOpacity
         style={styles.floatingButton}
         // onPress={() => navigation.navigate('pins')}
         onPress={() => router.push('/bulletin')}
       >
         <Image source={PinIcon} style={styles.pinIcon} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </>
   );
 }

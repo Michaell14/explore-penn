@@ -77,7 +77,7 @@ export default function ProfileScreen() {
                 </View>}
 
                 {/* buttons section */}
-                {<View className="flex-1 px-8 py-8">
+                {<View className="flex-1 px-8 py-16">
                     <TouchableOpacity className="bg-[#F0EFFD] py-3 items-left" onPress={onResetPasswords}>
                         <View className="flex-row">
                             <Image source={require("../../assets/images/reset-password-icon.png")} style={styles.resetpasswordIcon} />
