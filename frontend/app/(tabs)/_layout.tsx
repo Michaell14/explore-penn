@@ -1,4 +1,4 @@
-import { Tabs } from 'expo-router';
+import { Tabs, useRouter } from 'expo-router';
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
@@ -10,7 +10,8 @@ import PinIcon from '../../assets/images/pin-icon.png';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const navigation = useNavigation();
+  //const navigation = useNavigation();
+  const router = useRouter();
 
   return (
     <>
@@ -53,7 +54,8 @@ export default function TabLayout() {
       {/* pin button */}
       <TouchableOpacity
         style={styles.floatingButton}
-        onPress={() => navigation.navigate('pins')}
+        // onPress={() => navigation.navigate('pins')}
+        onPress={() => router.push('/pins')}
       >
         <Image source={PinIcon} style={styles.pinIcon} />
       </TouchableOpacity>

@@ -20,7 +20,10 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Your custom message explaining why the app needs location access while in use.",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Your custom message explaining why the app needs location access even when the app is in the background.",
-        "UIBackgroundModes": ["location", "fetch"]
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
       }
     },
     "android": {
@@ -54,7 +57,8 @@
             "useFrameworks": "static"
           }
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
