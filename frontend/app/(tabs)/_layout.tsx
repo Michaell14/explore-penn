@@ -31,10 +31,19 @@ export default function TabLayout() {
             ),
           }}
         />
-        <Tabs.Screen
+        {/* <Tabs.Screen
           name="pins"
           options={{
             title: 'Pins',
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon name={focused ? 'square' : 'square-outline'} color={focused ? 'white' : '#771FD6'} />
+            ),
+          }}
+        /> */}
+        <Tabs.Screen
+          name="bulletin"
+          options={{
+            title: 'Bulletin',
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon name={focused ? 'square' : 'square-outline'} color={focused ? 'white' : '#771FD6'} />
             ),
@@ -55,7 +64,7 @@ export default function TabLayout() {
       <TouchableOpacity
         style={styles.floatingButton}
         // onPress={() => navigation.navigate('pins')}
-        onPress={() => router.push('/pins')}
+        onPress={() => router.push('/bulletin')}
       >
         <Image source={PinIcon} style={styles.pinIcon} />
       </TouchableOpacity>
