@@ -7,6 +7,8 @@ import * as WebBrowser from 'expo-web-browser';
 import axios from 'axios';
 import { baseURL } from '../config';
 import {webClientId, iosClientId, androidClientId} from '../config';
+import { registerUser } from '../api/userApi';
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -73,28 +75,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const createUserIfNotExists = async (user: User) => {
     try {
-      // First, check if the user already exists in your backend
-      const response = await axios.get(`${baseURL}/api/users/${user.uid}`);
-      
-      if (response.status === 404) {
-        // If the user doesn't exist, proceed with registration
-        await axios.post(
-          `${baseURL}/api/users/register`,
-          { uid: user.uid, name: user.displayName, email: user.email },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-        console.log('User registered successfully');
-      } else {
-        console.log('User already exists');
-      }
+        console.log('Checking if user exists...');
+        const response = await axios.get(`${baseURL}/api/users/${user.uid}`);
+        console.log('User exists:', response.status === 200);
     } catch (error) {
-      console.error("Error registering user:", error);
+        if (axios.isAxiosError(error) && error.response && error.response.status === 404) {
+            console.log('User not found, registering user...');
+            await registerUser(user);
+            console.log('User registered successfully');
+        } else {
+            console.error("Error checking user existence:", error);
+        }
     }
-  };
+};
 
   const signOut = async () => {
     await auth.signOut();
