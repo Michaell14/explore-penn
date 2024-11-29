@@ -45,17 +45,7 @@ const HomeScreen: React.FC = () => {
     }
   };
 
-  const loadPins = async () => {
-    try {
-      const currentPins = await fetchCurrentPins();
-      console.log('Fetched pins:', currentPins);
-      setPins(currentPins);
-    } catch (error) {
-      console.error('Error loading pins:', error);
-    }
-  };
-  
-  // const getNearbyPins = async () => {
+    // const getNearbyPins = async () => {
   //   if (!location) return;
   //   try {
   //     const response = await axios.post<PinData[]>(
@@ -73,6 +63,17 @@ const HomeScreen: React.FC = () => {
   //   }
   // };
 
+
+  const loadPins = async () => {
+    try {
+      const currentPins = await fetchCurrentPins();
+      console.log('Fetched pins:', currentPins);
+      setPins(currentPins);
+    } catch (error) {
+      console.error('Error loading pins:', error);
+    }
+  };
+  
   const handleMarkerPress = (pin: PinData) => {
     setSelectedPin(pin);
     // bottomSheetRef.current?.expand();
@@ -151,6 +152,7 @@ useEffect(() => {
         title={pin.header}
         description={pin.description}
         onPress={() => handleMarkerPress(pin)}
+        image={require('../../assets/images/map-pin.png')}
       />
       ))}
 
@@ -253,26 +255,3 @@ const styles = StyleSheet.create({
 
 
 export default HomeScreen;
-
-        {/* <Marker
-          coordinate={{ latitude: 39.9522, longitude: -75.1932 }}
-          title="Van Pelt Library"
-          description="where best spark team is working rn"
-          onPress={(e) => handleMarkerPress({
-            title: "Van Pelt Library",
-            description: "where best spark team is working rn",
-            longitude: 39.9522,
-            latitude: -75.1932
-          })}
-        />
-        <Marker
-          coordinate={{ latitude: 39.9509, longitude: -75.1939 }}
-          title="Houston Hall"
-          description="This is where the ping pong table is"
-          onPress={(e) => handleMarkerPress({
-            title: "Houston Hall",
-            description: "This is where the ping pong table is",
-            longitude: 39.9509,
-            latitude: -75.1939
-          })}
-        /> */}
