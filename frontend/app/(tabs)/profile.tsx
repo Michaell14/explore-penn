@@ -1,17 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, } from 'react';
 import { useFonts } from 'expo-font';
-import { View, Text, TextInput, Keyboard, TouchableWithoutFeedback, StyleSheet, TouchableOpacity, Image, Platform } from 'react-native';
+import { View, Text, TextInput, Keyboard, TouchableWithoutFeedback, StyleSheet, TouchableOpacity, Image, Platform, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { auth } from "../../firebaseConfig";
-import { signOut, onAuthStateChanged } from 'firebase/auth';
+import { getUserById } from '@/api/userApi';
+import { signOut, onAuthStateChanged, User } from 'firebase/auth';
 import { router } from 'expo-router';
 import BottomSheet from '@gorhom/bottom-sheet';
 import ResetPasswordSheet from '@/components/ResetPasswordSheet';
 
+interface UserProfile {
+    username: string;
+    email: string;
+    numPins: number;
+    numReactions: number;
+}
+
 export default function ProfileScreen() {
     //edit mode toggle
     const [isEditable, setIsEditable] = useState(true);
-    const [loaded] = useFonts({
+    const [username, setUsername] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [pinCount, setPinCount] = useState<number>(0);
+    const [reactionCount, setReactionCount] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [fontsLoaded] = useFonts({
         Yorkmade: require('../../assets/fonts/Yorkmade.otf'),
         "SF UI Display": require('../../assets/fonts/sf-ui-display-black.otf'),
     });
@@ -19,31 +32,64 @@ export default function ProfileScreen() {
     const onOpenResetPass = () => resetPasswordRef.current?.expand();
     const onCloseResetPass = () => resetPasswordRef.current?.close();
 
-
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // User is signed in
-            const uid = user.uid;
-            const email = user.email;
-            // ... other user properties
-            console.log(uid);
-            console.log(email);
-        } else {
-            // User is signed out
+    const fetchUserProfile = async (uid: string) => {
+        try {
+            setLoading(true);
+            const response = await getUserById(uid);
+            const { username, email, numPins, numStickers} = response; // Assuming response contains these fields
+            setUsername(username);
+            setEmail(email);
+            setPinCount(numPins);
+            setReactionCount(numStickers);
+        } catch (error) {
+            console.error("Error fetching user profile:", error);
+        } finally {
+            setLoading(false);
         }
-    });
+    };
+    
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log(`User signed in: ${user.uid}`);
+                fetchUserProfile(user.uid);
+            } else {
+                console.log("User signed out");
+                // Reset profile state on sign-out
+                setUsername('');
+                setEmail('');
+                setPinCount(0);
+                setReactionCount(0);
+                setLoading(false);
+            }
+        });
+        return unsubscribe; // Cleanup listener on unmount
+    }, []);
+
+    // Handle loading state
+    if (loading || !fontsLoaded) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#3D00B8" />
+            </View>
+        );
+    }
+
     function onResetPasswords() {
         onOpenResetPass();
     }
     function onPushNotifications() {
     }
-    function onPressLogout() {
-        signOut(auth).then(() => {
-            console.log("logged out");
-            router.push("../landing")
-        }).catch((error) => {
-            // An error happened.
-        });
+    const onPressLogout = async (): Promise<void> => {
+        try {
+            setLoading(true); // Show loading state during logout
+            await signOut(auth);
+            router.push("../landing");
+        } catch (error) {
+            console.error("Error logging out:", error);
+        } finally {
+            setLoading(false);
+        }
     }
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -54,8 +100,8 @@ export default function ProfileScreen() {
                         fontFamily: 'Yorkmade',
                         fontSize: 40,
                         color: '#3D00B8',
-                    }} >Hungry Hippo</Text>
-                    <Text className="text-md text-[#3D00B8]">email@school.upenn.edu</Text>
+                    }} >{username}</Text>
+                    <Text className="text-md text-[#3D00B8]">{email}</Text>
                 </View>
 
                 {/* status section */}
@@ -63,7 +109,7 @@ export default function ProfileScreen() {
                     <Image source={require("../../assets/images/winner.png")} style={styles.winner} />
                     <TouchableOpacity className="bg-[#F0EFFD] py-5 px-2 items-center rounded-[10px] w-[100px]">
                         <View className="flex-column items-center">
-                            <Text className="text-5xl font-bold text-[#50F]">35</Text>
+                            <Text className="text-5xl font-bold text-[#50F]">{pinCount}</Text>
                             <Text className="text-xl text-[#50F]">Pins</Text>
                             <Text className="text-xl text-[#50F]">posted</Text>
                         </View>
@@ -71,7 +117,7 @@ export default function ProfileScreen() {
                     <View className="w-10"></View>
                     <TouchableOpacity className="bg-[#F0EFFD] py-5 px-2 items-center rounded-[10px] w-[100px]" >
                         <View className="flex-column items-center">
-                            <Text className="text-5xl font-bold text-[#50F]">70</Text>
+                            <Text className="text-5xl font-bold text-[#50F]">{reactionCount}</Text>
                             <Text className="text-xl text-[#50F]">Stickers</Text>
                             <Text className="text-xl text-[#50F]">placed</Text>
                         </View>
@@ -142,5 +188,11 @@ const styles = StyleSheet.create({
         top: -60,
         left: -20,
         objectFit: "cover"
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#D9D9FF',
     },
 });
