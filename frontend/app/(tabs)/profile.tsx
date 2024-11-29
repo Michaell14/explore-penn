@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { auth } from "../../firebaseConfig";
 import { getUserById } from '@/api/userApi';
 import { signOut, onAuthStateChanged, User } from 'firebase/auth';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { db } from '../../firebaseConfig';
 import { router } from 'expo-router';
 import BottomSheet from '@gorhom/bottom-sheet';
 import ResetPasswordSheet from '@/components/ResetPasswordSheet';
@@ -19,6 +21,7 @@ interface UserProfile {
 export default function ProfileScreen() {
     //edit mode toggle
     const [isEditable, setIsEditable] = useState(true);
+    const [user, setUser] = useState<User | null>(null);
     const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [pinCount, setPinCount] = useState<number>(0);
@@ -32,48 +35,119 @@ export default function ProfileScreen() {
     const onOpenResetPass = () => resetPasswordRef.current?.expand();
     const onCloseResetPass = () => resetPasswordRef.current?.close();
 
-    const fetchUserProfile = async (uid: string) => {
-        try {
-            setLoading(true);
-            const response = await getUserById(uid);
-            const { username, email, numPins, numStickers} = response; // Assuming response contains these fields
-            setUsername(username);
-            setEmail(email);
-            setPinCount(numPins);
-            setReactionCount(numStickers);
-        } catch (error) {
-            console.error("Error fetching user profile:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    // useEffect(() => {
+    //     // Test Firestore connection
+    //     const testFirestore = async () => {
+    //         try {
+    //             const testDocRef = doc(db, 'users', 'WwrD2UGiMJgle9Yy6THHVGUhOei2');
+    //             const testDocSnapshot = await getDoc(testDocRef);
+    //             if (testDocSnapshot.exists()) {
+    //                 console.log('Firestore connection is working. Test document data:', testDocSnapshot.data());
+    //             } else {
+    //                 console.warn('Test document does not exist in Firestore.');
+    //             }
+    //         } catch (error) {
+    //             console.error('Error testing Firestore connection:', error);
+    //         }
+    //     };
+    
+    //     testFirestore();
+    // }, []);
     
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log(`User signed in: ${user.uid}`);
-                fetchUserProfile(user.uid);
+        let unsubscribe: (() => void) | null = null;
+    
+        const authUnsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            if (firebaseUser) {
+                console.log(`User signed in: ${firebaseUser.uid}`);
+                setUser(firebaseUser);
+    
+                // Start Firestore listener
+                if (!unsubscribe) {
+                    unsubscribe = listenForUserUpdates(firebaseUser.uid);
+                }
             } else {
-                console.log("User signed out");
-                // Reset profile state on sign-out
+                console.log('User signed out');
+                setUser(null);
+    
+                // Reset state for logged-out user
                 setUsername('');
                 setEmail('');
                 setPinCount(0);
                 setReactionCount(0);
-                setLoading(false);
+    
+                // Ensure Firestore listener is unsubscribed
+                if (unsubscribe) {
+                    unsubscribe();
+                    unsubscribe = null;
+                }
+    
+                setLoading(false); // Ensure loading stops
             }
         });
-        return unsubscribe; // Cleanup listener on unmount
+    
+        // Cleanup both listeners on unmount
+        return () => {
+            console.log('Cleaning up listeners...');
+            authUnsubscribe();
+            if (unsubscribe) {
+                unsubscribe();
+            }
+        };
     }, []);
 
+    const listenForUserUpdates = (uid: string) => {
+        try {
+            const userDocRef = doc(db, 'users', uid);
+            console.log(`Listening for updates on user: ${uid}`);
+    
+            return onSnapshot(
+                userDocRef,
+                (docSnapshot) => {
+                    console.log(`Snapshot received for user: ${uid}`);
+                    if (docSnapshot.exists()) {
+                        const data = docSnapshot.data();
+                        console.log('User document data:', data);
+    
+                        setUsername(data?.username || '');
+                        setEmail(data?.email || '');
+                        setPinCount(data?.numPins || 0);
+                        setReactionCount(data?.numStickers || 0);
+                    } else {
+                        console.warn(`User document does not exist for UID: ${uid}`);
+                        setUsername('');
+                        setEmail('');
+                        setPinCount(0);
+                        setReactionCount(0);
+                    }
+                    setLoading(false); // Ensure loading is stopped
+                },
+                (error) => {
+                    console.error('Error listening for user updates:', error);
+                    setLoading(false); // Prevent infinite loading on errors
+                }
+            );
+        } catch (error) {
+            console.error('Error in Firestore listener setup:', error);
+            setLoading(false); // Prevent infinite loading on exceptions
+            return () => {}; // Return a no-op cleanup function
+        }
+    };
+    
+       
+    // Debugging Logs for Loading State
+    console.log('Loading state:', loading);
+    
     // Handle loading state
     if (loading || !fontsLoaded) {
+        console.log('Rendering loading spinner...');
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#3D00B8" />
             </View>
         );
     }
+    
 
     function onResetPasswords() {
         onOpenResetPass();
@@ -82,7 +156,7 @@ export default function ProfileScreen() {
     }
     const onPressLogout = async (): Promise<void> => {
         try {
-            setLoading(true); // Show loading state during logout
+            setLoading(true);
             await signOut(auth);
             router.push("../landing");
         } catch (error) {
