@@ -46,35 +46,35 @@ export default function LandingPage({ onDismiss }: LandingPageProps) {
     <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <GestureHandlerRootView style={styles.container}>
-          <View className="flex-1 items-center justify-center">
-            <LinearGradient
-              colors={['rgb(107, 52, 223)', 'rgb(35, 11, 35)', "#1C0821"]}
-              style={styles.background}
-            />
-
+          <View className="flex-1 items-center justify-center bg-[#F5F5FF]">
             <Image
               // placeholder until dslaysigners mary and ruth cook
-              source={require("./../assets/images/pin.png")}
+              source={require("./../assets/images/logo.png")}
+              style={styles.logo}
+            />
+            <Image
+              // placeholder until dslaysigners mary and ruth cook
+              source={require("./../assets/images/loginCenter.png")}
               style={styles.pinImage}
             />
 
-            <TouchableOpacity onPress={() => { onCloseSignUp(); onOpenLogin() }} className = "mt-20">
-              <View className="rounded-[10px] border border-solid border-[#CEF7A0] w-[261px] items-center mb-4 flex-row justify-center">
-                <Image source={require("./../assets/images/mail-icon.png")} style={styles.mailIcon}/>
-                <Text className="text-lg font-semibold py-3 text-[#CEF7A0]">Login with Email</Text>
+            <TouchableOpacity onPress={() => { onCloseSignUp(); onOpenLogin() }} className="mt-10">
+              <View className="rounded-[10px] bg-[#E3E3FF] w-[261px] items-center mb-4 flex-row justify-center">
+                <Image source={require("./../assets/images/mail-icon.png")} style={styles.mailIcon} />
+                <Text className="text-lg font-semibold py-3 text-[#3D00B8]">Login with Email</Text>
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => { signInWithGoogle() }}>
-              <View className="rounded-[10px] border border-solid border-[#CEF7A0] w-[261px] items-center mb-4 flex-row justify-center">
-                <Image source={require("./../assets/images/google-icon.png")} style={styles.googleIcon}/>
-                <Text className="text-lg font-semibold py-3 text-[#CEF7A0]">Login with Google</Text>
+            <TouchableOpacity onPress={() => { }}>
+              <View className="rounded-[10px] bg-[#E3E3FF] w-[261px] items-center mb-4 flex-row justify-center">
+                <Image source={require("./../assets/images/google-icon.png")} style={styles.googleIcon} />
+                <Text className="text-lg font-semibold py-3 text-[#3D00B8]">Login with Google</Text>
               </View>
             </TouchableOpacity>
 
             <View className="flex-row">
-              <Text className="text-slate-300">Don't have an account? </Text>
-              <Text className="text-[#CEF7A0]" onPress={() => { onCloseLogin(); onOpenSignUp() }}>Sign Up</Text>
+              <Text className="text-slate-700">Don't have an account? </Text>
+              <Text className="text-[#3D00B8]" onPress={() => { onCloseLogin(); onOpenSignUp() }}>Sign Up</Text>
             </View>
           </View>
 
@@ -97,9 +97,14 @@ const styles = StyleSheet.create({
     top: 0,
     height: "100%",
   },
+  logo: {
+    width: 170,
+    height: 170,
+    objectFit: "contain",
+  },
   pinImage: {
-    width: 260,
-    height: 260,
+    width: 300,
+    height: 300,
     objectFit: "contain",
   },
   googleIcon: {
@@ -112,6 +117,6 @@ const styles = StyleSheet.create({
     width: 19.5,
     height: 15,
     marginRight: 8,
-    objectFit: "cover"
+    objectFit: "fill"
   }
 });

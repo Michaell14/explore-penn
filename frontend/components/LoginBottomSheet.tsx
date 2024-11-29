@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, TextInput, Button, Keyboard, TouchableWithoutFeedback } from 'react-native'
-import React, { forwardRef, useMemo, useCallback, useState } from 'react';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native'
+import React, { forwardRef, useMemo, useCallback } from 'react';
+import BottomSheet, { BottomSheetView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useForm, Controller } from "react-hook-form"
 import { signInWithEmailAndPassword } from "firebase/auth";
 
@@ -56,13 +56,27 @@ const LoginBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                 onChange={handleSheetChanges}
                 enablePanDownToClose={true}
                 index={-1}
-                backgroundStyle={{ backgroundColor: "#F2F0EF" }}
+                backgroundStyle={{ backgroundColor: "#F5F5FF" }}
+                backdropComponent={props => (
+                    <BottomSheetBackdrop
+                        {...props}
+                        style={[props.style, styles.backdrop]}
+                    />
+                )}
             >
                 <BottomSheetView className="items-center flex-1" style={styles.contentContainer}>
-                    <Text style = {styles.headingText}>Login with Email</Text>
-
+                    <Image
+                        // placeholder until dslaysigners mary and ruth cook
+                        source={require("./../assets/images/smile.png")}
+                        style={styles.newImage}
+                    />
+                    <Image
+                        // placeholder until dslaysigners mary and ruth cook
+                        source={require("./../assets/images/login.png")}
+                        style={styles.headerImg}
+                    />
+                    <View style = {{marginTop: 180}}></View>
                     <View style={styles.inputContent}>
-                        <Text className="text-4xl">Enter Email</Text>
                         <Controller
                             control={control}
                             rules={{
@@ -74,6 +88,7 @@ const LoginBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                                 <TextInput
                                     style={styles.textInput}
                                     placeholder="Email"
+                                    placeholderTextColor="#3D00B8"
                                     onBlur={onBlur}
                                     onChangeText={onChange}
                                     value={value}
@@ -86,7 +101,6 @@ const LoginBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                     </View>
 
                     <View style={styles.inputContent}>
-                        <Text className="text-4xl">Enter Password</Text>
                         <Controller
                             control={control}
                             rules={{
@@ -96,7 +110,8 @@ const LoginBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                             render={({ field: { onChange, onBlur, value } }) => (
                                 <TextInput
                                     style={styles.textInput}
-                                    placeholder="Enter Password"
+                                    placeholder="Password"
+                                    placeholderTextColor="#3D00B8"
                                     onBlur={onBlur}
                                     onChangeText={onChange}
                                     value={value}
@@ -109,7 +124,9 @@ const LoginBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                         {errors.password && <Text>This is required.</Text>}
                     </View>
 
-                    <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+                    <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit(onSubmit)}>
+                        <Text style = {{color: "#F5F5FF", fontWeight: 600, fontSize: 16}}>Log In</Text>
+                    </TouchableOpacity>
 
                 </BottomSheetView>
             </BottomSheet>
@@ -122,31 +139,43 @@ const styles = StyleSheet.create({
 
     contentContainer: {
         padding: 36,
-        backgroundColor: "#F2F0EF"
-    },
-    background: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        height: "120%",
+        backgroundColor: "#F5F5FF"
     },
     textInput: {
-        borderColor: "black",
-        borderWidth: 1,
-        borderRadius: 10,
-        padding: 12,
+        borderRadius: 9,
+        padding: 16,
         width: "100%",
+        backgroundColor: "#E3E3FF"
     },
     inputContent: {
         marginBottom: 16,
         width: "100%"
     },
-    headingText: {
-        fontSize: 24,
-        fontWeight: 600,
-        marginBottom: 10
-    }
+    backdrop: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Change the color here
+    },
+    newImage: {
+        width: 120,
+        height: 120,
+        objectFit: "contain",
+        position: "absolute",
+        top: 20
+    },
+    headerImg: {
+        width: 310,
+        height: 300,
+        objectFit: "contain",
+        position: "absolute",
+        top: 30
+    },
+    submitBtn: {
+        alignItems: 'center',
+        backgroundColor: '#3D00B8',
+        borderRadius: 9,
+        paddingHorizontal: 20,
+        paddingVertical: 12,
+        marginTop: 10
+    },
 });
 
 export default LoginBottomSheet;

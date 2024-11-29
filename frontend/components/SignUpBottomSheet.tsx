@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, TextInput, Button, Keyboard, TouchableWithoutFeedback } from 'react-native'
-import React, { forwardRef, useMemo, useCallback, useState } from 'react';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native'
+import React, { forwardRef, useMemo, useCallback } from 'react';
+import BottomSheet, { BottomSheetView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { useForm, Controller } from "react-hook-form"
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -10,8 +10,7 @@ interface Props {
 type FormData = {
     username: string;
     email: string;
-    password: string,
-    confirmPassword: string
+    password: string
 };
 
 type Ref = BottomSheet;
@@ -27,10 +26,6 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
 
     // Signs a new user up
     const onSubmit = (data: FormData) => {
-        if (data.password != data.confirmPassword) {
-            console.log("passwords dont match");
-            return;
-        }
         console.log(data);
 
         createUserWithEmailAndPassword(props.auth, data.email, data.password)
@@ -52,9 +47,9 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
     }
 
     // callbacks
-    const handleSheetChanges = useCallback((index: number) => {
-        console.log('handleSheetChanges', index);
-    }, []);
+    // const handleSheetChanges = useCallback((index: number) => {
+    //     console.log('handleSheetChanges', index);
+    // }, []);
 
     return (
         <>
@@ -62,16 +57,30 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
             <BottomSheet
                 ref={ref}
                 snapPoints={snapPoints}
-                onChange={handleSheetChanges}
+                //onChange={handleSheetChanges}
                 enablePanDownToClose={true}
                 index={-1}
-                backgroundStyle={{ backgroundColor: "#F2F0EF" }}
+                backgroundStyle={{ backgroundColor: "#F5F5FF" }}
+                backdropComponent={props => (
+                    <BottomSheetBackdrop
+                        {...props}
+                        style={[props.style, styles.backdrop]}
+                    />
+                )}
             >
                 <BottomSheetView className="items-center flex-1" style={styles.contentContainer}>
-                    <Text style={styles.headingText}>Sign Up with Email</Text>
-
+                    <Image
+                        // placeholder until dslaysigners mary and ruth cook
+                        source={require("./../assets/images/new.png")}
+                        style={styles.newImage}
+                    />
+                    <Image
+                        // placeholder until dslaysigners mary and ruth cook
+                        source={require("./../assets/images/account.png")}
+                        style={styles.headerImg}
+                    />
+                    <View style = {{marginTop: 180}}></View>
                     <View style={styles.inputContent}>
-                        <Text>Enter Username</Text>
                         <Controller
                             control={control}
                             rules={{
@@ -82,6 +91,7 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                                 <TextInput
                                     style={styles.textInput}
                                     placeholder="Username"
+                                    placeholderTextColor="#3D00B8"
                                     onBlur={onBlur}
                                     onChangeText={onChange}
                                     value={value}
@@ -94,7 +104,6 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                     </View>
 
                     <View style={styles.inputContent}>
-                        <Text className="text-4xl">Enter Email</Text>
                         <Controller
                             control={control}
                             rules={{
@@ -106,6 +115,7 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                                 <TextInput
                                     style={styles.textInput}
                                     placeholder="Email"
+                                    placeholderTextColor="#3D00B8"
                                     onBlur={onBlur}
                                     onChangeText={onChange}
                                     value={value}
@@ -118,7 +128,6 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                     </View>
 
                     <View style={styles.inputContent}>
-                        <Text className="text-4xl">Enter Password</Text>
                         <Controller
                             control={control}
                             rules={{
@@ -128,7 +137,8 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                             render={({ field: { onChange, onBlur, value } }) => (
                                 <TextInput
                                     style={styles.textInput}
-                                    placeholder="Enter Password"
+                                    placeholder="Password"
+                                    placeholderTextColor="#3D00B8"
                                     onBlur={onBlur}
                                     onChangeText={onChange}
                                     value={value}
@@ -141,30 +151,9 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                         {errors.password && <Text>This is required.</Text>}
                     </View>
 
-                    <View style={styles.inputContent}>
-                        <Text className="text-4xl">Confirm Password</Text>
-                        <Controller
-                            control={control}
-                            rules={{
-                                maxLength: 100,
-                                required: true
-                            }}
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <TextInput
-                                    style={styles.textInput}
-                                    placeholder="Confirm Password"
-                                    onBlur={onBlur}
-                                    onChangeText={onChange}
-                                    value={value}
-                                    secureTextEntry={true}
-                                    autoCorrect={false}
-                                />
-                            )}
-                            name="confirmPassword"
-                        />
-                        {errors.confirmPassword && <Text>This is required.</Text>}
-                    </View>
-                    <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+                    <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit(onSubmit)}>
+                        <Text style = {{color: "#F5F5FF", fontWeight: 600, fontSize: 16}}>Sign Up</Text>
+                    </TouchableOpacity>
 
                 </BottomSheetView>
             </BottomSheet>
@@ -176,30 +165,42 @@ const SignUpBottomSheet = forwardRef<Ref, Props>((props, ref) => {
 const styles = StyleSheet.create({
     contentContainer: {
         padding: 36,
-        backgroundColor: "#F2F0EF"
-    },
-    background: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        height: "120%",
+        backgroundColor: "#F5F5FF"
     },
     textInput: {
-        borderColor: "black",
-        borderWidth: 1,
-        borderRadius: 20,
-        padding: 5,
+        borderRadius: 9,
+        padding: 16,
         width: "100%",
+        backgroundColor: "#E3E3FF"
     },
     inputContent: {
-        marginBottom: 16,
+        marginBottom: 18,
         width: "100%"
     },
-    headingText: {
-        fontSize: 24,
-        fontWeight: 600,
-        marginBottom: 10
+    newImage: {
+        width: 220,
+        height: 215,
+        objectFit: "contain",
+        position: "absolute",
+        top: -30
+    },
+    backdrop: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Change the color here
+    },
+    submitBtn: {
+        alignItems: 'center',
+        backgroundColor: '#3D00B8',
+        borderRadius: 9,
+        paddingHorizontal: 20,
+        paddingVertical: 12,
+        marginTop: 10
+    },
+    headerImg: {
+        width: 310,
+        height: 300,
+        objectFit: "contain",
+        position: "absolute",
+        top: 25
     }
 });
 

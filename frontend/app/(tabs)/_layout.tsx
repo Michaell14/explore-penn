@@ -5,14 +5,13 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+//import { useNavigation } from '@react-navigation/native';
 import PinIcon from '../../assets/images/pin-icon.png';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   //const navigation = useNavigation();
   const router = useRouter();
-
   return (
     <>
       <Tabs
@@ -31,23 +30,13 @@ export default function TabLayout() {
             ),
           }}
         />
-        {/* <Tabs.Screen
+        <Tabs.Screen
           name="pins"
           options={{
             title: 'Pins',
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon name={focused ? 'square' : 'square-outline'} color={focused ? 'white' : '#771FD6'} />
             ),
-          }}
-        /> */}
-        <Tabs.Screen
-          name="bulletin"
-          options={{
-            title: 'Bulletin',
-            tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon name={focused ? 'square' : 'square-outline'} color={focused ? 'white' : '#771FD6'} />
-            ),
-            tabBarStyle: { display: 'none' },
           }}
         />
         <Tabs.Screen
@@ -61,14 +50,13 @@ export default function TabLayout() {
         />
       </Tabs>
 
-      {/* pin button
+      {/* pin button */}
       <TouchableOpacity
         style={styles.floatingButton}
-        // onPress={() => navigation.navigate('pins')}
-        onPress={() => router.push('/bulletin')}
+        onPress={() => router.push('pins')}
       >
         <Image source={PinIcon} style={styles.pinIcon} />
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </>
   );
 }
