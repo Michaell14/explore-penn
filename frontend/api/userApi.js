@@ -1,19 +1,17 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_BASE_URL = 'http://localhost:3000/api/user';
+const API_BASE_URL = 'http://10.102.109.239:3000/api/users';
 
 const getAuthToken = async () => {
     return await AsyncStorage.getItem('token');
 };
 
-// Register a new user
 export const registerUser = async (userData) => {
     const token = await getAuthToken();
     try {
         const response = await axios.post(`${API_BASE_URL}/register`, userData, {
             headers: {
-                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         });
@@ -23,6 +21,36 @@ export const registerUser = async (userData) => {
         throw error;
     }
 };
+
+export const getUserById = async (userId) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/${userId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data.user;
+    } catch (error) {
+        console.error('Error fetching user by ID:', error.response?.data || error.message);
+        throw error;
+    }
+};
+
+// Delete user by ID
+export const deleteUserById = async (userId) => {
+    try {
+        const response = await axios.delete(`${API_BASE_URL}/${userId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log(response.data.message);
+    } catch (error) {
+        console.error('Error deleting user by ID:', error.response?.data || error.message);
+        throw error;
+    }
+};
+
 
 // Get posts created by the user
 export const getMyPosts = async (userId) => {
