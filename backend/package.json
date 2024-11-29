@@ -22,6 +22,10 @@
     "google-auth-library": "^9.14.2",
     "joi": "^17.13.3",
     "node-geocoder": "^4.4.0",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "expo-location": "~17.0.1",
+    "expo-notifications": "~0.28.19",
+    "expo-task-manager": "~11.8.2",
+    "expo-dev-client": "~4.0.29"
   }
 }

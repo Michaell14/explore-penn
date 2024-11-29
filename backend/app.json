@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "5af319ef-3f13-46c9-adf0-e94e2f8b78e7"
+      }
+    },
+    "android": {
+      "package": "com.kestelle.backend"
+    },
+    "ios": {
+      "bundleIdentifier": "com.kestelle.backend"
+    }
+  }
+}
