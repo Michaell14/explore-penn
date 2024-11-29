@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Dimensions, Platform, StatusBar, Modal } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import PinBottomSheet from '@/components/PinBottomSheet';
@@ -11,14 +11,7 @@ import { getExpoPushToken, saveExpoPushToken } from '@/hooks/pushToken';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 import { startBackgroundUpdate } from '@/hooks/registerBackground';
-
-interface PinData {
-  title: string,
-  description: string,
-  longitude: number,
-  latitude: number,
-}
-
+import { PinData, fetchCurrentPins } from '@/api/eventPinApi';
 
 interface LocationType {
   latitude: number;
@@ -26,16 +19,16 @@ interface LocationType {
 }
 
 
-
 const HomeScreen: React.FC = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const [pin, setPin] = useState<PinData | undefined>();
+  const [pins, setPins] = useState<PinData[]>([]);
+  const [selectedPin, setSelectedPin] = useState<PinData | null>(null);
   const {signOut, user} = useAuth()
   const router = useRouter();
   const [locationError, setLocationError] = React.useState<string | null>(null);
   const [location, setLocation] = useState<LocationType | null>(null);
-  const [pins, setPins] = useState<PinData[]>([]);
   const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
+  // const [loading, setLoading] = useState(true);
 
   const getLocation = async () => {
     try {
@@ -52,31 +45,43 @@ const HomeScreen: React.FC = () => {
     }
   };
 
-  const getNearbyPins = async () => {
-    if (!location) return;
+  const loadPins = async () => {
     try {
-      const response = await axios.post<PinData[]>(
-        `${baseURL}/api/pins/location`,
-        {
-          radius: 0.0011,
-          latitude: location.latitude,
-          longitude: location.longitude,
-        },
-        { headers: { 'Content-Type': 'application/json' } }
-      );
-      setPins(response.data);
-    } catch (e) {
-      console.log('Error getting nearby pins:', e);
+      const currentPins = await fetchCurrentPins();
+      console.log('Fetched pins:', currentPins);
+      setPins(currentPins);
+    } catch (error) {
+      console.error('Error loading pins:', error);
     }
   };
+  
+  // const getNearbyPins = async () => {
+  //   if (!location) return;
+  //   try {
+  //     const response = await axios.post<PinData[]>(
+  //       `${baseURL}/api/pins/location`,
+  //       {
+  //         radius: 0.0011,
+  //         latitude: location.latitude,
+  //         longitude: location.longitude,
+  //       },
+  //       { headers: { 'Content-Type': 'application/json' } }
+  //     );
+  //     setPins(response.data);
+  //   } catch (e) {
+  //     console.log('Error getting nearby pins:', e);
+  //   }
+  // };
 
   const handleMarkerPress = (pin: PinData) => {
-    console.log(pin.longitude);
-    console.log(pin.latitude)
-    setPin(pin);
+    setSelectedPin(pin);
+    // bottomSheetRef.current?.expand();
   };
-  React.useEffect(() => {
+useEffect(() => {
     const initializeApp = async () => {
+      await getLocation();
+      await loadPins();
+
       const permissionsGranted = await requestPermissions();
       if (permissionsGranted) {
         // Initialize push notifications
@@ -136,31 +141,22 @@ const HomeScreen: React.FC = () => {
         }}
         showsUserLocation={true}
       >
-        <Marker
-          coordinate={{ latitude: 39.9522, longitude: -75.1932 }}
-          title="Van Pelt Library"
-          description="where best spark team is working rn"
-          onPress={(e) => handleMarkerPress({
-            title: "Van Pelt Library",
-            description: "where best spark team is working rn",
-            longitude: 39.9522,
-            latitude: -75.1932
-          })}
-        />
-        <Marker
-          coordinate={{ latitude: 39.9509, longitude: -75.1939 }}
-          title="Houston Hall"
-          description="This is where the ping pong table is"
-          onPress={(e) => handleMarkerPress({
-            title: "Houston Hall",
-            description: "This is where the ping pong table is",
-            longitude: 39.9509,
-            latitude: -75.1939
-          })}
-        />
+      {pins && pins.map((pin: PinData, index: React.Key | null | undefined) => (
+      <Marker
+        key={index}
+        coordinate={{
+          latitude: pin.coords[0], // Access latitude from coords array
+          longitude: pin.coords[1], // Access longitude from coords array
+        }}
+        title={pin.header}
+        description={pin.description}
+        onPress={() => handleMarkerPress(pin)}
+      />
+      ))}
+
       </MapView>
 
-      <PinBottomSheet pin={pin} ref={bottomSheetRef} />
+      <PinBottomSheet pin={selectedPin} ref={bottomSheetRef} />
 
     </View>
   );
@@ -257,3 +253,26 @@ const styles = StyleSheet.create({
 
 
 export default HomeScreen;
+
+        {/* <Marker
+          coordinate={{ latitude: 39.9522, longitude: -75.1932 }}
+          title="Van Pelt Library"
+          description="where best spark team is working rn"
+          onPress={(e) => handleMarkerPress({
+            title: "Van Pelt Library",
+            description: "where best spark team is working rn",
+            longitude: 39.9522,
+            latitude: -75.1932
+          })}
+        />
+        <Marker
+          coordinate={{ latitude: 39.9509, longitude: -75.1939 }}
+          title="Houston Hall"
+          description="This is where the ping pong table is"
+          onPress={(e) => handleMarkerPress({
+            title: "Houston Hall",
+            description: "This is where the ping pong table is",
+            longitude: 39.9509,
+            latitude: -75.1939
+          })}
+        /> */}

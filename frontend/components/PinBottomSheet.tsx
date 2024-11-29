@@ -1,16 +1,10 @@
 import { Text, StyleSheet } from 'react-native'
 import React, { forwardRef, useMemo, useCallback } from 'react';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-
-interface PinData {
-    title: string,
-    description: string,
-    longitude: number,
-    latitude: number
-  }
-
+import { PinData } from '@/api/eventPinApi';
+  
 interface Props {
-    pin: PinData;
+    pin: PinData | null;
 }
 
 type Ref = BottomSheet;
@@ -34,7 +28,10 @@ const PinBottomSheet = forwardRef<Ref, Props>((props, ref) => {
             index = {1}
             >
             <BottomSheetView style={styles.contentContainer}>
-                <Text>{pin?.title}</Text>
+                <Text>{pin?.header}</Text>
+                <Text>{pin?.loc_description}</Text>
+                <Text>{pin?.start_time}</Text>
+                <Text>{pin?.end_time}</Text>
                 <Text>{pin?.description}</Text>
             </BottomSheetView>
         </BottomSheet>

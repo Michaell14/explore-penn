@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const API_BASE_URL = "http://localhost:3000/api/eventPins";
+const API_BASE_URL = "http://10.102.109.239:3000/api/eventPins";
 
 // Helper function to get the auth token
 const getAuthToken = async (): Promise<string | null> => {
@@ -11,23 +11,20 @@ const getAuthToken = async (): Promise<string | null> => {
 // =====================
 // Types
 // =====================
-interface Coordinate {
-  lat: number;
-  lng: number;
-}
 
-interface Pin {
+export interface PinData {
   id?: string;
   header: string;
   description: string;
   loc_description?: string;
   org_id: string;
-  coordinate: Coordinate;
-  start_time: string;
-  end_time: string;
+  coords: [number, number];
+  start_time: any;
+  end_time: any;
   photo?: string | null;
   isActive?: boolean;
 }
+
 
 interface ImageData {
   images: string[];
@@ -59,27 +56,39 @@ interface PositionData {
 // Pins APIs
 // =====================
 
-export const fetchCurrentPins = async (): Promise<Pin[]> => {
+const formatTimestamp = (timestamp: { _seconds: number }): string => {
+  const date = new Date(timestamp._seconds * 1000);
+  return date.toLocaleString();
+};
+
+
+export const fetchCurrentPins = async (): Promise<PinData[]> => {
   const token = await getAuthToken();
   try {
-    const response: AxiosResponse<Pin[]> = await axios.get(`${API_BASE_URL}/`, {
+    const response: AxiosResponse<PinData[]> = await axios.get(`${API_BASE_URL}/`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return response.data;
+    return response.data.map(pin => ({
+      ...pin,
+      start_time: formatTimestamp(pin.start_time),
+      end_time: formatTimestamp(pin.end_time),
+      photo: pin.photo || null,
+    }));
   } catch (error) {
     console.error("Error fetching pins:", error);
     throw error;
   }
 };
 
+
 export const fetchPinsByLocation = async (
   latitude: number,
   longitude: number,
   radius: number
-): Promise<Pin[]> => {
+): Promise<PinData[]> => {
   const token = await getAuthToken();
   try {
-    const response: AxiosResponse<Pin[]> = await axios.post(
+    const response: AxiosResponse<PinData[]> = await axios.post(
       `${API_BASE_URL}/location`,
       { latitude, longitude, radius },
       { headers: { Authorization: `Bearer ${token}` } }
@@ -91,10 +100,10 @@ export const fetchPinsByLocation = async (
   }
 };
 
-export const fetchHistoricalPins = async (): Promise<Pin[]> => {
+export const fetchHistoricalPins = async (): Promise<PinData[]> => {
   const token = await getAuthToken();
   try {
-    const response: AxiosResponse<Pin[]> = await axios.get(
+    const response: AxiosResponse<PinData[]> = await axios.get(
       `${API_BASE_URL}/historical`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -105,10 +114,10 @@ export const fetchHistoricalPins = async (): Promise<Pin[]> => {
   }
 };
 
-export const fetchPinDetails = async (pinId: string): Promise<Pin> => {
+export const fetchPinDetails = async (pinId: string): Promise<PinData> => {
   const token = await getAuthToken();
   try {
-    const response: AxiosResponse<Pin> = await axios.get(
+    const response: AxiosResponse<PinData> = await axios.get(
       `${API_BASE_URL}/${pinId}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -119,10 +128,10 @@ export const fetchPinDetails = async (pinId: string): Promise<Pin> => {
   }
 };
 
-export const addPin = async (newPinData: Pin): Promise<Pin> => {
+export const addPin = async (newPinData: PinData): Promise<PinData> => {
   const token = await getAuthToken();
   try {
-    const response: AxiosResponse<Pin> = await axios.post(
+    const response: AxiosResponse<PinData> = await axios.post(
       `${API_BASE_URL}/`,
       newPinData,
       { headers: { Authorization: `Bearer ${token}` } }
