@@ -23,10 +23,12 @@ const BulletinStack = (navigation: { goBack: () => void; }) => {
             </TouchableOpacity>
 
             {/* Outer View */}
-            <View className="flex justify-center items-center w-[370px] h-[620px] bg-[#BFBFEE] rounded-lg border border-gray-300 p-4 overflow-hidden">
+            <View className="flex justify-center items-center w-[390px] h-[620px] bg-[#BFBFEE] rounded-lg p-4 overflow-hidden">
+
+
 
                 {/* Inner View */}
-                <View className="w-[350px] h-[600px] bg-[#F2F3FD] rounded-lg border border-gray-300 p-4 relative">
+                <View className="w-[370px] h-[600px] bg-[#F2F3FD] rounded-lg p-4 relative">
                     {/* Rounded Rectangle at top for visual indent FINALLY DIS BISH WORKS HOLY SHART */}
                     <View className="absolute -top-8 left-0 right-0 items-center">
                         <View className="w-[300px] h-[40px] bg-[#BFBFEE] opacity-100 rounded-full" />

@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useFonts } from 'expo-font';
 import { View, Text, TextInput, Keyboard, TouchableWithoutFeedback, StyleSheet, TouchableOpacity, Image, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { auth } from "../../firebaseConfig";
 import { signOut, onAuthStateChanged } from 'firebase/auth';
 import { router } from 'expo-router';
+import BottomSheet from '@gorhom/bottom-sheet';
+import ResetPasswordSheet from '@/components/ResetPasswordSheet';
 
 export default function ProfileScreen() {
     //edit mode toggle
@@ -13,9 +15,10 @@ export default function ProfileScreen() {
         Yorkmade: require('../../assets/fonts/Yorkmade.otf'),
         "SF UI Display": require('../../assets/fonts/sf-ui-display-black.otf'),
     });
-    if (!loaded) {
-        return null;
-    }
+    const resetPasswordRef = useRef<BottomSheet>(null);
+    const onOpenResetPass = () => resetPasswordRef.current?.expand();
+    const onCloseResetPass = () => resetPasswordRef.current?.close();
+
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -30,6 +33,7 @@ export default function ProfileScreen() {
         }
     });
     function onResetPasswords() {
+        onOpenResetPass();
     }
     function onPushNotifications() {
     }
@@ -77,12 +81,11 @@ export default function ProfileScreen() {
                 </View>}
 
                 {/* buttons section */}
-                {<View className="flex-1 px-8 py-16">
+                {<View className="flex-1 px-10 py-16">
                     <TouchableOpacity className="bg-[#F0EFFD] py-3 items-left" onPress={onResetPasswords}>
                         <View className="flex-row">
                             <Image source={require("../../assets/images/reset-password-icon.png")} style={styles.resetpasswordIcon} />
                             <Text className="text-lg text-[#50F]">Reset password</Text>
-                            <Image source={require("../../assets/images/reset-password-rightarrow.png")} style={styles.resetpasswordArrowIcon} />
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity className="bg-[#F0EFFD] py-3 items-left" onPress={onPushNotifications}>
@@ -98,6 +101,7 @@ export default function ProfileScreen() {
                         </View>
                     </TouchableOpacity>
                 </View>}
+                <ResetPasswordSheet auth={auth} ref={resetPasswordRef} />
             </View>
         </TouchableWithoutFeedback>
     );
