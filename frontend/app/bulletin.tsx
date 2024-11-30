@@ -1,12 +1,70 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
+import { GestureHandlerRootView, Gesture } from 'react-native-gesture-handler';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { styled } from 'tailwindcss-react-native';
+import Sticker from '../../components/StickerTray';
 
-const BulletinStack = (navigation: { goBack: () => void; }) => {
+const StyledView = styled(View);
+
+type Sticker = {
+  id: number;
+  uri: string;
+};
+
+const stickers: Sticker[] = [
+  { id: 1, uri: 'https://example.com/sticker1.png' },
+  { id: 2, uri: 'https://example.com/sticker2.png' },
+  { id: 3, uri: 'https://example.com/sticker3.png' },
+];
+
+const StickerTray: React.FC<{
+  onDragSticker: (sticker: Sticker) => Gesture;
+}> = ({ onDragSticker }) => {
+  return (
+    <StyledView className="h-24 bg-gray-200 border-t border-gray-300 p-2">
+      {stickers.map((sticker) => (
+        <Gesture gesture={onDragSticker(sticker)} key={sticker.id}>
+          <Animated.View className="m-2 w-20 h-20 items-center justify-center">
+            <Image source={{ uri: sticker.uri }} className="w-16 h-16" />
+          </Animated.View>
+        </Gesture>
+      ))}
+    </StyledView>
+  );
+};
+
+const BulletinStack: React.FC = () => {
     const router = useRouter();
+    const [boardStickers, setBoardStickers] = useState<
+        { sticker: typeof Sticker; x: number; y: number; id: string }[]
+    >([]);
 
     const handleClose = () => {
         router.push('/(tabs)');
+    };
+
+    const addStickerToBoard = (sticker: typeof Sticker, x: number, y: number) => {
+        setBoardStickers((prev) => [
+            ...prev,
+            { sticker, x, y, id: `${sticker.id}-${Date.now()}` },
+        ]);
+    };
+
+    const handleDragSticker = (sticker: typeof Sticker) => {
+        const translateX = useSharedValue(0);
+        const translateY = useSharedValue(0);
+
+        return Gesture.Pan()
+            .onUpdate((event) => {
+                translateX.value = event.translationX;
+                translateY.value = event.translationY;
+            })
+            .onEnd(() => {
+                addStickerToBoard(sticker, translateX.value, translateY.value);
+            });
     };
 
     return (
@@ -103,3 +161,5 @@ const BulletinStack = (navigation: { goBack: () => void; }) => {
 };
 
 export default BulletinStack;
+
+
