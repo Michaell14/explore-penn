@@ -17,7 +17,7 @@ const BulletinStack = (navigation: { goBack: () => void; }) => {
                 className="absolute top-16 right-4"
             >
                 <Image
-                    source={require('../../assets/images/xout.png')}
+                    source={require('../assets/images/xout.png')}
                     className="w-12 h-12"
                 />
             </TouchableOpacity>
@@ -52,19 +52,19 @@ const BulletinStack = (navigation: { goBack: () => void; }) => {
 
                     {/* Corner Dots */}
                     <Image
-                        source={require('../../assets/images/bulletincircle.png')}
+                        source={require('../assets/images/bulletincircle.png')}
                         className="absolute top-2 left-2 w-2 h-2"
                     />
                     <Image
-                        source={require('../../assets/images/bulletincircle.png')}
+                        source={require('../assets/images/bulletincircle.png')}
                         className="absolute top-2 right-2 w-2 h-2"
                     />
                     <Image
-                        source={require('../../assets/images/bulletincircle.png')}
+                        source={require('../assets/images/bulletincircle.png')}
                         className="absolute bottom-2 left-2 w-2 h-2"
                     />
                     <Image
-                        source={require('../../assets/images/bulletincircle.png')}
+                        source={require('../assets/images/bulletincircle.png')}
                         className="absolute bottom-2 right-2 w-2 h-2"
                     />
 
@@ -85,7 +85,7 @@ const BulletinStack = (navigation: { goBack: () => void; }) => {
                     {/* Swipe Up Section */}
                     <View className="absolute bottom-12 left-0 right-0 items-center">
                         <Image
-                            source={require('../../assets/images/swipeup.png')}
+                            source={require('../assets/images/swipeup.png')}
                             className="w-6 h-6 mb-2"
                         />
                         <Text className="text-xs text-[#808080]">Swipe Up To Write</Text>

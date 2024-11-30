@@ -44,16 +44,16 @@ const LoginBottomSheet = forwardRef<Ref, Props>((props, ref) => {
     }
 
     // callbacks
-    const handleSheetChanges = useCallback((index: number) => {
-        console.log('handleSheetChanges', index);
-    }, []);
+    // const handleSheetChanges = useCallback((index: number) => {
+    //     console.log('handleSheetChanges', index);
+    // }, []);
 
     return (
         <>
             <BottomSheet
                 ref={ref}
                 snapPoints={snapPoints}
-                onChange={handleSheetChanges}
+                //onChange={handleSheetChanges}
                 enablePanDownToClose={true}
                 index={-1}
                 backgroundStyle={{ backgroundColor: "#F5F5FF" }}

@@ -16,7 +16,6 @@ export default function TabLayout() {
     <>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
           headerShown: false,
           tabBarStyle: styles.tabBar,
         }}
@@ -24,27 +23,27 @@ export default function TabLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            title: 'Home',
+            title: '',
             tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon name={focused ? 'home' : 'home-outline'} color={focused ? 'white' : '#771FD6'} />
+              <TabBarIcon name={focused ? 'home' : 'home-outline'} color={focused ? 'black' : '#771FD6'} />
             ),
           }}
         />
-        <Tabs.Screen
+        {/* <Tabs.Screen
           name="pins"
           options={{
-            title: 'Pins',
+            title: '',
             tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon name={focused ? 'square' : 'square-outline'} color={focused ? 'white' : '#771FD6'} />
+              <TabBarIcon name={focused ? 'square' : 'square-outline'} color={focused ? 'black' : '#771FD6'} />
             ),
           }}
-        />
+        /> */}
         <Tabs.Screen
           name="profile"
           options={{
-            title: 'Profile',
+            title: '',
             tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon name={focused ? 'person' : 'person-outline'} color={focused ? 'white' : '#771FD6'} />
+              <TabBarIcon name={focused ? 'person' : 'person-outline'} color={focused ? 'black' : '#771FD6'} />
             ),
           }}
         />
@@ -53,7 +52,7 @@ export default function TabLayout() {
       {/* pin button */}
       <TouchableOpacity
         style={styles.floatingButton}
-        onPress={() => router.push('pins')}
+        onPress={() => router.replace('../bulletin')}
       >
         <Image source={PinIcon} style={styles.pinIcon} />
       </TouchableOpacity>
@@ -64,24 +63,15 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   tabBar: {
     position: 'absolute',
-    bottom: 40,
-    left: 20,
-    right: 90,
-    height: 60,
-    borderRadius: 25,
-    backgroundColor: '#191C16',
-    paddingHorizontal: 10,
-    paddingBottom: 10,
-    paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 5 },
-  },
-  tabBarItem: {
-    justifyContent: 'center',
+    bottom: 45,
+    marginLeft: 30,
+    width: "35%",
+    height: 52,
+    paddingTop: 5,
+    paddingHorizontal: 8,
+    borderRadius: 16,
+    borderColor: "#E0E0F4",
+    backgroundColor: '#E0E0F4',
   },
   floatingButton: {
     position: 'absolute',
@@ -92,10 +82,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 5 },
   },
   pinIcon: {
     width: 80,

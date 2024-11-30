@@ -44,9 +44,9 @@ export default function RootLayout() {
           <AuthProvider>
 
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <Stack>
-          <Stack.Screen name="landing" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="landing"/>
+          <Stack.Screen name="(tabs)"/>
           <Stack.Screen name="+not-found" />
         </Stack>
       </GestureHandlerRootView>

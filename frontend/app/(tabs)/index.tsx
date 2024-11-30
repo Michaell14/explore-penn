@@ -18,12 +18,27 @@ interface LocationType {
   longitude: number;
 }
 
+const pins_data = [
+  {
+    id: "",
+    header: "Hill College House",
+    description: "Hill College House is a low-rise First Year Community located on the east side of Penn’s campus with convenient access to academic buildings, as well as Philadelphia’s 30th Street Station.",
+    loc_description: "desc",
+    org_id: "test",
+    coords: [39.9530, -75.1907],
+    start_time: 5,
+    end_time: 5,
+    photo: null,
+    isActive: false,
+  }
+]
+
 
 const HomeScreen: React.FC = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const [pins, setPins] = useState<PinData[]>([]);
+  const [pins, setPins] = useState<PinData[]>(pins_data);
   const [selectedPin, setSelectedPin] = useState<PinData | null>(null);
-  const {signOut, user} = useAuth()
+  const { signOut, user } = useAuth()
   const router = useRouter();
   const [locationError, setLocationError] = React.useState<string | null>(null);
   const [location, setLocation] = useState<LocationType | null>(null);
@@ -45,7 +60,7 @@ const HomeScreen: React.FC = () => {
     }
   };
 
-    // const getNearbyPins = async () => {
+  // const getNearbyPins = async () => {
   //   if (!location) return;
   //   try {
   //     const response = await axios.post<PinData[]>(
@@ -73,12 +88,13 @@ const HomeScreen: React.FC = () => {
       console.error('Error loading pins:', error);
     }
   };
-  
+
   const handleMarkerPress = (pin: PinData) => {
     setSelectedPin(pin);
-    // bottomSheetRef.current?.expand();
+    handleOpenPress();
   };
-useEffect(() => {
+
+  useEffect(() => {
     const initializeApp = async () => {
       await getLocation();
       await loadPins();
@@ -142,19 +158,18 @@ useEffect(() => {
         }}
         showsUserLocation={true}
       >
-      {pins && pins.map((pin: PinData, index: React.Key | null | undefined) => (
-      <Marker
-        key={index}
-        coordinate={{
-          latitude: pin.coords[0], // Access latitude from coords array
-          longitude: pin.coords[1], // Access longitude from coords array
-        }}
-        title={pin.header}
-        description={pin.description}
-        onPress={() => handleMarkerPress(pin)}
-        image={require('../../assets/images/map-pin.png')}
-      />
-      ))}
+        {pins && pins.map((pin: PinData, index: React.Key | null | undefined) => (
+          <Marker
+            key={index}
+            coordinate={{
+              latitude: pin.coords[0], // Access latitude from coords array
+              longitude: pin.coords[1], // Access longitude from coords array
+            }}
+            title={pin.header}
+            onPress={() => handleMarkerPress(pin)}
+            image={require('../../assets/images/map-pin.png')}
+          />
+        ))}
 
       </MapView>
 
@@ -243,7 +258,7 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get('window').width,
     // uhh this is for my iphone, just hardcoded it for now but might be diff for other phoens
-    height: Dimensions.get('window').height - 140,
+    height: Dimensions.get('window').height,
   },
   contentContainer: {
     flex: 1,

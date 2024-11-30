@@ -50,18 +50,18 @@ export default function ProfileScreen() {
     //             console.error('Error testing Firestore connection:', error);
     //         }
     //     };
-    
+
     //     testFirestore();
     // }, []);
-    
+
     useEffect(() => {
         let unsubscribe: (() => void) | null = null;
-    
+
         const authUnsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             if (firebaseUser) {
                 console.log(`User signed in: ${firebaseUser.uid}`);
                 setUser(firebaseUser);
-    
+
                 // Start Firestore listener
                 if (!unsubscribe) {
                     unsubscribe = listenForUserUpdates(firebaseUser.uid);
@@ -69,23 +69,23 @@ export default function ProfileScreen() {
             } else {
                 console.log('User signed out');
                 setUser(null);
-    
+
                 // Reset state for logged-out user
                 setUsername('');
                 setEmail('');
                 setPinCount(0);
                 setReactionCount(0);
-    
+
                 // Ensure Firestore listener is unsubscribed
                 if (unsubscribe) {
                     unsubscribe();
                     unsubscribe = null;
                 }
-    
+
                 setLoading(false); // Ensure loading stops
             }
         });
-    
+
         // Cleanup both listeners on unmount
         return () => {
             console.log('Cleaning up listeners...');
@@ -100,7 +100,7 @@ export default function ProfileScreen() {
         try {
             const userDocRef = doc(db, 'users', uid);
             console.log(`Listening for updates on user: ${uid}`);
-    
+
             return onSnapshot(
                 userDocRef,
                 (docSnapshot) => {
@@ -108,7 +108,7 @@ export default function ProfileScreen() {
                     if (docSnapshot.exists()) {
                         const data = docSnapshot.data();
                         console.log('User document data:', data);
-    
+
                         setUsername(data?.username || '');
                         setEmail(data?.email || '');
                         setPinCount(data?.numPins || 0);
@@ -130,14 +130,14 @@ export default function ProfileScreen() {
         } catch (error) {
             console.error('Error in Firestore listener setup:', error);
             setLoading(false); // Prevent infinite loading on exceptions
-            return () => {}; // Return a no-op cleanup function
+            return () => { }; // Return a no-op cleanup function
         }
     };
-    
-       
+
+
     // Debugging Logs for Loading State
     console.log('Loading state:', loading);
-    
+
     // Handle loading state
     if (loading || !fontsLoaded) {
         console.log('Rendering loading spinner...');
@@ -147,7 +147,7 @@ export default function ProfileScreen() {
             </View>
         );
     }
-    
+
 
     function onResetPasswords() {
         onOpenResetPass();
@@ -201,24 +201,19 @@ export default function ProfileScreen() {
                 </View>}
 
                 {/* buttons section */}
-                {<View className="flex-1 px-10 py-16">
-                    <TouchableOpacity className="bg-[#F0EFFD] py-3 items-left" onPress={onResetPasswords}>
-                        <View className="flex-row">
-                            <Image source={require("../../assets/images/reset-password-icon.png")} style={styles.resetpasswordIcon} />
-                            <Text className="text-lg text-[#50F]">Reset password</Text>
-                        </View>
+                {<View className="flex-1 px-10 py-16" style={styles.container}>
+                    <TouchableOpacity className="bg-[#F0EFFD] p-5 items-left flex-row" onPress={onResetPasswords}>
+                        <Image source={require("../../assets/images/reset-password-icon.png")} style={styles.resetpasswordIcon} />
+                        <Text className="text-lg text-[#50F]">Reset password</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity className="bg-[#F0EFFD] py-3 items-left" onPress={onPushNotifications}>
-                        <View className="flex-row">
-                            <Image source={require("../../assets/images/push-notification-bell.png")} style={styles.resetpasswordIcon} />
-                            <Text className="text-lg text-[#50F]">Push notifications</Text>
-                        </View>
+                    <TouchableOpacity className="bg-[#F0EFFD] p-5 items-left flex-row" onPress={onPushNotifications}>
+                        <Image source={require("../../assets/images/push-notification-bell.png")} style={styles.resetpasswordIcon} />
+                        <Text className="text-lg text-[#50F]">Push notifications</Text>
+
                     </TouchableOpacity>
-                    <TouchableOpacity className="bg-[#F0EFFD] py-3 items-left" onPress={onPressLogout}>
-                        <View className="flex-row">
-                            <Image source={require("../../assets/images/logout.png")} style={styles.logoutIcon} />
-                            <Text className="text-lg text-[#EF6A56]">Log out</Text>
-                        </View>
+                    <TouchableOpacity className="bg-[#F0EFFD] p-5 items-left flex-row" onPress={onPressLogout}>
+                        <Image source={require("../../assets/images/logout.png")} style={styles.logoutIcon} />
+                        <Text className="text-lg text-[#EF6A56]">Log out</Text>
                     </TouchableOpacity>
                 </View>}
                 <ResetPasswordSheet auth={auth} ref={resetPasswordRef} />
@@ -269,4 +264,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#D9D9FF',
     },
+    container: {
+        borderRadius: 19,
+    }
 });
