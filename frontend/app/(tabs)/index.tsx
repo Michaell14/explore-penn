@@ -174,8 +174,8 @@ const HomeScreen: React.FC = () => {
             isSelected={clickedPinId === pin.id}
             onPress={() => handleMarkerPress(pin)}
             staticImageSource={require('../../assets/images/map-pin.png')}
-            //will replace with aftereffects gif
-            gifImageSource={require('../../assets/images/google-icon.png')}
+            //will replace with better aftereffects gif
+            gifImageSource={require('../../assets/images/map-pin.gif')}
             title={pin.header}
           />
         ))}
