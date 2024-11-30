@@ -1,5 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, StyleSheet, Dimensions, Platform } from 'react-native';
+import {
+  View, KeyboardAvoidingView, StyleSheet, Dimensions, Platform, TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import MapView from 'react-native-maps';
 import PinBottomSheet from '@/components/PinBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -11,6 +14,7 @@ import { startBackgroundUpdate } from '@/hooks/registerBackground';
 import { PinData, fetchCurrentPins } from '@/api/eventPinApi';
 import BouncingMarker from '@/components/BouncingMarker';
 import { getExpoPushToken } from '@/hooks/pushToken';
+import SearchBar from '../../components/SearchBar';
 
 interface LocationType {
   latitude: number;
@@ -41,6 +45,12 @@ const HomeScreen: React.FC = () => {
   const { signOut, user } = useAuth();
   const router = useRouter();
   const [location, setLocation] = useState<LocationType | null>(null);
+
+  //for the search bar
+  const handleSearch = (query: string) => {
+    console.log('Search query:', query);
+    // will add later
+  };
 
   // Fetch the user's current location
   const getLocation = async () => {
@@ -75,7 +85,7 @@ const HomeScreen: React.FC = () => {
       handleOpenPress(selectedPin.coords[0], selectedPin.coords[1]);
     }
   }, [selectedPin]);
-  
+
   const handleMarkerPress = (pin: PinData) => {
     if (clickedPinId === pin.id) {
       setSelectedPin(pin);
@@ -85,7 +95,7 @@ const HomeScreen: React.FC = () => {
       setClickedPinId(pin.id || null);
     }
   };
-  
+
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -132,7 +142,7 @@ const HomeScreen: React.FC = () => {
   // Open the bottom sheet and center the map on the pin
   const handleOpenPress = (latitude: number, longitude: number) => {
     bottomSheetRef.current?.snapToIndex(2);
-  
+
     if (mapViewRef.current) {
       mapViewRef.current.animateToRegion(
         {
@@ -147,43 +157,54 @@ const HomeScreen: React.FC = () => {
       console.error('mapViewRef is undefined');
     }
   };
-   
+
 
   return (
-    <View style={styles.container}>
-      {/* Map Section */}
-      <MapView
-        ref={mapViewRef}
-        style={styles.map}
-        initialRegion={{
-          latitude: 39.9522,
-          longitude: -75.1932,
-          latitudeDelta: 0.002,
-          longitudeDelta: 0.002,
-        }}
-        showsUserLocation={true}
-      >
-        {pins.map((pin) => (
-          <BouncingMarker
-            key={pin.id}
-            coordinate={{
-              latitude: pin.coords[0],
-              longitude: pin.coords[1],
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          {/* Search Bar */}
+          <View className="p-4 mt-4">
+            <SearchBar placeholder="Search for locations..." onSearch={handleSearch} />
+          </View>
+          {/* Map Section */}
+          <MapView
+            ref={mapViewRef}
+            style={styles.map}
+            initialRegion={{
+              latitude: 39.9522,
+              longitude: -75.1932,
+              latitudeDelta: 0.002,
+              longitudeDelta: 0.002,
             }}
-            id={pin.id || ''}
-            isSelected={clickedPinId === pin.id}
-            onPress={() => handleMarkerPress(pin)}
-            staticImageSource={require('../../assets/images/map-pin.png')}
-            //will replace with better aftereffects gif
-            gifImageSource={require('../../assets/images/map-pin.gif')}
-            title={pin.header}
-          />
-        ))}
-      </MapView>
+            showsUserLocation={true}
+          >
+            {pins.map((pin) => (
+              <BouncingMarker
+                key={pin.id}
+                coordinate={{
+                  latitude: pin.coords[0],
+                  longitude: pin.coords[1],
+                }}
+                id={pin.id || ''}
+                isSelected={clickedPinId === pin.id}
+                onPress={() => handleMarkerPress(pin)}
+                staticImageSource={require('../../assets/images/map-pin.png')}
+                //will replace with better aftereffects gif
+                gifImageSource={require('../../assets/images/map-pin.gif')}
+                title={pin.header}
+              />
+            ))}
+          </MapView>
 
-      {/* Bottom Sheet Section */}
-      <PinBottomSheet pin={selectedPin} ref={bottomSheetRef} />
-    </View>
+          {/* Bottom Sheet Section */}
+          <PinBottomSheet pin={selectedPin} ref={bottomSheetRef} />
+        </View>
+      </TouchableWithoutFeedback >
+    </KeyboardAvoidingView >
   );
 };
 
