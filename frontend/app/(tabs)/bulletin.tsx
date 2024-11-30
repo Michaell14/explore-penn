@@ -6,6 +6,7 @@ const BulletinStack = (navigation: { goBack: () => void }) => {
     const router = useRouter();
     const [isModalVisible, setModalVisible] = useState(false);
     const [text, setText] = useState('');
+    const [pinnedText, setPinnedText] = useState('');
 
     const handleClose = () => {
         router.push('/(tabs)');
@@ -15,8 +16,14 @@ const BulletinStack = (navigation: { goBack: () => void }) => {
         setModalVisible(!isModalVisible);
     };
 
-    const closeModal = () => {
-        setModalVisible(false);
+    // const closeModal = () => {
+    //     setModalVisible(false);
+    // };
+
+    const handlePin = () => {
+        setPinnedText(text); // Set the pinned text
+        setText(''); // Clear the input field
+        setModalVisible(false); // Close the modal
     };
 
     return (
@@ -77,6 +84,13 @@ const BulletinStack = (navigation: { goBack: () => void }) => {
                         className="absolute bottom-2 right-2 w-2 h-2"
                     />
 
+                    {/* Pinned Text Display */}
+                    {pinnedText ? (
+                        <View className="mb-4 p-3 bg-green-500 rounded-md">
+                            <Text className="text-white text-sm">{pinnedText}</Text>
+                        </View>
+                    ) : null}
+
                     {/* Dotted Background */}
                     <View className="flex-1 mt-2">
                         {Array.from({ length: 35 }).map((_, rowIndex) => (
@@ -116,11 +130,11 @@ const BulletinStack = (navigation: { goBack: () => void }) => {
                 animationType="fade"
                 transparent={true}
                 visible={isModalVisible}
-                onRequestClose={closeModal}
+                onRequestClose={toggleModal}
             >
                 <TouchableOpacity
                     activeOpacity={1}
-                    onPress={closeModal}
+                    onPress={toggleModal}
                     className="flex-1 items-center justify-center bg-black/50"
                 >
                     <View
@@ -169,7 +183,7 @@ const BulletinStack = (navigation: { goBack: () => void }) => {
 
                         {/* Pin Button */}
                         <TouchableOpacity
-                            onPress={closeModal}
+                            onPress={handlePin}
                             className="absolute bottom-4 right-4 bg-[#3D00B8] py-1 px-4 rounded-lg"
                         >
                             <Text className="text-white text-sm">Pin</Text>
