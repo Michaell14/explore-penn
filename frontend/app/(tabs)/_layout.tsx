@@ -29,15 +29,15 @@ export default function TabLayout() {
             ),
           }}
         />
-        {/* <Tabs.Screen
-          name="pins"
+        <Tabs.Screen
+          name="bulletin"
           options={{
             title: '',
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon name={focused ? 'square' : 'square-outline'} color={focused ? 'black' : '#771FD6'} />
             ),
           }}
-        /> */}
+        />
         <Tabs.Screen
           name="profile"
           options={{

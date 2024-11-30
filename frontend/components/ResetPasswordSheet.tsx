@@ -92,8 +92,8 @@ const ResetPasswordSheet = forwardRef<Ref, Props>((props, ref) => {
                         {errors.confirmPassword && <Text>This is required.</Text>}
                     </View>
                     <View className="items-center">
-                        <TouchableOpacity className="bg-[#3D00B8]">
-                            <Text className="text-[#3D00B8] text-2xl font-bold">Reset</Text>
+                        <TouchableOpacity style={styles.resetBtn} onPress={handleSubmit(onSubmit)}>
+                            <Text style={{ color: "#F5F5FF", fontWeight: 600, fontSize: 16 }}>Reset</Text>
                         </TouchableOpacity>
                     </View>
                 </BottomSheetView>
@@ -119,7 +119,15 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 600,
         marginBottom: 10
-    }
+    },
+    resetBtn: {
+        alignItems: 'center',
+        backgroundColor: '#3D00B8',
+        borderRadius: 9,
+        paddingHorizontal: 20,
+        paddingVertical: 12,
+        marginTop: 10
+    },
 });
 
 export default ResetPasswordSheet;
