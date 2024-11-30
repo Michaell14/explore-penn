@@ -46,14 +46,14 @@ const styles = StyleSheet.create({
 
     contentContainer: {
         flex: 1,
-        padding: 36,
+        padding: 30,
         alignItems: 'center',
         backgroundColor: "#F2F3FD"
     },
     header: {
         color: "#3D00B8",
         fontWeight: 600,
-        fontSize: 36,
+        fontSize: 24,
         marginTop: -10
     },
     hr: {

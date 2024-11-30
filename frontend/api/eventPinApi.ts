@@ -58,7 +58,10 @@ interface PositionData {
 
 const formatTimestamp = (timestamp: { _seconds: number }): string => {
   const date = new Date(timestamp._seconds * 1000);
-  return date.toLocaleString();
+  return date.toLocaleTimeString([], {
+    hour: 'numeric',
+    minute: '2-digit',
+});
 };
 
 
