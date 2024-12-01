@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, TextInput, Text, Image, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
 type SearchBarProps = {
@@ -33,7 +33,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder = 'Search...', onSear
     };
 
     return (
-        <View className="w-full bg-[#F2F3FD] rounded-lg px-4 py-2 shadow-md border border-gray-200 mt-10">
+        <View className="w-full bg-[#D9D9FF] rounded-lg px-4 py-2 shadow-md border border-2 border-gray-100 mt-10">
             {/* Input Row */}
             <View className="flex-row items-center">
                 <FontAwesome name="search" size={20} color="#535353" className="mr-2" />
@@ -50,24 +50,41 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder = 'Search...', onSear
 
             {/* Suggestions */}
             {showSuggestions && (
-                <View className="mt-2 bg-white rounded-lg p-2 shadow">
-                    <FlatList
+                <View className="rounded-lg" style={styles.suggestions}>
+                    <FlatList className="p-2"
                         data={suggestions}
                         keyExtractor={(item) => item.id}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity
+                        renderItem={({ item }) => {
+                            const fillingStr = ' ' + '_'.repeat(29 - item.name.length) + ' ';
+                            return <TouchableOpacity
                                 onPress={() => handleSuggestionPress(item.name)}
-                                className="flex-row justify-between items-center p-2 border-b border-gray-200 last:border-none"
+                                className="flex-row justify-left items-center p-2 border-gray-200 last:border-none"
                             >
+                                <Image source={require("../assets/images/down-right-arrow.png")} style={styles.downRightArrowIcon} />
                                 <Text className="text-[#535353]">{item.name}</Text>
+                                <Text className="text-[#A1A1A1]">{fillingStr}</Text>
                                 <Text className="text-[#A1A1A1]">{item.distance}</Text>
                             </TouchableOpacity>
-                        )}
+                        }}
                     />
                 </View>
             )}
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    downRightArrowIcon: {
+        width: 18,
+        height: 16,
+        marginLeft: 8,
+        marginRight: 20,
+    },
+    suggestions: {
+        width: "100%",
+        backgroundColor: '#E0E0F4',
+        marginTop: 10,
+    }
+});
 
 export default SearchBar;
