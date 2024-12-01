@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Modal, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
+import WriteModal from '../../components/WriteModal';
 
 const BulletinStack = (navigation: { goBack: () => void }) => {
     const router = useRouter();
@@ -21,9 +22,9 @@ const BulletinStack = (navigation: { goBack: () => void }) => {
     // };
 
     const handlePin = () => {
-        setPinnedText(text); // Set the pinned text
-        setText(''); // Clear the input field
-        setModalVisible(false); // Close the modal
+        setPinnedText(text);
+        setText('');
+        setModalVisible(false);
     };
 
     return (
@@ -125,73 +126,17 @@ const BulletinStack = (navigation: { goBack: () => void }) => {
                 </View>
             </View>
 
-            {/* Modal Component */}
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={isModalVisible}
-                onRequestClose={toggleModal}
-            >
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={toggleModal}
-                    className="flex-1 items-center justify-center bg-black/50"
-                >
-                    <View
-                        onStartShouldSetResponder={() => true}
-                        className="w-[320px] h-[450px] bg-[#BFBFEE] rounded-2xl p-4 border border-2 border-dashed border-[#7A67CE] shadow-lg"
-                    >
-                        {/* Text Input Box */}
-                        <TextInput
-                            style={{
-                                flex: 1,
-                                backgroundColor: 'rgba(61, 0, 184, 0.03)',
-                                color: '#7A67CE',
-                                borderRadius: 10,
-                                paddingHorizontal: 16,
-                                paddingVertical: 12,
-                                borderWidth: 1,
-                                borderColor: 'rgba(0, 0, 0, 0.1)',
-                                shadowColor: '#000',
-                                shadowOffset: { width: 0, height: 1.19 },
-                                shadowOpacity: 0.1,
-                                shadowRadius: 2.975,
-                                elevation: 3,
-                                maxHeight: 380,
-                            }}
-                            //className="flex-1 bg-[#3D00B805] text-[#7A67CE] placeholder-[#7A67CE] rounded-lg px-4 py-3 text-base border border-[rgba(0,0,0,0.1)] shadow-lg"
-                            placeholder="Type here"
-                            placeholderTextColor="#7A67CE"
-                            maxLength={200}
-                            multiline={true}
-                            value={text}
-                            onChangeText={(val) => setText(val)}
-                        />
-
-                        {/* Character Count */}
-                        <Text className="text-xs text-[#3D00B86E] mt-2">
-                            {`${text.length}/200 characters`}
-                        </Text>
-
-                        {/* Image Upload Icon */}
-                        <View className="absolute bottom-20 right-8 w-15 h-15 rounded-full items-center justify-center">
-                            <Image
-                                source={require('../../assets/images/camera.png')}
-                                className="w-10 h-8"
-                            />
-                        </View>
-
-                        {/* Pin Button */}
-                        <TouchableOpacity
-                            onPress={handlePin}
-                            className="absolute bottom-4 right-4 bg-[#3D00B8] py-1 px-4 rounded-lg"
-                        >
-                            <Text className="text-white text-sm">Pin</Text>
-                        </TouchableOpacity>
-                    </View>
-                </TouchableOpacity>
-            </Modal>
+            {/* WriteModal Component */}
+            <WriteModal
+                isVisible={isModalVisible}
+                text={text}
+                setText={setText}
+                onClose={toggleModal}
+                onPin={handlePin}
+            />
         </View>
+
+
     );
 };
 

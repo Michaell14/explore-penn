@@ -174,6 +174,7 @@ const HomeScreen: React.FC = () => {
           <MapView
             ref={mapViewRef}
             style={styles.map}
+            //penn campus on hill side
             initialRegion={{
               latitude: 39.9522,
               longitude: -75.1932,
