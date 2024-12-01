@@ -89,7 +89,7 @@ const WriteModal: React.FC<WriteModalProps> = ({
               {/* Image Upload Icon */}
               <View className="absolute bottom-20 right-8 w-15 h-15 rounded-full items-center justify-center">
                 <Image
-                  source={require('../assets/images/camera.png')}
+                  source={require('../../assets/images/camera.png')}
                   className="w-10 h-8"
                 />
               </View>

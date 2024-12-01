@@ -60,7 +60,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder = 'Search...', onSear
                                 onPress={() => handleSuggestionPress(item.name)}
                                 className="flex-row justify-left items-center p-2 border-gray-200 last:border-none"
                             >
-                                <Image source={require("../assets/images/down-right-arrow.png")} style={styles.downRightArrowIcon} />
+                                <Image source={require("../../assets/images/down-right-arrow.png")} style={styles.downRightArrowIcon} />
                                 <Text className="text-[#535353]">{item.name}</Text>
                                 <Text className="text-[#A1A1A1]">{fillingStr}</Text>
                                 <Text className="text-[#A1A1A1]">{item.distance}</Text>

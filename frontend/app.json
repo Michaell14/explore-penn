@@ -24,6 +24,9 @@
           "location",
           "fetch"
         ]
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyBZcOy55DoheVK7r4MFWd3Bwnu_oyCef_s"
       }
     },
     "android": {
@@ -32,7 +35,12 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.ericslee1207.explorepenn",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBZcOy55DoheVK7r4MFWd3Bwnu_oyCef_s"
+        }
+      }
     },
     "web": {
       "bundler": "metro",

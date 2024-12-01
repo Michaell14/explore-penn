@@ -67,12 +67,12 @@ const LoginBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                 <BottomSheetView className="items-center flex-1" style={styles.contentContainer}>
                     <Image
                         // placeholder until dslaysigners mary and ruth cook
-                        source={require("./../assets/images/smile.png")}
+                        source={require("../../assets/images/smile.png")}
                         style={styles.newImage}
                     />
                     <Image
                         // placeholder until dslaysigners mary and ruth cook
-                        source={require("./../assets/images/login.png")}
+                        source={require("../../assets/images/login.png")}
                         style={styles.headerImg}
                     />
                     <View style = {{marginTop: 180}}></View>

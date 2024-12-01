@@ -42,7 +42,7 @@ const PinBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                 <Text style={styles.time}>{pin?.start_time} - {pin?.end_time}</Text>
                 <Text style={styles.description}>{pin?.description}</Text>
                 <TouchableOpacity className="bg-[#F2F3FD] mt-4 p-5 items-left flex-row" onPress={onPressViewBoard}>
-                    <Image source={require("../assets/images/down-arrow.png")} style={styles.viewBoardIcon} />
+                    <Image source={require("../../assets/images/down-arrow.png")} style={styles.viewBoardIcon} />
                     <Text className="text-lg text-[#3D00B8]">View Board</Text>
                 </TouchableOpacity>
             </BottomSheetView>
@@ -62,12 +62,12 @@ const styles = StyleSheet.create({
         color: "#3D00B8",
         fontWeight: 600,
         fontSize: 24,
-        marginTop: -10
+        marginTop: -15,
     },
     hr: {
         borderBottomColor: '#D6D6D6',
         borderBottomWidth: 1,
-        marginTop: 40,
+        marginTop: 30,
         marginBottom: 30,
         width: "130%",
         alignItems: "center"

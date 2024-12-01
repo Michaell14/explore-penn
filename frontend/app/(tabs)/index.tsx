@@ -4,7 +4,8 @@ import {
   Keyboard,
 } from 'react-native';
 import MapView from 'react-native-maps';
-import PinBottomSheet from '@/components/PinBottomSheet';
+import { PROVIDER_GOOGLE } from 'react-native-maps';
+import PinBottomSheet from '@/components/map/PinBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useAuth } from '../../hooks/useAuth';
 import { useRouter } from 'expo-router';
@@ -12,9 +13,10 @@ import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 import { startBackgroundUpdate } from '@/hooks/registerBackground';
 import { PinData, fetchCurrentPins } from '@/api/eventPinApi';
-import BouncingMarker from '@/components/BouncingMarker';
+import BouncingMarker from '@/components/map/BouncingMarker';
 import { getExpoPushToken } from '@/hooks/pushToken';
-import SearchBar from '../../components/SearchBar';
+import SearchBar from '../../components/map/SearchBar';
+// import customMapStyle from '../../constants/MapStyle';
 
 interface LocationType {
   latitude: number;
@@ -141,12 +143,12 @@ const HomeScreen: React.FC = () => {
 
   // Open the bottom sheet and center the map on the pin
   const handleOpenPress = (latitude: number, longitude: number) => {
-    bottomSheetRef.current?.snapToIndex(2);
+    bottomSheetRef.current?.snapToIndex(1);
 
     if (mapViewRef.current) {
       mapViewRef.current.animateToRegion(
         {
-          latitude: latitude - 0.0002,
+          latitude: latitude - 0.0003,
           longitude,
           latitudeDelta: 0.001,
           longitudeDelta: 0.001,
@@ -174,7 +176,8 @@ const HomeScreen: React.FC = () => {
           <MapView
             ref={mapViewRef}
             style={styles.map}
-            //penn campus on hill side
+            //needs developer acc or dev build
+            // provider={PROVIDER_GOOGLE}
             initialRegion={{
               latitude: 39.9522,
               longitude: -75.1932,
@@ -182,6 +185,7 @@ const HomeScreen: React.FC = () => {
               longitudeDelta: 0.002,
             }}
             showsUserLocation={true}
+            // customMapStyle={customMapStyle}
           >
             {pins.map((pin) => (
               <BouncingMarker

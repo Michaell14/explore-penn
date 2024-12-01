@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import WriteModal from '../../components/WriteModal';
-import StickyNote from '../../components/StickyNote';
+import WriteModal from '../../components/bulletin/WriteModal';
+import StickyNote from '../../components/bulletin/StickyNote';
 
 const BulletinStack = () => {
     const router = useRouter();

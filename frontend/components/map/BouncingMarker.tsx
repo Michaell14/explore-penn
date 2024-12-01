@@ -21,21 +21,28 @@ const BouncingMarker: React.FC<BouncingMarkerProps> = ({
   gifImageSource,
   title,
 }) => {
+  // Debugging Props
+  useEffect(() => {
+    console.log(`Props for marker ${id}:`, { coordinate, isSelected, title });
+  }, [coordinate, isSelected, title]);
 
-    useEffect(() => {
-        console.log(`Marker ${id}: isSelected = ${isSelected}, title = ${title}`);
-        console.log(`Rendering marker ${id}: title = ${isSelected && title ? title : 'No Title'}`);
+  // Validate Coordinate
+  if (!coordinate || !coordinate.latitude || !coordinate.longitude) {
+    console.error(`Invalid coordinate for marker ${id}`);
+    return null; // Don't render the marker
+  }
 
-      }, [isSelected, title]);
-      
+  // Validate Image Sources
+  if (!staticImageSource || !gifImageSource) {
+    console.error(`Missing image sources for marker ${id}`);
+    return null; // Don't render the marker
+  }
 
   return (
     <Marker
       coordinate={coordinate}
-      onPress={() => {
-        onPress();
-      }}
-      title={title || undefined}
+      onPress={onPress || (() => console.warn(`No onPress handler for marker ${id}`))}
+      title={title || 'Untitled'}
     >
       <Image
         source={isSelected ? gifImageSource : staticImageSource}
@@ -50,6 +57,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     resizeMode: 'contain',
+
   },
 });
 

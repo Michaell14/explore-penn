@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { baseURL } from "@/config";
 
-const API_BASE_URL = "http://10.102.109.239:3000/api/eventPins";
+const API_BASE_URL = baseURL + "/eventPins";
 
 // Helper function to get the auth token
 const getAuthToken = async (): Promise<string | null> => {
