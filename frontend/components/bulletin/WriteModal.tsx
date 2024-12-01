@@ -39,7 +39,7 @@ const WriteModal: React.FC<WriteModalProps> = ({
   return (
     <Modal
       animationType="fade"
-      transparent={true}
+      transparent={true} 
       visible={isVisible}
       onRequestClose={onClose}
     >

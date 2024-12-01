@@ -55,6 +55,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder = 'Search...', onSear
                         data={suggestions}
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => {
+                            //WHAT IS THIS
                             const fillingStr = ' ' + '_'.repeat(29 - item.name.length) + ' ';
                             return <TouchableOpacity
                                 onPress={() => handleSuggestionPress(item.name)}
