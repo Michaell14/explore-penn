@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, Modal, TextInput } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import WriteModal from '../../components/WriteModal';
+import StickyNote from '../../components/StickyNote';
 
-const BulletinStack = (navigation: { goBack: () => void }) => {
+const BulletinStack = () => {
     const router = useRouter();
     const [isModalVisible, setModalVisible] = useState(false);
     const [text, setText] = useState('');
-    const [pinnedText, setPinnedText] = useState('');
+    const [pinnedTexts, setPinnedTexts] = useState<{ id: string; text: string; color: string }[]>([]); // Array of pins with colors
+
+    // Predefined colors
+    const colors = ['#FFB3DE', '#9FE5A9', '#FFCC26', '#D9D9FF', '#87CEEB'];
 
     const handleClose = () => {
         router.push('/(tabs)');
@@ -17,14 +21,16 @@ const BulletinStack = (navigation: { goBack: () => void }) => {
         setModalVisible(!isModalVisible);
     };
 
-    // const closeModal = () => {
-    //     setModalVisible(false);
-    // };
-
     const handlePin = () => {
-        setPinnedText(text);
-        setText('');
-        setModalVisible(false);
+        if (text.trim() !== '') {
+            const randomColor = colors[Math.floor(Math.random() * colors.length)]; // Pick a random color
+            setPinnedTexts((prev) => [
+                ...prev,
+                { id: `${Date.now()}`, text, color: randomColor }, // Add new pin with random color
+            ]);
+            setText(''); // Clear the input field
+            setModalVisible(false); // Close the modal
+        }
     };
 
     return (
@@ -61,40 +67,9 @@ const BulletinStack = (navigation: { goBack: () => void }) => {
                         </View>
                     </View>
 
-                    {/* Content */}
-                    <Text className="text-xs text-[#373737] mb-4">
-                        Come to the Ben Franklin statue to speak with UPenn founder Ben
-                        Franklin!
-                    </Text>
-
-                    {/* Corner Dots */}
-                    <Image
-                        source={require('../../assets/images/bulletincircle.png')}
-                        className="absolute top-2 left-2 w-2 h-2"
-                    />
-                    <Image
-                        source={require('../../assets/images/bulletincircle.png')}
-                        className="absolute top-2 right-2 w-2 h-2"
-                    />
-                    <Image
-                        source={require('../../assets/images/bulletincircle.png')}
-                        className="absolute bottom-2 left-2 w-2 h-2"
-                    />
-                    <Image
-                        source={require('../../assets/images/bulletincircle.png')}
-                        className="absolute bottom-2 right-2 w-2 h-2"
-                    />
-
-                    {/* Pinned Text Display */}
-                    {pinnedText ? (
-                        <View className="mb-4 p-3 bg-green-500 rounded-md">
-                            <Text className="text-white text-sm">{pinnedText}</Text>
-                        </View>
-                    ) : null}
-
                     {/* Dotted Background */}
-                    <View className="flex-1 mt-2">
-                        {Array.from({ length: 35 }).map((_, rowIndex) => (
+                    <View className="absolute inset-0 top-24">
+                        {Array.from({ length: 40 }).map((_, rowIndex) => (
                             <View key={rowIndex} className="flex-row justify-center">
                                 {Array.from({ length: 18 }).map((_, colIndex) => (
                                     <View
@@ -103,6 +78,20 @@ const BulletinStack = (navigation: { goBack: () => void }) => {
                                     />
                                 ))}
                             </View>
+                        ))}
+                    </View>
+
+                    {/* Sticky Notes Container */}
+                    <View
+                        className="absolute inset-0 mt-12 p-4 pt-16 flex-wrap flex-row"
+                        style={{
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            gap: 16, // Adds space between sticky notes
+                        }}
+                    >
+                        {pinnedTexts.map((pin) => (
+                            <StickyNote key={pin.id} text={pin.text} color={pin.color} />
                         ))}
                     </View>
 
@@ -135,8 +124,6 @@ const BulletinStack = (navigation: { goBack: () => void }) => {
                 onPin={handlePin}
             />
         </View>
-
-
     );
 };
 
