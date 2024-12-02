@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle, Image } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, Image, TouchableOpacity } from 'react-native';
 
 interface StickyNoteProps {
     id: string;
@@ -8,9 +8,10 @@ interface StickyNoteProps {
     color: string;
     style?: ViewStyle;
     imageUri?: string;
+    onDelete: (id: string) => void;
 }
 
-const StickyNote: React.FC<StickyNoteProps> = ({ id, isUserPost, text, color, style, imageUri }) => {
+const StickyNote: React.FC<StickyNoteProps> = ({ id, isUserPost, text, color, style, imageUri, onDelete }) => {
     return (
         <View
             style={[
@@ -19,6 +20,11 @@ const StickyNote: React.FC<StickyNoteProps> = ({ id, isUserPost, text, color, st
                 style,
             ]}
         >
+            {isUserPost && (
+                <TouchableOpacity style={styles.deleteButton} onPress={() => onDelete(id)}>
+                    <Text style={styles.deleteButtonText}>X</Text>
+                </TouchableOpacity>
+            )}
             <View style={[styles.stickyNote, { backgroundColor: color }]}>
                 {imageUri && (
                     <Image
@@ -69,6 +75,23 @@ const styles = StyleSheet.create({
         marginBottom: 8,
         borderRadius: 5,
         resizeMode: 'cover',
+    },
+    deleteButton: {
+        position: 'absolute',
+        zIndex: 1,
+        top: 5,
+        right: 5,
+        backgroundColor: 'red',
+        borderRadius: 50,
+        width: 20,
+        height: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    deleteButtonText: {
+        color: 'white',
+        fontSize: 12,
+        fontWeight: 'bold',
     },
 });
 

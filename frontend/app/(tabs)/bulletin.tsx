@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import WriteModal from '../../components/bulletin/WriteModal';
 import StickyNote from '../../components/bulletin/StickyNote';
 import { usePin } from '@/hooks/usePin';
-import { addPost } from '@/api/eventPinApi';
+import { addPost, deletePost } from '@/api/eventPinApi';
 import { PostData } from '@/api/eventPinApi';
 import { useAuth } from '@/hooks/useAuth';
 import { collection, query, onSnapshot } from 'firebase/firestore';
@@ -79,6 +79,18 @@ const BulletinStack = () => {
             setModalVisible(false);
         } catch (error) {
             console.error('Error adding post:', error);
+        }
+    };
+
+    const handleDelete = async (postId: string) => {
+        // console.log(selectedPin?.id, postId);
+        if (!selectedPin?.id) return;
+        
+        try {
+            await deletePost(selectedPin.id, postId); // API call
+            setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+        } catch (error) {
+            console.error('Error deleting post:', error);
         }
     };
 
@@ -206,7 +218,8 @@ const BulletinStack = () => {
                                     transform: [{ translateX: '-50%' }, { translateY: '-50%' }, {rotate: `${post.rotation}deg`}],
                                 }}
                                 isUserPost={post.isUserPost}
-                                imageUri={post.picture ?? undefined} id={''}                           />
+                                imageUri={post.picture ?? undefined} id={''}
+                                onDelete={() => handleDelete(post.id)}                           />
                         ))}
                     </View>
 

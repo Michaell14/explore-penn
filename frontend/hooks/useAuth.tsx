@@ -134,3 +134,17 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
+
+export const getAuthToken = async (): Promise<string | null> => {
+  try {
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      throw new Error("User is not signed in");
+    }
+    const token = await currentUser.getIdToken();
+    return token;
+  } catch (error) {
+    console.error("Error retrieving auth token:", error);
+    return null;
+  }
+};

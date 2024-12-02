@@ -1,13 +1,9 @@
 import axios, { AxiosResponse } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { baseURL } from "@/config";
+import { getAuthToken } from "@/hooks/useAuth";
 
 const API_BASE_URL = baseURL + "/eventPins";
-
-// Helper function to get the auth token
-const getAuthToken = async (): Promise<string | null> => {
-  return await AsyncStorage.getItem("token");
-};
 
 
 // =====================
@@ -267,17 +263,12 @@ export const addPost = async (
   }
 };
 
-
 export const deletePost = async (pinId: string, postId: string): Promise<void> => {
   try {
-    const token = await AsyncStorage.getItem("token");
-    if (!token) {
-      throw new Error("Authentication token is missing");
-    }
+    console.log("Deleting post with pinId:", pinId, "postId:", postId);
 
-    await axios.delete(`${API_BASE_URL}/${pinId}/posts/${postId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await axios.delete(`${API_BASE_URL}/${pinId}/posts/${postId}`);
+    console.log("Post successfully deleted");
   } catch (error) {
     console.error("Error deleting post:", error);
     throw error;

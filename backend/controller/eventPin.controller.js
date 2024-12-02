@@ -364,11 +364,6 @@ export const movePost = async (req, res) => {
  */
 export const deletePost = async (req, res) => {
   const { pin_id, post_id } = req.params;
-  const uid = req.user?.uid;
-
-  if (!uid) {
-    return res.status(401).json({ error: "Unauthorized: Missing user authentication" });
-  }
 
   try {
     const postRef = db.collection("eventPins").doc(pin_id).collection("posts").doc(post_id);
@@ -376,11 +371,6 @@ export const deletePost = async (req, res) => {
 
     if (!postDoc.exists) {
       return res.status(404).json({ error: "Post not found" });
-    }
-
-    const postData = postDoc.data();
-    if (postData.uid !== uid) {
-      return res.status(403).json({ error: "Forbidden: You cannot delete this post" });
     }
 
     await postRef.delete();
