@@ -120,7 +120,6 @@ export const addPin = async (req, res) => {
       loc_description,
       photo: null,
       isActive: true,
-      maxZIndex: 0,
       reactionCount: 0
     };
 
@@ -295,38 +294,44 @@ export const getPosts = async (req, res) => {
 /**
  * Add a post to a specific pin.
  * @route POST /pins/:pin_id/posts
+ * @body { uid, x, y, rotation, words, picture }
  */
 export const addPost = async (req, res) => {
-    const { pin_id } = req.params;
-    const { x, y, rotation, words, picture } = req.body;
-  
-    if (x === undefined || y === undefined || rotation === undefined || !words) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-  
-    try {
-      const pinRef = db.collection("eventPins").doc(pin_id);
-      const postsRef = pinRef.collection("posts");
-      const newPost = {
-        x,
-        y,
-        rotation,
-        words,
-        picture: picture || null,
-        time_posted: admin.firestore.FieldValue.serverTimestamp(),
-      };
-  
-      const postRef = await postsRef.add(newPost);
-      await pinRef.update({
-        maxZIndex: admin.firestore.FieldValue.increment(1),
-      });
-      res.status(200).json({ message: "Post successfully added", postId: postRef.id });
-    } catch (error) {
-      console.error("Error adding post:", error);
-      res.status(500).json({ error: "Failed to add post" });
-    }
-  };
-  
+  const { pin_id } = req.params;
+  const { x, y, rotation, words, picture } = req.body;
+
+  if (!req.uid) {
+    return res.status(401).json({ error: "Unauthorized: Missing user authentication" });
+  }
+
+  if (x === undefined || y === undefined || rotation === undefined || !words) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    const pinRef = db.collection("eventPins").doc(pin_id);
+    const postsRef = pinRef.collection("posts");
+    const newPost = {
+      x,
+      y,
+      rotation,
+      words,
+      picture: picture || null,
+      uid: req.uid,
+      time_posted: admin.firestore.FieldValue.serverTimestamp(),
+    };
+
+    const postRef = await postsRef.add(newPost);
+
+    res.status(200).json({
+      message: "Post successfully added",
+      post: { id: postRef.id, ...newPost },
+    });
+  } catch (error) {
+    console.error("Error adding post:", error);
+    res.status(500).json({ error: "Failed to add post" });
+  }
+};
 
 /**
  * Move a post by updating its coordinates.
@@ -362,27 +367,33 @@ export const movePost = async (req, res) => {
  * @route DELETE /pins/:pin_id/posts/:post_id
  */
 export const deletePost = async (req, res) => {
-    const { pin_id, post_id } = req.params;
-  
-    try {
-      const pinRef = db.collection("eventPins").doc(pin_id);
-      const postRef = pinRef.collection("posts").doc(post_id);
-      const postDoc = await postRef.get();
-  
-      if (!postDoc.exists) {
-        return res.status(404).json({ error: "Post not found" });
-      }
-  
-      await postRef.delete();
-      await pinRef.update({
-        maxZIndex: admin.firestore.FieldValue.increment(1),
-      });
-      res.status(200).json({ message: "Post successfully deleted" });
-    } catch (error) {
-      console.error("Error deleting post:", error);
-      res.status(500).json({ error: "Failed to delete post" });
+  const { pin_id, post_id } = req.params;
+  const uid = req.user?.uid;
+
+  if (!uid) {
+    return res.status(401).json({ error: "Unauthorized: Missing user authentication" });
+  }
+
+  try {
+    const postRef = db.collection("eventPins").doc(pin_id).collection("posts").doc(post_id);
+    const postDoc = await postRef.get();
+
+    if (!postDoc.exists) {
+      return res.status(404).json({ error: "Post not found" });
     }
-  };
+
+    const postData = postDoc.data();
+    if (postData.uid !== uid) {
+      return res.status(403).json({ error: "Forbidden: You cannot delete this post" });
+    }
+
+    await postRef.delete();
+    res.status(200).json({ message: "Post successfully deleted" });
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    res.status(500).json({ error: "Failed to delete post" });
+  }
+};
   
 // =====================
 // Stickers APIs

@@ -32,12 +32,14 @@ interface ImageData {
   uploadedBy: string;
 }
 
-interface PostData {
+export interface PostData {
+  id: string,
   x: number;
   y: number;
   rotation: number;
   words: string;
   picture?: string | null;
+  uid: string;
 }
 
 interface StickerData {
@@ -230,9 +232,13 @@ export const fetchPosts = async (
   const token = await getAuthToken();
   try {
     const response = await axios.get(`${API_BASE_URL}/${pinId}/posts`, {
-      headers: { Authorization: `Bearer ${token}` },
+      // headers: { Authorization: `Bearer ${token}` },
     });
-    return response.data;
+    return response.data.map((post: PostData) => ({
+      ...post,
+      id: post.id,
+      uid: post.uid || "Unknown",
+    }));
   } catch (error) {
     console.error("Error fetching posts for pin:", error);
     throw error;
@@ -242,14 +248,58 @@ export const fetchPosts = async (
 export const addPost = async (
   pinId: string,
   postData: PostData
-): Promise<void> => {
+): Promise<PostData> => {
   const token = await getAuthToken();
   try {
-    await axios.post(`${API_BASE_URL}/${pinId}/posts`, postData, {
+    const response = await axios.post(`${API_BASE_URL}/${pinId}/posts`, postData, {
+      // headers: { Authorization: `Bearer ${token}` },
+    });
+
+    // Return the response data
+    return response.data;
+  } catch (error) {
+    console.error("Error adding post:", error);
+    throw error;
+  }
+};
+
+
+export const deletePost = async (pinId: string, postId: string): Promise<void> => {
+  try {
+    const token = await AsyncStorage.getItem("token");
+    if (!token) {
+      throw new Error("Authentication token is missing");
+    }
+
+    await axios.delete(`${API_BASE_URL}/${pinId}/posts/${postId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   } catch (error) {
-    console.error("Error adding post:", error);
+    console.error("Error deleting post:", error);
+    throw error;
+  }
+};
+
+export const movePost = async (
+  pinId: string,
+  postId: string,
+  x: number,
+  y: number,
+  rotation: number
+): Promise<void> => {
+  try {
+    const token = await AsyncStorage.getItem("token");
+    if (!token) {
+      throw new Error("Authentication token is missing");
+    }
+
+    await axios.post(
+      `${API_BASE_URL}/${pinId}/posts/move`,
+      { post_id: postId, x, y, rotation },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  } catch (error) {
+    console.error("Error moving post:", error);
     throw error;
   }
 };
@@ -287,3 +337,4 @@ export const addSticker = async (
     throw error;
   }
 };
+

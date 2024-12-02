@@ -11,6 +11,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import LandingPage from './landing';
 import React from 'react';
 import { AuthProvider } from '@/hooks/useAuth';
+import { PinProvider } from '@/hooks/usePin';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -42,16 +43,16 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <AuthProvider>
-
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="landing"/>
-          <Stack.Screen name="(tabs)"/>
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </GestureHandlerRootView>
-      </AuthProvider>
-
+            <PinProvider>
+              <GestureHandlerRootView style={{ flex: 1 }}>
+                <Stack screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="landing"/>
+                  <Stack.Screen name="(tabs)"/>
+                  <Stack.Screen name="+not-found" />
+                </Stack>
+              </GestureHandlerRootView>
+            </PinProvider>
+          </AuthProvider>
     </ThemeProvider>
   );
 }

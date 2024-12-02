@@ -21,6 +21,7 @@ import {
   deleteSticker,
   moveSticker
 } from "../controller/eventPin.controller.js";
+// import authenticateJWT from '../authMiddleware.js';
 
 const router = express.Router();
 
@@ -40,7 +41,7 @@ router.delete('/:pin_id/images/:image_id', deletePinImage);
 
 /*Posts: subcollection inside each pin*/
 router.get('/:pin_id/posts', getPosts);
-router.post('/:pin_id/posts', addPost);
+router.post('/:pin_id/posts',  addPost);
 router.post('/:pin_id/posts/move', movePost);
 router.delete('/:pin_id/posts/:post_id', deletePost);
 

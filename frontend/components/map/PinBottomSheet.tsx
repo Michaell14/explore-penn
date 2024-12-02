@@ -2,6 +2,7 @@ import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { forwardRef, useMemo, useCallback } from 'react';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { PinData } from '@/api/eventPinApi';
+import { router } from 'expo-router';
 
 interface Props {
     pin: PinData | null;
@@ -13,15 +14,18 @@ const PinBottomSheet = forwardRef<Ref, Props>((props, ref) => {
 
     const pin = props.pin;
 
-    const snapPoints = useMemo(() => ["25%", "50%", "70%"], [])
+    const snapPoints = useMemo(() => ["25%", "50%", "100%"], [])
 
     const onPressViewBoard = async (): Promise<void> => {
+        router.push('/(tabs)/bulletin');
     }
-
 
     // callbacks
     const handleSheetChanges = useCallback((index: number) => {
         console.log('handleSheetChanges', index);
+        if (index === 2) {
+            router.push('/(tabs)/bulletin');
+        }
     }, []);
 
     return (

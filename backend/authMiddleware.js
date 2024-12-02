@@ -1,5 +1,5 @@
-const admin = require('./firebase');
-const express = require('express'); 
+import admin from './firebaseadmin.js';
+import express from 'express';
 const router = express.Router();
 
 const authenticateJWT = async (req, res, next) => {
@@ -19,4 +19,4 @@ const authenticateJWT = async (req, res, next) => {
     }
 };
 
-module.exports = authenticateJWT;
+export default authenticateJWT;
