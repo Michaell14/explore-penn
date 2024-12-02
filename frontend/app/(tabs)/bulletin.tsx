@@ -118,12 +118,12 @@ const BulletinStack = () => {
                     {/* Rounded Rectangle */}
                     {/* <View className="absolute -top-8 left-0 right-0 items-center">
                         <View className="w-[300px] h-[40px] bg-[#BFBFEE] opacity-100 rounded-full" /> */}
-                    <View className="absolute -top-[25px] px-20 left-0 right-0 items-center">
+                    <View className="absolute -top-[25px] px-10 left-0 right-0 items-center">
                         <View className="w-full h-[40px] bg-[#BFBFEE] opacity-100 rounded-full" />
                     </View>
 
                     {/* Title Section */}
-                    <View className="flex-row justify-between border-b border-gray-300 pb-2 py-4 mb-4">
+                    <View className="flex-row justify-between border-b border-gray-300 pb-2 py-4">
                         <Text className="text-lg font-bold text-[#535353]">
                             {selectedPin.header}
                         </Text>
@@ -148,20 +148,20 @@ const BulletinStack = () => {
                     {/* Corner Dots */}
                     <Image
                         source={require('../../assets/images/bulletincircle.png')}
-                        className="absolute top-3 left-14 w-2 h-2"
+                        className="absolute top-3 left-3 w-2 h-2"
                     />
                     <Image
                         source={require('../../assets/images/bulletincircle.png')}
-                        className="absolute top-3 right-14 w-2 h-2"
-                    />
-                    {/* <Image
-                        source={require('../../assets/images/bulletincircle.png')}
-                        className="absolute bottom-2 left-2 w-2 h-2"
+                        className="absolute top-3 right-3 w-2 h-2"
                     />
                     <Image
                         source={require('../../assets/images/bulletincircle.png')}
-                        className="absolute bottom-2 right-2 w-2 h-2"
-                    /> */}
+                        className="absolute bottom-3 left-3 w-2 h-2"
+                    />
+                    <Image
+                        source={require('../../assets/images/bulletincircle.png')}
+                        className="absolute bottom-3 right-3 w-2 h-2"
+                    />
 
 
                     {/* Dotted Background */}
