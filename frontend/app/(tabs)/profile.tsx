@@ -10,6 +10,7 @@ import { db } from '../../firebaseConfig';
 import { router } from 'expo-router';
 import BottomSheet from '@gorhom/bottom-sheet';
 import ResetPasswordSheet from '@/components/ResetPasswordSheet';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface UserProfile {
     username: string;
@@ -168,6 +169,7 @@ export default function ProfileScreen() {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View className="flex-1 bg-[#D9D9FF]">
+            <SafeAreaView style={{ flex: 1 }}>
                 {/* header section */}
                 <View className="bg-[#D9D9FF] pb-16 items-center rounded-b-[40px]" style={styles.header}>
                     <Text style={{
@@ -202,21 +204,41 @@ export default function ProfileScreen() {
 
                 {/* buttons section */}
                 {<View className="flex-1 px-10 py-16" style={styles.container}>
-                    <TouchableOpacity className="bg-[#F0EFFD] p-5 items-left flex-row" onPress={onResetPasswords}>
-                        <Image source={require("../../assets/images/reset-password-icon.png")} style={styles.resetpasswordIcon} />
+                    <TouchableOpacity className="bg-[#F0EFFD] p-5 items-left flex-row rounded-tl-[7px] rounded-tr-[7px]" onPress={onResetPasswords}>
+                        <Image source={require("../../assets/images/reset-password-icon.png")} style={styles.icon} />
                         <Text className="text-lg text-[#50F]">Reset password</Text>
+                        <View
+                            style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 16,
+                            right: 16,
+                            height: 1,
+                            backgroundColor: '#9F9FD5',
+                            }}
+                        />
                     </TouchableOpacity>
                     <TouchableOpacity className="bg-[#F0EFFD] p-5 items-left flex-row" onPress={onPushNotifications}>
-                        <Image source={require("../../assets/images/push-notification-bell.png")} style={styles.resetpasswordIcon} />
+                        <Image source={require("../../assets/images/push-notification-bell.png")} style={styles.icon} />
                         <Text className="text-lg text-[#50F]">Push notifications</Text>
-
+                        <View
+                            style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 16,
+                            right: 16,
+                            height: 1,
+                            backgroundColor: '#9F9FD5',
+                            }}
+                        />
                     </TouchableOpacity>
-                    <TouchableOpacity className="bg-[#F0EFFD] p-5 items-left flex-row" onPress={onPressLogout}>
-                        <Image source={require("../../assets/images/logout.png")} style={styles.logoutIcon} />
+                    <TouchableOpacity className="bg-[#F0EFFD] p-5 items-left flex-row rounded-bl-[7px] rounded-br-[7px]" onPress={onPressLogout}>
+                        <Image source={require("../../assets/images/logout.png")} style={styles.icon} />
                         <Text className="text-lg text-[#EF6A56]">Log out</Text>
                     </TouchableOpacity>
                 </View>}
                 <ResetPasswordSheet auth={auth} ref={resetPasswordRef} />
+                </SafeAreaView>
             </View>
         </TouchableWithoutFeedback>
     );
@@ -227,22 +249,12 @@ const styles = StyleSheet.create({
     header: {
         paddingTop: Platform.OS === 'ios' ? 80 : 60,
     },
-    resetpasswordIcon: {
+    icon: {
         width: 17,
         height: 22,
         marginLeft: 8,
-        marginRight: 20
-    },
-    resetpasswordArrowIcon: {
-        width: 18,
-        height: 16,
-        marginLeft: 60
-    },
-    logoutIcon: {
-        width: 18,
-        height: 16,
-        marginLeft: 8,
         marginRight: 20,
+        objectFit: "contain",
     },
     winner: {
         width: 60,
@@ -268,3 +280,4 @@ const styles = StyleSheet.create({
         borderRadius: 19,
     }
 });
+

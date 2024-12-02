@@ -1,6 +1,6 @@
-const { initializeApp } = require("firebase/app");
-const { getFirestore } = require("firebase/firestore");
-const admin = require("firebase-admin");
+import { initializeApp } from "firebase-admin";
+import { getFirestore } from "firebase-admin/firestore";
+import admin from "./firebaseadmin";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVcPQ18HbuIL6zFc7EMHVSWOwbHHU5U2E",
@@ -16,4 +16,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-module.exports = { db, admin };
+export default { db, admin };

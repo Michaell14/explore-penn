@@ -1,7 +1,7 @@
 // firebaseAdmin.js
-const admin = require('firebase-admin');
-require('dotenv').config();
-
+import admin from 'firebase-admin';
+import 'dotenv/config';
+if (!admin.apps.length) {
 admin.initializeApp({
   credential: admin.credential.cert({
     "type": "service_account",
@@ -17,5 +17,5 @@ admin.initializeApp({
   }),
   databaseURL: "https://explore-penn.firebaseio.com"
 });
-
-module.exports = admin;
+}
+export default admin;

@@ -17,6 +17,7 @@ import BouncingMarker from '@/components/map/BouncingMarker';
 import { getExpoPushToken } from '@/hooks/pushToken';
 import SearchBar from '../../components/map/SearchBar';
 // import customMapStyle from '../../constants/MapStyle';
+import { usePin } from '@/hooks/usePin';
 
 interface LocationType {
   latitude: number;
@@ -39,10 +40,11 @@ const pins_data: PinData[] = [
 ];
 
 const HomeScreen: React.FC = () => {
+  const { selectedPin, selectPin, clearPin } = usePin();
+
   const mapViewRef = useRef<MapView>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [pins, setPins] = useState<PinData[]>(pins_data);
-  const [selectedPin, setSelectedPin] = useState<PinData | null>(null);
   const [clickedPinId, setClickedPinId] = useState<string | null>(null);
   const { signOut, user } = useAuth();
   const router = useRouter();
@@ -89,8 +91,10 @@ const HomeScreen: React.FC = () => {
   }, [selectedPin]);
 
   const handleMarkerPress = (pin: PinData) => {
+    //second click: open bottom sheet and zoom in
     if (clickedPinId === pin.id) {
-      setSelectedPin(pin);
+      //update pindata hook
+      selectPin(pin);
       setClickedPinId(null);
       handleOpenPress(pin.coords[0], pin.coords[1]);
     } else {

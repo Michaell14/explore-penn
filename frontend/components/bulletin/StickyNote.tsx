@@ -2,13 +2,15 @@ import React from 'react';
 import { View, Text, StyleSheet, ViewStyle, Image } from 'react-native';
 
 interface StickyNoteProps {
+    id: string;
+    userId: string;
     text: string;
     color: string;
     style?: ViewStyle;
     imageUri?: string;
 }
 
-const StickyNote: React.FC<StickyNoteProps> = ({ text, color, style, imageUri }) => {
+const StickyNote: React.FC<StickyNoteProps> = ({ id, userId, text, color, style, imageUri }) => {
     // console.log('Rendering StickyNote:');
     // console.log('Text:', text);
     // console.log('Color:', color);
