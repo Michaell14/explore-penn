@@ -4,114 +4,94 @@ import { useRouter } from 'expo-router';
 import WriteModal from '../../components/bulletin/WriteModal';
 import StickyNote from '../../components/bulletin/StickyNote';
 import { usePin } from '@/hooks/usePin';
-import { fetchPosts, addPost } from '@/api/eventPinApi';
+import { addPost } from '@/api/eventPinApi';
 import { PostData } from '@/api/eventPinApi';
+import { useAuth } from '@/hooks/useAuth';
+import { collection, query, onSnapshot } from 'firebase/firestore';
+import { db } from '@/firebaseConfig';
+
+const colors = ['#FFB3DE', '#9FE5A9', '#FFCC26', '#D9D9FF', '#87CEEB'];
+const hashStringToIndex = (str: string, arrayLength: number): number => {
+    if (!str || arrayLength === 0) return 0;
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = (hash * 31 + str.charCodeAt(i)) % arrayLength;
+    }
+    return hash;
+};
 
 const BulletinStack = () => {
     const router = useRouter();
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [text, setText] = useState('');
-    const [posts, setPosts] = useState<PostData[]>([]); // Posts fetched and managed
-    const colors = ['#FFB3DE', '#9FE5A9', '#FFCC26', '#D9D9FF', '#87CEEB']; // Predefined colors
+    const { user } = useAuth();
     const { selectedPin } = usePin();
 
-    // Fetch posts
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [text, setText] = useState('');
+    const [posts, setPosts] = useState<PostData[]>([]);
+
+    // Real-time listener for posts
     useEffect(() => {
-        const loadPosts = async () => {
-            if (!selectedPin?.id) return; // Ensure pin is selected
-            try {
-                const fetchedPosts = await fetchPosts(selectedPin.id);
-                setPosts(fetchedPosts);
-            } catch (error) {
-                console.error("Error loading posts:", error);
-            }
+        if (!selectedPin?.id) return;
+
+        const postsQuery = query(collection(db, 'eventPins', selectedPin.id, 'posts'));
+        const unsubscribe = onSnapshot(postsQuery, (snapshot) => {
+            const updatedPosts: PostData[] = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                x: doc.data().x ?? 0, // Default value if undefined
+                y: doc.data().y ?? 0,
+                rotation: doc.data().rotation ?? 0,
+                words: doc.data().words ?? 'Untitled',
+                uid: doc.data().uid,
+                picture: doc.data().picture ?? null,
+                isUserPost: doc.data().uid === user?.uid,
+            }));
+            setPosts(updatedPosts);
+        });
+
+        return () => unsubscribe();
+    }, [selectedPin, user?.uid]);
+
+    const handlePin = async (imageUri?: string) => {
+        if (!text.trim() && !imageUri) {
+            console.error('Cannot add an empty post.');
+            return;
+        }
+
+        if (!user || !selectedPin?.id) {
+            console.error('User or selected pin is missing.');
+            return;
+        }
+
+        const newPost: PostData = {
+            id: '', // Placeholder until Firebase assigns ID
+            uid: user.uid,
+            x: Math.random() * 100,
+            y: Math.random() * 100,
+            rotation: Math.random() * 40 - 20,
+            words: text.trim() || 'Untitled',
+            picture: imageUri || null,
+            isUserPost: true,
         };
 
-        loadPosts();
-    }, [selectedPin]);
+        try {
+            await addPost(selectedPin.id, newPost);
+            setText('');
+            setModalVisible(false);
+        } catch (error) {
+            console.error('Error adding post:', error);
+        }
+    };
 
-    // Log selected pin
-    useEffect(() => {
-        console.log('Selected Pin:', selectedPin);
-    }, [selectedPin]);
+    const handleClose = () => router.push('/(tabs)');
+    const toggleModal = () => setModalVisible((prev) => !prev);
 
     if (!selectedPin) {
         return (
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: 16,
-                    backgroundColor: '#F2F3FD',
-                }}
-            >
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F2F3FD' }}>
                 <Text>No pin selected</Text>
             </View>
         );
     }
-
-    const handleClose = () => {
-        router.push('/(tabs)');
-    };
-
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
-
-    const handlePin = async (imageUri?: string) => {
-        if (text.trim() !== '' || imageUri) {
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            const randomX = Math.random() * 100; // Random X position as percentage of width
-            const randomY = Math.random() * 100; // Random Y position as percentage of height
-            const randomRotation = Math.random() * 360; // Random rotation for fun
-
-            const newPost: PostData = {
-                id: '', // Temporary placeholder, will be replaced by backend
-                uid: '', // Temporary placeholder, will be replaced by backend
-                x: randomX,
-                y: randomY,
-                rotation: randomRotation,
-                words: text,
-                picture: imageUri || null,
-            };
-
-            setPosts((prev) => [
-                ...prev,
-            newPost,
-            ]);
-            setText('');
-            setModalVisible(false);
-
-            // try {
-            //     // Add post to backend and receive the stored post (with backend-generated `id`)
-            //     let storedPost: PostData | undefined;
-            //     if (selectedPin?.id) {
-            //         storedPost = await addPost(selectedPin.id, newPost);
-            //     } else {
-            //         console.error('Selected pin ID is undefined');
-            //     }
-    
-            //     if (storedPost !== undefined) {
-            //         // Update local state with the complete post from the backend
-            //         setPosts((prev) => [
-            //             ...prev,
-            //             {
-            //                 ...storedPost,
-            //                 color: randomColor, // Assign color for frontend display
-            //             },
-            //         ]);
-            //     }
-    
-                // Reset input and close modal
-            //     setText('');
-            //     setModalVisible(false);
-            // } catch (error) {
-                
-            //     console.error('Error adding post:', error);
-            // }
-        }
-    };
 
 //scale everything to width of screen so we can have consistent full screen view + coordinate system
 
@@ -216,16 +196,17 @@ const BulletinStack = () => {
                     <View className="absolute m-20 my-44 inset-0 border-2 border-red-300">
                     {posts.map((post, index) => (
                             <StickyNote
-                                key={index}
+                                key={post.id}
                                 text={post.words}
-                                color={colors[index % colors.length]}
+                                color={colors[hashStringToIndex(post.id, colors.length)]}
                                 style={{
                                     position: 'absolute',
                                     left: `${post.x}%`,
                                     top: `${post.y}%`,
-                                    transform: [{ translateX: '-50%' }, { translateY: '-50%' }],
+                                    transform: [{ translateX: '-50%' }, { translateY: '-50%' }, {rotate: `${post.rotation}deg`}],
                                 }}
-                                imageUri={post.picture ?? undefined} id={''} userId={''}                            />
+                                isUserPost={post.isUserPost}
+                                imageUri={post.picture ?? undefined} id={''}                           />
                         ))}
                     </View>
 

@@ -3,61 +3,72 @@ import { View, Text, StyleSheet, ViewStyle, Image } from 'react-native';
 
 interface StickyNoteProps {
     id: string;
-    userId: string;
+    isUserPost: boolean;
     text: string;
     color: string;
     style?: ViewStyle;
     imageUri?: string;
 }
 
-const StickyNote: React.FC<StickyNoteProps> = ({ id, userId, text, color, style, imageUri }) => {
-    // console.log('Rendering StickyNote:');
-    // console.log('Text:', text);
-    // console.log('Color:', color);
-    // console.log('Image URI:', imageUri);
-
+const StickyNote: React.FC<StickyNoteProps> = ({ id, isUserPost, text, color, style, imageUri }) => {
     return (
-        <View style={[styles.stickyNote, { backgroundColor: color }, style]}>
-            {/* Render the image if imageUri is defined */}
-            {imageUri ? (
-                <Image
-                    source={{ uri: imageUri }}
-                    style={{
-                        width: 80,
-                        height: 80,
-                        marginBottom: text ? 8 : 0,
-                        borderRadius: 5,
-                        resizeMode: 'cover',
-                    }}
-                />
-            ) : null}
+        <View
+            style={[
+                styles.shadowContainer,
+                isUserPost && styles.userPostBorder,
+                style,
+            ]}
+        >
+            <View style={[styles.stickyNote, { backgroundColor: color }]}>
+                {imageUri && (
+                    <Image
+                        source={{ uri: imageUri }}
+                        style={styles.image}
+                    />
+                )}
 
-            {/* Render the text if it exists */}
-            {text ? <Text style={styles.text}>{text}</Text> : null}
+                {text && <Text style={styles.text}>{text}</Text>}
+            </View>
         </View>
     );
 };
 
-
 const styles = StyleSheet.create({
-    stickyNote: {
+    shadowContainer: {
         width: 120,
         height: 120,
         borderRadius: 5,
-        padding: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 5,
-        elevation: 3, 
+        elevation: 3,
+        overflow: 'visible', // Ensure shadow is visible
+    },
+    stickyNote: {
+        flex: 1,
+        borderRadius: 5,
+        padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'relative',
+        overflow: 'hidden', // Clip overflowing content inside the sticky note
     },
     text: {
         fontSize: 8,
         color: '#373737',
         textAlign: 'center',
+    },
+    userPostBorder: {
+        borderWidth: 2,
+        borderColor: '#8C7DFF',
+        borderStyle: 'dotted',
+    },
+    image: {
+        width: 80,
+        height: 80,
+        marginBottom: 8,
+        borderRadius: 5,
+        resizeMode: 'cover',
     },
 });
 

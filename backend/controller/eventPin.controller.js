@@ -298,13 +298,9 @@ export const getPosts = async (req, res) => {
  */
 export const addPost = async (req, res) => {
   const { pin_id } = req.params;
-  const { x, y, rotation, words, picture } = req.body;
+  const { x, y, rotation, words, picture, uid } = req.body;
 
-  if (!req.uid) {
-    return res.status(401).json({ error: "Unauthorized: Missing user authentication" });
-  }
-
-  if (x === undefined || y === undefined || rotation === undefined || !words) {
+  if (!uid || x === undefined || y === undefined || rotation === undefined || !words) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
@@ -317,7 +313,7 @@ export const addPost = async (req, res) => {
       rotation,
       words,
       picture: picture || null,
-      uid: req.uid,
+      uid,
       time_posted: admin.firestore.FieldValue.serverTimestamp(),
     };
 

@@ -9,6 +9,7 @@ const getAuthToken = async (): Promise<string | null> => {
   return await AsyncStorage.getItem("token");
 };
 
+
 // =====================
 // Types
 // =====================
@@ -40,6 +41,7 @@ export interface PostData {
   words: string;
   picture?: string | null;
   uid: string;
+  isUserPost: boolean;
 }
 
 interface StickerData {
@@ -238,6 +240,7 @@ export const fetchPosts = async (
       ...post,
       id: post.id,
       uid: post.uid || "Unknown",
+      isUserPost: false,
     }));
   } catch (error) {
     console.error("Error fetching posts for pin:", error);
@@ -249,7 +252,8 @@ export const addPost = async (
   pinId: string,
   postData: PostData
 ): Promise<PostData> => {
-  const token = await getAuthToken();
+  // const token = await getAuthToken();
+  console.log("postData", postData);
   try {
     const response = await axios.post(`${API_BASE_URL}/${pinId}/posts`, postData, {
       // headers: { Authorization: `Bearer ${token}` },
