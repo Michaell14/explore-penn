@@ -1,0 +1,27 @@
+{
+  "cli": {
+    "version": ">= 12.6.2",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "GOOGLE_SERVICES_FILE": "@GOOGLE_SERVICES_FILE"
+      }
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "autoIncrement": true,
+      "env": {
+        "GOOGLE_SERVICES_FILE": "@GOOGLE_SERVICES_FILE"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

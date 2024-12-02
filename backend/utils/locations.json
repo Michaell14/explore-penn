@@ -1,0 +1,1096 @@
+[
+  {
+    "address": "3465 Sansom Street, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9540543,
+      "lng": -75.1944895
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Sunday",
+        "hours": "Closed"
+      }
+    ],
+    "name": "Kings Court English College House (KCECH)",
+    "isOpen": false
+  },
+  {
+    "address": "3335 Woodland Walk, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9536909,
+      "lng": -75.1912987
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Sunday",
+        "hours": "Closed"
+      }
+    ],
+    "name": "Lauder College House",
+    "isOpen": false
+  },
+  {
+    "address": "3333 Walnut Street, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.952912,
+      "lng": -75.190697
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Sunday",
+        "hours": "Closed"
+      }
+    ],
+    "name": "Hill College House",
+    "isOpen": false
+  },
+  {
+    "address": "3820 Locust Walk, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9523693,
+      "lng": -75.2001648
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Sunday",
+        "hours": "Closed"
+      }
+    ],
+    "name": "Harnwell College House",
+    "isOpen": false
+  },
+  {
+    "address": "3910 Irving Street, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9520792,
+      "lng": -75.2010583
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 1100, "close": 1500 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 1100, "close": 1500 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 1100, "close": 1500 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 1100, "close": 1500 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Saturday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Sunday",
+        "hours": "Closed"
+      }
+    ],
+    "name": "Harrison College House",
+    "isOpen": false
+  },
+  {
+    "address": "3901 Walnut Street, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9536496,
+      "lng": -75.2025717
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Sunday",
+        "hours": "Closed"
+      }
+    ],
+    "name": "Gutmann College House",
+    "isOpen": false
+  },
+  {
+    "address": "3901 Locust Walk, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9531669,
+      "lng": -75.2013636
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Sunday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      }
+    ],
+    "name": "Rodin College House",
+    "isOpen": false
+  },
+  {
+    "address": "3925 Walnut Street, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9543842,
+      "lng": -75.2013417
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 1000, "close": 1800 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 1000, "close": 1800 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 1000, "close": 1800 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 1000, "close": 1800 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 1000, "close": 1800 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Sunday",
+        "hours": "Closed"
+      }
+    ],
+    "name": "The Radian Apartments",
+    "isOpen": false
+  },
+  {
+    "address": "3420 Walnut Street, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9522126,
+      "lng": -75.1937023
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": "Invalid time format"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "Invalid time format"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "Invalid time format"
+      },
+      {
+        "day": "Thursday",
+        "hours": "Invalid time format"
+      },
+      {
+        "day": "Friday",
+        "hours": "Invalid time format"
+      },
+      {
+        "day": "Saturday",
+        "hours": "Invalid time format"
+      },
+      {
+        "day": "Sunday",
+        "hours": "Invalid time format"
+      }
+    ],
+    "name": "The Button (Split Button Sculpture)",
+    "isOpen": false
+  },
+  {
+    "address": "36th Street and Locust Walk, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.951845,
+      "lng": -75.1948592
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": "Invalid time format"
+      },
+      {
+        "day": "Tuesday",
+        "hours": "Invalid time format"
+      },
+      {
+        "day": "Wednesday",
+        "hours": "Invalid time format"
+      },
+      {
+        "day": "Thursday",
+        "hours": "Invalid time format"
+      },
+      {
+        "day": "Friday",
+        "hours": "Invalid time format"
+      },
+      {
+        "day": "Saturday",
+        "hours": "Invalid time format"
+      },
+      {
+        "day": "Sunday",
+        "hours": "Invalid time format"
+      }
+    ],
+    "name": "LOVE Statue",
+    "isOpen": false
+  },
+  {
+    "address": "36th Street and Locust Walk, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9522586,
+      "lng": -75.1970002
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Sunday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      }
+    ],
+    "name": "The Bench (The Covenant)",
+    "isOpen": false
+  },
+  {
+    "address": "37th Street and Locust Walk, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9491039,
+      "lng": -75.1658813
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 900, "close": 1700 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Sunday",
+        "hours": "Closed"
+      }
+    ],
+    "name": "The Compass",
+    "isOpen": false
+  },
+  {
+    "address": "3420 Walnut Street, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9527242,
+      "lng": -75.1940217
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Sunday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      }
+    ],
+    "name": "Tampons (We Lost)",
+    "isOpen": false
+  },
+  {
+    "address": "3420 Walnut Street, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9527865,
+      "lng": -75.1934428
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 830, "close": 0 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 830, "close": 0 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 830, "close": 0 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 830, "close": 0 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 830, "close": 2100 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": [
+          { "open": 1000, "close": 1800 }
+        ]
+      },
+      {
+        "day": "Sunday",
+        "hours": [
+          { "open": 1000, "close": 0 }
+        ]
+      }
+    ],
+    "name": "Van Pelt-Dietrich Library Center (VP)",
+    "isOpen": false
+  },
+  {
+    "address": "3730 Walnut Street, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9533795,
+      "lng": -75.1980036
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Sunday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      }
+    ],
+    "name": "Jon M. Huntsman Hall",
+    "isOpen": false
+  },
+  {
+    "address": "220 South 33rd Street, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9516691,
+      "lng": -75.1912037
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Sunday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      }
+    ],
+    "name": "Towne Building (Engineering Quad)",
+    "isOpen": false
+  },
+  {
+    "address": "255 South 36th Street, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9508653,
+      "lng": -75.195022
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 830, "close": 1600 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 830, "close": 1600 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 830, "close": 1600 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 830, "close": 1600 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 830, "close": 1500 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": "Closed"
+      },
+      {
+        "day": "Sunday",
+        "hours": "Closed"
+      }
+    ],
+    "name": "Williams Hall",
+    "isOpen": false
+  },
+  {
+    "address": "3417 Spruce Street, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9509138,
+      "lng": -75.1938738
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Sunday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      }
+    ],
+    "name": "Houston Hall",
+    "isOpen": false
+  },
+  {
+    "address": "418 Curie Boulevard, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9489696,
+      "lng": -75.1963072
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Sunday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      }
+    ],
+    "name": "Claire M. Fagin Hall",
+    "isOpen": false
+  },
+  {
+    "address": "210 South 34th Street, Philadelphia, PA 19104",
+    "coordinate": {
+      "lat": 39.9522452,
+      "lng": -75.1926617
+    },
+    "facts": [
+      "This bench is a great place to sit and relax",
+      "It's a great place to people watch",
+      "It's a great place to read a book"
+    ],
+    "hours": [
+      {
+        "day": "Monday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Friday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      },
+      {
+        "day": "Sunday",
+        "hours": [
+          { "open": 0, "close": 2359 }
+        ]
+      }
+    ],
+    "name": "Meyerson Hall",
+    "isOpen": false
+  }
+]
