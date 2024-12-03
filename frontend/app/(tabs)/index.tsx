@@ -173,9 +173,9 @@ const HomeScreen: React.FC = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           {/* Search Bar */}
-          <View className="p-4 mt-4">
+          {/*<View className="p-4 mt-4">
             <SearchBar placeholder="Search for locations..." onSearch={handleSearch} />
-          </View>
+          </View>*/}
           {/* Map Section */}
           <MapView
             ref={mapViewRef}
