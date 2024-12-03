@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.ericslee1207.explorepenn</string>
+	<string>com.kestelle.explorepenn</string>
 	<key>PROJECT_ID</key>
 	<string>explore-penn-f67e6</string>
 	<key>STORAGE_BUCKET</key>

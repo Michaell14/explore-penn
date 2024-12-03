@@ -18,13 +18,19 @@ const PinBottomSheet = forwardRef<Ref, Props>((props, ref) => {
 
     const onPressViewBoard = async (): Promise<void> => {
         router.push('/(tabs)/bulletin');
+        if (ref && typeof ref !== 'function') {
+            ref.current?.close();
+        }
     }
 
     // callbacks
     const handleSheetChanges = useCallback((index: number) => {
         console.log('handleSheetChanges', index);
-        if (index === 2) {
+        if (index === 3) {
             router.push('/(tabs)/bulletin');
+            if (ref && typeof ref !== 'function') {
+                ref.current?.close();
+            }
         }
     }, []);
 
@@ -35,6 +41,7 @@ const PinBottomSheet = forwardRef<Ref, Props>((props, ref) => {
             onChange={handleSheetChanges}
             index={-1}
             enablePanDownToClose={true}
+            enableOverDrag={false}
             backgroundStyle={{ backgroundColor: "#F2F3FD" }}
         >
             <BottomSheetView style={styles.contentContainer}>

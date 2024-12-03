@@ -147,12 +147,12 @@ const HomeScreen: React.FC = () => {
 
   // Open the bottom sheet and center the map on the pin
   const handleOpenPress = (latitude: number, longitude: number) => {
-    bottomSheetRef.current?.snapToIndex(1);
+    bottomSheetRef.current?.snapToIndex(2);
 
     if (mapViewRef.current) {
       mapViewRef.current.animateToRegion(
         {
-          latitude: latitude - 0.0003,
+          latitude: latitude - 0.0004,
           longitude,
           latitudeDelta: 0.001,
           longitudeDelta: 0.001,

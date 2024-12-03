@@ -31,7 +31,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ericslee1207.explorepenn",
+      "package": "com.kestelle.explorepenn",
       "googleServicesFile": "./google-services.json"
     },
     "web": {
