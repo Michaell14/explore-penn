@@ -69,9 +69,11 @@ const formatTimestamp = (timestamp: { _seconds: number }): string => {
 export const fetchCurrentPins = async (): Promise<PinData[]> => {
   const token = await getAuthToken();
   try {
+    console.log('fetching details');
     const response: AxiosResponse<PinData[]> = await axios.get(`${API_BASE_URL}/`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+    console.log('details', response);
     return response.data.map(pin => ({
       ...pin,
       start_time: formatTimestamp(pin.start_time),
@@ -90,6 +92,7 @@ export const fetchPinsByLocation = async (
   longitude: number,
   radius: number
 ): Promise<PinData[]> => {
+
   const token = await getAuthToken();
   try {
     const response: AxiosResponse<PinData[]> = await axios.post(

@@ -32,7 +32,11 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.kestelle.explorepenn",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -68,8 +72,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "8503183b-0b14-4c77-82c0-762fa5dfaa18"
+        "projectId": "e7cdd263-bc4c-41be-8270-25e4d9ed1088"
       }
-    }
+    },
+    "owner": "spark-pins"
   }
 }
