@@ -11,7 +11,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useRouter } from 'expo-router';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
-import { startBackgroundUpdate } from '@/hooks/registerBackground';
+// import { startBackgroundUpdate } from '@/hooks/registerBackground';
 import { PinData, fetchCurrentPins } from '@/api/eventPinApi';
 import BouncingMarker from '@/components/map/BouncingMarker';
 import { getExpoPushToken } from '@/hooks/pushToken';
@@ -120,7 +120,7 @@ const HomeScreen: React.FC = () => {
         }
 
         // Register background fetch task
-        await startBackgroundUpdate();
+        // await startBackgroundUpdate();
       }
     };
 

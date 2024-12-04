@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { baseURL } from "@/config";
-import { getAuthToken } from "@/hooks/useAuth";
+import { baseURL } from "../config";
+import { getAuthToken } from "../hooks/useAuth";
 
 const API_BASE_URL = baseURL + "/eventPins";
 

@@ -4,6 +4,10 @@ import fs from 'fs'
 import { getPinsByLocation } from './eventPin.controller.js';
 import { notifServiceAccount } from '../server.js';
 
+admin.initializeApp({
+  credential: admin.credential.cert(JSON.parse(process.env.FCM_SERVER_KEY)),
+});
+
 const sendPushNotification = async (expoPushToken, title, body) => {
     try {
         await axios.post('https://exp.host/--/api/v2/push/send', {

@@ -1,5 +1,8 @@
-//replace with your devices ip address
-export const baseURL = "http://10.102.135.175:3000/api";
-export const webClientId = "414478752713-32g3fp5u83cfstkap2kpglnlhkfhatqe.apps.googleusercontent.com";
-export const iosClientId = "414478752713-ikd3dsmt2og30ev6jf95q3j9h0ohiusj.apps.googleusercontent.com";
-export const androidClientId = "414478752713-survvesc5vb87jja1dvvtjbckbsj952d.apps.googleusercontent.com";
+import Constants from "expo-constants";
+
+const { extra } = Constants.expoConfig;
+
+export const baseURL = extra?.baseURL || "http://10.102.135.175:3000/api";
+export const webClientId = extra?.webClientId || "";
+export const iosClientId = extra?.iosClientId || "";
+export const androidClientId = extra?.androidClientId || "";

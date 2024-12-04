@@ -2,9 +2,7 @@
   "expo": {
     "name": "explore-penn",
     "slug": "explore-penn",
-    "authSessionRedirectScheme": "explore-penn",
     "version": "1.0.0",
-    "orientation": "portrait",
     "scheme": "myapp",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
@@ -73,7 +71,18 @@
       },
       "eas": {
         "projectId": "e7cdd263-bc4c-41be-8270-25e4d9ed1088"
-      }
+      },
+      "firebaseApiKey": "AIzaSyDVcPQ18HbuIL6zFc7EMHVSWOwbHHU5U2E",
+      "firebaseAuthDomain": "explore-penn-f67e6.firebaseapp.com",
+      "firebaseProjectId": "explore-penn-f67e6",
+      "firebaseStorageBucket": "explore-penn-f67e6.appspot.com",
+      "firebaseMessagingSenderId": "414478752713",
+      "firebaseAppId": "1:414478752713:web:3a97d56840222b61efa618",
+      "firebaseMeasurementId": "G-DSJY5NEQ36",
+      "baseURL": "http://10.102.135.175:3000/api",
+      "webClientId": "414478752713-32g3fp5u83cfstkap2kpglnlhkfhatqe.apps.googleusercontent.com",
+      "iosClientId": "414478752713-ikd3dsmt2og30ev6jf95q3j9h0ohiusj.apps.googleusercontent.com",
+      "androidClientId": "414478752713-survvesc5vb87jja1dvvtjbckbsj952d.apps.googleusercontent.com"
     },
     "owner": "spark-pins"
   }
