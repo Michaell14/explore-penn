@@ -1,73 +1,133 @@
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle, Image, TouchableOpacity } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    TouchableOpacity,
+    ViewStyle,
+} from 'react-native';
+import Animated, {
+    useSharedValue,
+    useAnimatedStyle,
+    withSpring,
+} from 'react-native-reanimated';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 interface StickyNoteProps {
-    id: string;
-    isUserPost: boolean;
     text: string;
     color: string;
     style?: ViewStyle;
     imageUri?: string;
+    isUserPost?: boolean;
     onDelete: (id: string) => void;
+    onMove: (x: number, y: number) => void;
+    id: string;
 }
 
-const StickyNote: React.FC<StickyNoteProps> = ({ id, isUserPost, text, color, style, imageUri, onDelete }) => {
+const StickyNote: React.FC<StickyNoteProps> = ({
+    text,
+    color,
+    style,
+    imageUri,
+    isUserPost,
+    onDelete,
+    onMove,
+    id,
+}) => {
+    // Shared values for position
+    const translateX = useSharedValue(0);
+    const translateY = useSharedValue(0);
+
+    // Gesture handler for drag events
+    const dragGesture = Gesture.Pan()
+        .onUpdate((event) => {
+            translateX.value = event.translationX;
+            translateY.value = event.translationY;
+        })
+        .onEnd(() => {
+            console.log('Drag ended at:', { x: translateX.value, y: translateY.value });
+            if (typeof onMove === 'function') {
+                try {
+                    onMove(translateX.value, translateY.value);
+                } catch (error) {
+                    console.error('Error in onMove:', (error as any).message || error);
+                }
+            } else {
+                console.error('onMove is not a function:', onMove);
+            }
+            translateX.value = withSpring(translateX.value);
+            translateY.value = withSpring(translateY.value);
+        });
+
+    // Animated style for drag movement
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [
+            { translateX: translateX.value },
+            { translateY: translateY.value },
+        ],
+    }));
+
     return (
-        <View
-            style={[
-                styles.shadowContainer,
-                isUserPost && styles.userPostBorder,
-                style,
-            ]}
-        >
-            {isUserPost && (
-                <TouchableOpacity style={styles.deleteButton} onPress={() => onDelete(id)}>
-                    <Text style={styles.deleteButtonText}>X</Text>
-                </TouchableOpacity>
-            )}
-            <View style={[styles.stickyNote, { backgroundColor: color }]}>
-                {imageUri && (
-                    <Image
-                        source={{ uri: imageUri }}
-                        style={styles.image}
-                    />
+        <GestureDetector gesture={dragGesture}>
+            <Animated.View
+                style={[
+                    styles.shadowContainer,
+                    isUserPost && styles.userPostBorder,
+                    animatedStyle,
+                    style,
+                ]}
+            >
+                {/* Delete Button for User Posts */}
+                {isUserPost && (
+                    <TouchableOpacity
+                        style={styles.deleteButton}
+                        onPress={() => onDelete(id)}
+                    >
+                        <Text style={styles.deleteButtonText}>X</Text>
+                    </TouchableOpacity>
                 )}
 
-                {text && <Text style={styles.text}>{text}</Text>}
-            </View>
-        </View>
+                {/* Sticky Note Content */}
+                <View style={[styles.stickyNote, { backgroundColor: color }]}>
+                    {imageUri && (
+                        <Image source={{ uri: imageUri }} style={styles.image} />
+                    )}
+
+                    {text && <Text style={styles.text}>{text}</Text>}
+                </View>
+            </Animated.View>
+        </GestureDetector>
     );
 };
 
 const styles = StyleSheet.create({
     shadowContainer: {
-        width: 120,
-        height: 120,
-        borderRadius: 5,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.2,
         shadowRadius: 5,
         elevation: 3,
-        overflow: 'visible', // Ensure shadow is visible
+        position: 'absolute',
+    },
+    userPostBorder: {
+        borderColor: '#FE8BC0',
+        borderWidth: 2,
+        borderRadius: 10,
     },
     stickyNote: {
-        flex: 1,
+        width: 120,
+        height: 120,
         borderRadius: 5,
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        overflow: 'hidden', // Clip overflowing content inside the sticky note
     },
     text: {
-        fontSize: 8,
+        fontSize: 10,
         color: '#373737',
         textAlign: 'center',
-    },
-    userPostBorder: {
-        borderWidth: 2,
-        borderColor: '#8C7DFF',
-        borderStyle: 'dotted',
+        fontWeight: 'bold',
     },
     image: {
         width: 80,
@@ -78,20 +138,17 @@ const styles = StyleSheet.create({
     },
     deleteButton: {
         position: 'absolute',
-        zIndex: 1,
-        top: 5,
-        right: 5,
+        top: -10,
+        right: -10,
         backgroundColor: 'red',
-        borderRadius: 50,
-        width: 20,
-        height: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
+        borderRadius: 10,
+        padding: 5,
+        zIndex: 10,
     },
     deleteButtonText: {
         color: 'white',
-        fontSize: 12,
         fontWeight: 'bold',
+        fontSize: 12,
     },
 });
 

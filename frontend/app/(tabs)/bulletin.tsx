@@ -66,6 +66,9 @@ const BulletinStack = () => {
 
     // Handle adding a new post
     const handlePin = async (imageUri?: string) => {
+        console.log('User:', user); //testing stuff
+        console.log('Selected Pin:', selectedPin);
+
         if (!text.trim() && !imageUri) {
             console.error('Cannot add an empty post.');
             return;
@@ -109,6 +112,8 @@ const BulletinStack = () => {
         }
     };
 
+
+
     const handleClose = () => router.push('/(tabs)');
     const toggleModal = () => setModalVisible((prev) => !prev);
 
@@ -118,15 +123,64 @@ const BulletinStack = () => {
             text={item.words}
             color={colors[hashStringToIndex(item.id, colors.length)]}
             style={{
-                position: 'absolute',
                 left: item.x,
-                top: `${item.y}%`,
-                transform: [{ translateX: '-50%' }, { translateY: '-50%' }, { rotate: `${item.rotation}deg` }],
+                top: item.y,
+                transform: [{ translateX: '-50%' }, { translateY: '-50%' }],
             }}
             isUserPost={item.isUserPost}
             imageUri={item.picture ?? undefined}
-            onDelete={() => handleDelete(item.id)} id={''}        />
+            onMove={(x, y) => handleMove(item.id, x, y)}
+            onDelete={() => handleDelete(item.id)} id={''}
+        />
     );
+
+
+    // const handleMove = (id: string, x: number, y: number) => {
+    //     console.log('handleMove called for:', { id, x, y }); // Log the sticky note ID and new position
+
+    //     try {
+    //         setPosts((prevPosts) => {
+    //             console.log('Previous posts:', prevPosts); // Log the current posts state
+    //             const updatedPosts = prevPosts.map((post) =>
+    //                 post.id === id ? { ...post, x, y } : post
+    //             );
+    //             console.log('Updated posts:', updatedPosts); // Log the updated posts state
+    //             return updatedPosts;
+    //         });
+    //     } catch (error) {
+    //         console.error('Error in handleMove:', error); // Catch and log any errors
+    //     }
+    // };
+
+    const handleMove = (id: string, x: number, y: number) => {
+        console.log('handleMove called with:', { id, x, y });
+
+        // Check if the ID exists in posts
+        const postExists = posts.some((post) => post.id === id);
+        if (!postExists) {
+            console.error('Post with the given ID does not exist:', id);
+            return;
+        }
+
+        if (x === undefined || y === undefined || isNaN(x) || isNaN(y)) {
+            console.error('Invalid x or y values:', { x, y });
+            return;
+        }
+
+
+        try {
+            setPosts((prevPosts) => {
+                console.log('Previous posts state:', prevPosts);
+                const updatedPosts = prevPosts.map((post) =>
+                    post.id === id ? { ...post, x, y } : post
+                );
+                console.log('Updated posts state:', updatedPosts);
+                return updatedPosts;
+            });
+        } catch (error) {
+            console.error('Error in handleMove state update:', error);
+        }
+    };
 
     return (
         <View className="flex-1 justify-start items-center bg-[#D9D9FF]">
