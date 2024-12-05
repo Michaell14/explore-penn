@@ -12,10 +12,15 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/storage';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 interface WriteModalProps {
   isVisible: boolean;
   text: string;
+  pin_id: string;
   setText: (value: string) => void;
   onClose: () => void;
   onPin: (imageUri?: string) => void; 
@@ -24,6 +29,7 @@ interface WriteModalProps {
 const WriteModal: React.FC<WriteModalProps> = ({
   isVisible,
   text,
+  pin_id,
   setText,
   onClose,
   onPin,
@@ -49,8 +55,27 @@ const WriteModal: React.FC<WriteModalProps> = ({
       }
 
       setImageUri(uri);
+      console.log('Image URI:', uri);
+      let URL;
+      try{
+          console.log('Uploading Image...');
+          const response = await fetch(uri);
+          const blob = await response.blob();
+          const storageRef = firebase.storage().ref();
+          const path = `images/${pin_id}_${new Date().getTime()}_${uri.split('/').pop()}`;
+          const upload = storageRef.child(path);
+          await upload.put(blob);
+          await upload.getDownloadURL().then((url: any) => {
+              URL = url;
+          });
+          console.log('URL:', URL);
+          return URL;
+      }catch(e){
+         throw e;
+      }
     }
   };
+  
 
   const handlePin = () => {
     // console.log('Pinning Text:', text);

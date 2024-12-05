@@ -6,7 +6,7 @@ import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Ionicons } from '@expo/vector-icons';
 //import { useNavigation } from '@react-navigation/native';
-import PinIcon from '../../assets/images/pin-icon.png';
+// import PinIcon from '../../assets/images/pin-icon.png';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -29,7 +29,7 @@ export default function TabLayout() {
             ),
           }}
         />
-        <Tabs.Screen
+        {/* <Tabs.Screen
           name="bulletin"
           options={{
             title: '',
@@ -37,7 +37,7 @@ export default function TabLayout() {
               <TabBarIcon name={focused ? 'square' : 'square-outline'} color={focused ? 'black' : '#771FD6'} />
             ),
           }}
-        />
+        /> */}
         <Tabs.Screen
           name="profile"
           options={{

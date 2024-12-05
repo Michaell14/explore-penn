@@ -68,7 +68,6 @@ const BulletinStack = () => {
     const handlePin = async (imageUri?: string) => {
         console.log('User:', user); //testing stuff
         console.log('Selected Pin:', selectedPin);
-
         if (!text.trim() && !imageUri) {
             console.error('Cannot add an empty post.');
             return;
@@ -125,7 +124,7 @@ const BulletinStack = () => {
             style={{
                 left: item.x,
                 top: item.y,
-                transform: [{ translateX: '-50%' }, { translateY: '-50%' }],
+                transform: [{ translateX: '-50%' }, { translateY: '-50%' }, { rotate: `${item.rotation}deg` }],
             }}
             isUserPost={item.isUserPost}
             imageUri={item.picture ?? undefined}
@@ -199,7 +198,7 @@ const BulletinStack = () => {
 
                     {/* Title Section */}
                     <View className="flex-row justify-between border-b border-gray-300 pb-2 py-4">
-                        <Text className="text-lg font-bold text-[#535353]">
+                        <Text className="text-xl font-bold text-[#535353]">
                             {selectedPin?.header}
                         </Text>
                         <View className="flex items-center justify-center">
@@ -278,6 +277,7 @@ const BulletinStack = () => {
             <WriteModal
                 isVisible={isModalVisible}
                 text={text}
+                pin_id={selectedPin?.id ?? 'undefined pin'}
                 setText={setText}
                 onClose={toggleModal}
                 onPin={handlePin}
