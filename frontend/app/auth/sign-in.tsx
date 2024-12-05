@@ -6,10 +6,10 @@ import axios from 'axios';
 import { baseURL } from '../../config.js';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
-import * as BackgroundFetch from 'expo-background-fetch';
+// import * as BackgroundFetch from 'expo-background-fetch';
 import * as TaskManager from 'expo-task-manager';
 import { getExpoPushToken, saveExpoPushToken } from '@/hooks/pushToken';
-import { startBackgroundUpdate } from '@/hooks/registerBackground';
+// import { startBackgroundUpdate } from '@/hooks/registerBackground';
 
 
 const SignInScreen: React.FC = () => {

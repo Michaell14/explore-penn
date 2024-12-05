@@ -8,11 +8,14 @@ import { addPost, deletePost } from '@/api/eventPinApi';
 import { PostData } from '@/api/eventPinApi';
 import { useAuth } from '@/hooks/useAuth';
 import { collection, query, onSnapshot } from 'firebase/firestore';
-import { db } from '@/firebaseConfig';
+import { db, storage } from '@/firebaseConfig';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import * as ImageManipulator from 'expo-image-manipulator';
 
 const { width } = Dimensions.get('window');
 const SPACING = 100;
 const POSTS_PER_PAGE = 10;
+
 
 const colors = ['#FFB3DE', '#9FE5A9', '#FFCC26', '#D9D9FF', '#87CEEB'];
 const hashStringToIndex = (str: string, arrayLength: number): number => {
@@ -64,6 +67,15 @@ const BulletinStack = () => {
         }
     }, [posts.length, flatListWidth]);
 
+    const resizeImage = async (uri: string) => {
+        const manipResult = await ImageManipulator.manipulateAsync(
+          uri,
+          [{ resize: { width: 400, height: 400 } }], // Resize to 800x800
+          { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG }
+        );
+        return manipResult.uri;
+      };
+
     // Handle adding a new post
     const handlePin = async (imageUri?: string) => {
         console.log('User:', user); //testing stuff
@@ -78,6 +90,20 @@ const BulletinStack = () => {
             return;
         }
 
+        let downloadURL: any;
+        if (imageUri) {
+            try {
+                console.log("Uploading file from URI:", imageUri);
+                const resizedUri = await resizeImage(imageUri);
+                downloadURL = await uploadImageToFirebase(resizedUri);
+              } catch (error) {
+                console.error("Error adding post:", error); // Logs full error details
+                const typedError = error as any;
+                console.error("Error code:", typedError.code);   // Logs specific error code
+                console.error("Error message:", typedError.message); // Logs error message
+              }
+        }
+
         // Calculate position for the new post
         const index = posts.length;
         const newPost: PostData = {
@@ -87,7 +113,7 @@ const BulletinStack = () => {
             y: Math.random() * 100, // Random vertical position
             rotation: Math.random() * 40 - 20,
             words: text.trim() || 'Untitled',
-            picture: imageUri || null,
+            picture: downloadURL || null,
             isUserPost: true,
         };
 
@@ -111,7 +137,50 @@ const BulletinStack = () => {
         }
     };
 
+    const uploadImageToFirebase = async (fileUri: string) => {
+        try {
+          const response = await fetch(fileUri);
+      
+          if (!response.ok) {
+            throw new Error(`Failed to fetch file: ${response.statusText}`);
+          }
+          console.log(response);
+          const blob = await response.blob();
+          const filename = `images/${selectedPin?.id || 'unnamed'}_${user?.uid}_${Date.now()}.jpeg`;
+          const storageRef = ref(storage, filename);
 
+            try {
+                const snapshot = await uploadBytes(storageRef, blob);
+            } catch (error) {
+                if (error instanceof Error) {
+                    console.error("Upload failed with error:", error.message);
+                } else {
+                    console.error("Upload failed with unknown error:", error);
+                }
+                console.error("Full error:", error);
+                throw error; // Re-throw to debug further
+            }
+                
+          const downloadURL = await getDownloadURL(storageRef);
+          console.log("Download URL:", downloadURL);
+      
+          return downloadURL;
+        } catch (error) {
+          console.error("Error uploading file to Firebase:", error);
+          throw error;
+        }
+      };
+     
+      // Usage
+    //   (async () => {
+    //     const fileUri = "file:///var/mobile/Containers/Data/Application/8270C186-AF99-46C5-8B5E-1AA004A06408/Library/Caches/ExponentExperienceData/@michaell19/explore-penn/ImagePicker/22531B1E-0DF7-42A5-8BD9-12D024665969.jpg";
+    //     try {
+    //       const url = await uploadImageToFirebase(fileUri);
+    //       console.log("Uploaded file available at:", url);
+    //     } catch (error) {
+    //       console.error("Upload failed:", error);
+    //     }
+    //   })();
 
     const handleClose = () => router.push('/(tabs)');
     const toggleModal = () => setModalVisible((prev) => !prev);
