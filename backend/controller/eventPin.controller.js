@@ -37,20 +37,6 @@ export const getPins = async (req, res) => {
  * @route POST /pins/location
  * @body { latitude: number, longitude: number, radius: number }
  */
-export const getPinsByLocation = async (req, res) => {
-  const { latitude, longitude, radius } = req.body;
-  try {
-    const eventPinRef = db.collection("eventPins");
-    const snapshot = await eventPinRef.get();
-    const pinsWithinRadius = snapshot.docs
-      .map((doc) => ({ id: doc.id, ...doc.data() }))
-      .filter((pin) => calculateDistance(pin, latitude, longitude) <= radius);
-    res.status(200).json(pinsWithinRadius);
-  } catch (error) {
-    console.error("Error fetching pins by location:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
 
 /** all pins posted in last 3 months
  * @route GET /pins/historical

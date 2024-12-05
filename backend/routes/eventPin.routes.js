@@ -2,7 +2,6 @@ import express from 'express';
 import {
   getPins,
   getHistoricalPins,
-  getPinsByLocation,
   addPin,
   getPin,
   deletePin,
@@ -32,7 +31,7 @@ router.get('/historical', getHistoricalPins); // pins in last month
 router.post('/', addPin);
 router.delete('/:pin_id', deletePin);
 router.get('/:pin_id', getPin);
-router.post('/location', getPinsByLocation);
+// router.post('/location', getPinsByLocation);
 
 /*images inside pins*/
 router.post('/:pin_id/images', addPinImages);

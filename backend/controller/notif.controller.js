@@ -1,5 +1,4 @@
 import admin from 'firebase-admin';
-import { getPinsByLocation } from './eventPin.controller.js';
 import 'dotenv/config';
 
 // Ensure Firebase Admin SDK is initialized
@@ -21,6 +20,28 @@ if (!admin.apps.length) {
   console.log('Firebase Admin initialized successfully');
 }
 
+export const getActivePins = async () => {
+  try {
+    const eventPinRef = admin.firestore().collection('eventPins');
+    const snapshot = await eventPinRef.where('isActive', '==', true).get();
+
+    if (snapshot.empty) {
+      console.log('No active pins found.');
+      return [];
+    }
+
+    const activePins = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return activePins;
+  } catch (error) {
+    console.error('Error fetching active pins:', error.message);
+    throw new Error('Failed to fetch active pins');
+  }
+};
+
 // Function to send push notifications
 export const sendPushNotificationWithData = async (deviceToken, title, body, pins) => {
   try {
@@ -38,7 +59,12 @@ export const sendPushNotificationWithData = async (deviceToken, title, body, pin
     await admin.messaging().send(message);
     console.log(`Notification sent to token: ${deviceToken}`);
   } catch (error) {
-    console.error(`Error sending notification to token ${deviceToken}:`, error.message);
+    if (error.code === 'messaging/registration-token-not-registered') {
+      console.error('Token is no longer valid. Remove it from your database.');
+      // Logic to remove the invalid token
+    } else {
+      console.error('Error sending notification:', error.message);
+    }
   }
 };
 
@@ -49,15 +75,10 @@ export const startPeriodicNotifications = async () => {
     try {
       // Example hardcoded token (replace with dynamic fetching from Firestore or DB)
       const deviceTokens = [
-        'example_device_token_1',
-        'example_device_token_2',
+        'dnzfA1AAm0vRjnmTUE5t7A:APA91bGIO6XOGWHYJFSd5LEbg3S-_we6u5HIXHYk5cioa2oTeSn_7hf1aKul94TuBma8vRUxO7V7l10wrQwMRse0nr-ieIK9F-aTvI72mEyXFdLdElyCQvI',
       ];
-
-      const latitude = 39.9526; // Example latitude
-      const longitude = -75.1652; // Example longitude
-      const radius = 2000; // Example radius in meters
-
-      const allPins = await getPinsByLocation(latitude, longitude, radius);
+      const allPins = await getActivePins();
+      console.log('All pins:', allPins);
       const activePins = allPins.filter((pin) => pin.isActive).map((pin) => ({
         id: pin.id,
         coords: pin.coords,
