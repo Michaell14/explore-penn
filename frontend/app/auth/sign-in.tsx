@@ -8,7 +8,7 @@ import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 // import * as BackgroundFetch from 'expo-background-fetch';
 // import * as TaskManager from 'expo-task-manager';
-import { getExpoPushToken, saveExpoPushToken } from '@/hooks/pushToken';
+// import { getExpoPushToken, saveExpoPushToken } from '@/hooks/fcmToken';
 // import { startBackgroundUpdate } from '@/hooks/registerBackground';
 
 

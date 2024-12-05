@@ -6,6 +6,7 @@ import path from 'path';
 import routes from './routes/index.js';
 import { startPeriodicUpdates } from './utils/openingTimeUpdates.js';
 import { startPinUpdates } from './utils/currentPinUpdates.js';
+import { startPeriodicNotifications } from './controller/notif.controller.js';
 
 // Resolve paths for service account files
 const serviceAccountPath = path.resolve('./firebaseServiceAccount.json');
@@ -19,15 +20,15 @@ export const notifServiceAccount = JSON.parse(
 );
 
 // Initialize Firebase Admin SDK
-try {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
-  console.log('Firebase Admin initialized successfully.');
-} catch (error) {
-  console.error('Error initializing Firebase Admin:', error);
-  process.exit(1);
-}
+// try {
+//   admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount),
+//   });
+//   console.log('Firebase Admin initialized successfully.');
+// } catch (error) {
+//   console.error('Error initializing Firebase Admin:', error);
+//   process.exit(1);
+// }
 
 const db = admin.firestore();
 const app = express();
@@ -38,6 +39,7 @@ app.use('/api', routes);
 
 startPeriodicUpdates();
 startPinUpdates();
+startPeriodicNotifications();
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
@@ -53,5 +55,31 @@ app.get('/test-db', async (req, res) => {
     res.status(500).json({ error: 'Error accessing Firestore', details: error.message });
   }
 });
+app.get('/test-notification', async (req, res) => {
+  const testDeviceToken = 'i4HcI7mwErLjuJuiR-Wbv:APA91bHgvZDNzYFa8IvpwQSoMAkcfqTiWfKh5fMBUzLtj4awJWkYVm-xlDK0XI5DZo_bTFf0yi2XpqQSuxrNnDu23WFB1dFqB_vhhqr7dPa6zOWkTcmOhwI';
+  const testPins = [
+    { id: '1', coords: [39.9530, -75.1907], header: 'Hill House', loc_description: 'Test location' },
+  ];
+
+  try {
+    const response = await admin.messaging().send({
+      token: testDeviceToken,
+      notification: {
+        title: 'Test Notification',
+        body: 'This is a test notification',
+      },
+      data: {
+        pins: JSON.stringify(testPins),
+      },
+    });
+
+    console.log('Test Notification Response:', response);
+    res.status(200).json({ success: true, message: 'Test notification sent successfully.' });
+  } catch (error) {
+    console.error('Error sending test notification:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 
 export { db, app };

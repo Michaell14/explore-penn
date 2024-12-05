@@ -14,10 +14,11 @@ import * as Notifications from 'expo-notifications';
 // import { startBackgroundUpdate } from '@/hooks/registerBackground';
 import { PinData, fetchCurrentPins } from '@/api/eventPinApi';
 import BouncingMarker from '@/components/map/BouncingMarker';
-import { getExpoPushToken } from '@/hooks/pushToken';
+import { getFcmPushToken, registerForFcmNotifications } from '@/hooks/fcmToken';
 import SearchBar from '../../components/map/SearchBar';
 // import customMapStyle from '../../constants/MapStyle';
 import { usePin } from '@/hooks/usePin';
+import { getDistance } from 'geolib';
 
 interface LocationType {
   latitude: number;
@@ -50,6 +51,7 @@ const HomeScreen: React.FC = () => {
   const router = useRouter();
   const [location, setLocation] = useState<LocationType | null>(null);
 
+  
   //for the search bar
   const handleSearch = (query: string) => {
     console.log('Search query:', query);
@@ -102,46 +104,81 @@ const HomeScreen: React.FC = () => {
     }
   };
 
+  // Process pins: filter by distance and show notifications
+  const processPins = async (pins: PinData[]) => {
+    console.log('Processing pins:', pins);
 
-  useEffect(() => {
-    const initializeApp = async () => {
-      await getLocation();
-      await loadPins();
+    if (location) {
+      const nearbyPins = pins.filter((pin) => {
+        const distance = getDistance(
+          { latitude: location.latitude, longitude: location.longitude },
+          { latitude: pin.coords[0], longitude: pin.coords[1] }
+        );
+        return distance <= 2000; // Example: 1000 meters radius
+      });
 
-      const permissionsGranted = await requestPermissions();
-      if (permissionsGranted) {
-        // Initialize push notifications
-        const storedToken = await getExpoPushToken();
-        if (storedToken) {
-          console.log('Stored token:', storedToken);
-        } else {
-          const token = await registerForPushNotificationsAsync();
-          console.log('Generated token:', token);
-        }
-
-        // Register background fetch task
-        // await startBackgroundUpdate();
+      // Display a notification for each nearby pin
+      for (const pin of nearbyPins) {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: pin.header,
+            body: pin.loc_description,
+            data: {
+              id: pin.id,
+              coords: pin.coords,
+              header: pin.header,
+              loc_description: pin.loc_description,
+            },
+          },
+          trigger: null, // Immediate notification
+        });
       }
-    };
+    }
+  };
 
-    initializeApp().catch((error) => {
-      console.error('Failed to initialize app:', error);
-    });
-
+  // Handle notifications
+  useEffect(() => {
     const notificationListener = Notifications.addNotificationReceivedListener((notification) => {
-      console.log('Notification received:', notification);
+      const data = notification.request.content.data;
+      if (data && data.pins) {
+        const pins = JSON.parse(data.pins);
+        processPins(pins);
+      }
     });
 
     const responseListener = Notifications.addNotificationResponseReceivedListener((response) => {
-      console.log('Notification response received:', response);
+      const data = response.notification.request.content.data;
+      if (data && data.pins) {
+        const pins = JSON.parse(data.pins);
+        processPins(pins);
+      }
     });
 
     return () => {
       Notifications.removeNotificationSubscription(notificationListener);
       Notifications.removeNotificationSubscription(responseListener);
     };
-  }, []);
+  }, [location]);
 
+  useEffect(() => {
+    const initializeApp = async () => {
+      await getLocation();
+      await loadPins();
+  
+      const storedToken = await getFcmPushToken();
+      if (!storedToken) {
+        const newToken = await registerForFcmNotifications();
+        console.log('Registered FCM Token:', newToken);
+      } else {
+        console.log('Using stored FCM Token:', storedToken);
+      }
+    };
+  
+    initializeApp().catch((error) => {
+      console.error('Failed to initialize app:', error);
+    });
+  }, []);
+  
   // Close the bottom sheet
   const handleClosePress = () => bottomSheetRef.current?.close();
 
