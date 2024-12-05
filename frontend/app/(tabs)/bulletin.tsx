@@ -183,7 +183,7 @@ const BulletinStack = () => {
     };
 
     return (
-        <View className="flex-1 justify-start items-center bg-[#D9D9FF]">
+        <View className="flex-1 justify-start items-center bg-[#BFBFEE]">
             {/* Close Button */}
             <TouchableOpacity onPress={() => router.push('/(tabs)')} className="absolute top-16 right-4">
                 <Image source={require('../../assets/images/xout.png')} className="w-12 h-12" />
@@ -191,7 +191,7 @@ const BulletinStack = () => {
 
             {/* Title and Decorative Elements */}
             <View className="flex justify-center items-center w-full aspect-[11/21] bg-[#BFBFEE] pt-14 pb-3 overflow-hidden">
-                <View className="w-full h-full bg-[#F2F3FD] p-10 relative">
+                <View className="w-full h-full bg-[#FAFAFA] p-10 relative">
                     {/* Top Bar */}
                     <View className="absolute -top-[25px] px-10 left-0 right-0 items-center">
                         <View className="w-full h-[40px] bg-[#BFBFEE] opacity-100 rounded-full" />
@@ -231,8 +231,8 @@ const BulletinStack = () => {
                     />
 
                     {/* Dotted Background */}
-                    <View className="absolute inset-0 top-36">
-                        {Array.from({ length: 24 }).map((_, rowIndex) => (
+                    <View className="absolute inset-0 top-40">
+                        {Array.from({ length: 25 }).map((_, rowIndex) => (
                             <View key={rowIndex} className="flex-row justify-center">
                                 {Array.from({ length: 18 }).map((_, colIndex) => (
                                     <View
@@ -252,7 +252,7 @@ const BulletinStack = () => {
                             renderItem={renderStickyNote}
                             horizontal
                             onEndReachedThreshold={0.5}
-                            showsHorizontalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={true}
                             contentContainerStyle={{
                                 width: flatListWidth,
                                 paddingHorizontal: width / 7,
@@ -263,17 +263,16 @@ const BulletinStack = () => {
                                 overflow: 'visible',
                             }}
                         />
+                                    {/* Add Post Button */}
+                    <TouchableOpacity
+                        onPress={() => setModalVisible(true)}
+                        className="absolute -bottom-[65px] right-0 bg-[#FE8BC0] w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
+                    >
+                        <Text className="text-white text-2xl font-bold">+</Text>
+                    </TouchableOpacity>
                     </View>
                 </View>
             </View>
-
-            {/* Add Post Button */}
-            <TouchableOpacity
-                onPress={() => setModalVisible(true)}
-                className="absolute bottom-[150px] right-10 bg-[#FE8BC0] w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
-            >
-                <Text className="text-white text-2xl font-bold">+</Text>
-            </TouchableOpacity>
 
             {/* Write Modal */}
             <WriteModal

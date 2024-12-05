@@ -50,12 +50,12 @@ export default function TabLayout() {
       </Tabs>
 
       {/* pin button */}
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.floatingButton}
         onPress={() => router.replace('../bulletin')}
       >
         <Image source={PinIcon} style={styles.pinIcon} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </>
   );
 }

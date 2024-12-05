@@ -104,29 +104,30 @@ const StickyNote: React.FC<StickyNoteProps> = ({
 const styles = StyleSheet.create({
     shadowContainer: {
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
-        shadowRadius: 5,
+        shadowRadius: 2,
         elevation: 3,
         position: 'absolute',
     },
     userPostBorder: {
-        borderColor: '#FE8BC0',
+        borderColor: 'white',
         borderWidth: 2,
-        borderRadius: 10,
+        borderRadius: 3,
     },
     stickyNote: {
         width: 120,
         height: 120,
-        borderRadius: 5,
+        borderRadius: 3,
         padding: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        
     },
     text: {
         fontSize: 10,
         color: '#373737',
-        textAlign: 'center',
+        textAlign: 'left',
         fontWeight: 'bold',
     },
     image: {
