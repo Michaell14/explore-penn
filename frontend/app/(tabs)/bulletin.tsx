@@ -12,8 +12,8 @@ import { db, storage } from '@/firebaseConfig';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import * as ImageManipulator from 'expo-image-manipulator';
 
-const { width } = Dimensions.get('window');
-const SPACING = 100;
+const { height } = Dimensions.get('window');
+const SPACING = 150;
 const POSTS_PER_PAGE = 10;
 
 
@@ -35,7 +35,7 @@ const BulletinStack = () => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [text, setText] = useState('');
     const [posts, setPosts] = useState<PostData[]>([]);
-    const [flatListWidth, setFlatListWidth] = useState(width);
+    const [flatListHeight, setFlatListHeight] = useState(height);
 
     // Fetch posts from Firestore and listen for real-time updates
     useEffect(() => {
@@ -62,10 +62,10 @@ const BulletinStack = () => {
     // Update the FlatList's width in increments of POSTS_PER_PAGE
     useEffect(() => {
         const currentThreshold = Math.ceil(posts.length / POSTS_PER_PAGE) * POSTS_PER_PAGE;
-        if (posts.length > 0 && flatListWidth < currentThreshold * SPACING) {
-            setFlatListWidth(currentThreshold * SPACING);
+        if (posts.length > 0 && flatListHeight < currentThreshold * SPACING) {
+            setFlatListHeight(currentThreshold * SPACING);
         }
-    }, [posts.length, flatListWidth]);
+    }, [posts.length, flatListHeight]);
 
     const resizeImage = async (uri: string) => {
         const manipResult = await ImageManipulator.manipulateAsync(
@@ -109,8 +109,8 @@ const BulletinStack = () => {
         const newPost: PostData = {
             id: '', // Placeholder until Firebase assigns ID
             uid: user.uid,
-            x: index * SPACING, // Position based on index
-            y: Math.random() * 100, // Random vertical position
+            x: Math.random() * 100, // Position based on index
+            y: index * SPACING, // Random vertical position
             rotation: Math.random() * 40 - 20,
             words: text.trim() || 'Untitled',
             picture: downloadURL || null,
@@ -144,13 +144,12 @@ const BulletinStack = () => {
           if (!response.ok) {
             throw new Error(`Failed to fetch file: ${response.statusText}`);
           }
-          console.log(response);
           const blob = await response.blob();
           const filename = `images/${selectedPin?.id || 'unnamed'}_${user?.uid}_${Date.now()}.jpeg`;
           const storageRef = ref(storage, filename);
 
             try {
-                const snapshot = await uploadBytes(storageRef, blob);
+                await uploadBytes(storageRef, blob);
             } catch (error) {
                 if (error instanceof Error) {
                     console.error("Upload failed with error:", error.message);
@@ -162,7 +161,6 @@ const BulletinStack = () => {
             }
                 
           const downloadURL = await getDownloadURL(storageRef);
-          console.log("Download URL:", downloadURL);
       
           return downloadURL;
         } catch (error) {
@@ -251,22 +249,28 @@ const BulletinStack = () => {
     };
 
     return (
-        <View className="flex-1 justify-start items-center bg-[#BFBFEE]">
+        <View className="flex-1 justify-start items-center p-5 bg-[#BFBFEE]">
             {/* Close Button */}
-            <TouchableOpacity onPress={() => router.push('/(tabs)')} className="absolute top-16 right-4">
-                <Image source={require('../../assets/images/xout.png')} className="w-12 h-12" />
+            <TouchableOpacity
+                onPress={handleClose}
+                className="absolute z-10 top-[62px] right-8"
+            >
+                <Image
+                    source={require('../../assets/images/x-out.png')}
+                    className="w-10 h-10"
+                />
             </TouchableOpacity>
 
             {/* Title and Decorative Elements */}
-            <View className="flex justify-center items-center w-full aspect-[11/21] bg-[#BFBFEE] pt-14 pb-3 overflow-hidden">
-                <View className="w-full h-full bg-[#FAFAFA] p-10 relative">
+            {/* <View className="flex justify-center items-center w-full aspect-[11/21] bg-[#BFBFEE] pt-14 pb-3 overflow-hidden"> */}
+                <View className="w-full h-full bg-[#FAFAFA] mt-10 p-6 pt-10 rounded-lg border-1 border-white relative overflow-hidden">
                     {/* Top Bar */}
-                    <View className="absolute -top-[25px] px-10 left-0 right-0 items-center">
-                        <View className="w-full h-[40px] bg-[#BFBFEE] opacity-100 rounded-full" />
+                    <View className="absolute -top-[50px] px-20 left-0 right-0 items-center">
+                        <View className="w-full h-[60px] bg-[#BFBFEE] opacity-100 rounded-full" />
                     </View>
 
                     {/* Title Section */}
-                    <View className="flex-row justify-between border-b border-gray-300 pb-2 py-4">
+                    <View className="z-10 flex-row justify-between border-b border-gray-300 pb-2 py-4">
                         <Text className="text-xl font-bold text-[#535353]">
                             {selectedPin?.header}
                         </Text>
@@ -283,11 +287,7 @@ const BulletinStack = () => {
                     {/* Corner Dots */}
                     <Image
                         source={require('../../assets/images/bulletincircle.png')}
-                        className="absolute top-3 left-3 w-2 h-2"
-                    />
-                    <Image
-                        source={require('../../assets/images/bulletincircle.png')}
-                        className="absolute top-3 right-3 w-2 h-2"
+                        className="absolute top-6 left-6 w-2 h-2"
                     />
                     <Image
                         source={require('../../assets/images/bulletincircle.png')}
@@ -318,12 +318,11 @@ const BulletinStack = () => {
                             data={posts}
                             keyExtractor={(item) => item.id}
                             renderItem={renderStickyNote}
-                            horizontal
                             onEndReachedThreshold={0.5}
-                            showsHorizontalScrollIndicator={true}
+                            showsVerticalScrollIndicator={true}
                             contentContainerStyle={{
-                                width: flatListWidth,
-                                paddingHorizontal: width / 7,
+                                height: flatListHeight,
+                                marginHorizontal: 20,
                                 borderColor: 'red',
                                 borderWidth: 1,
                             }}
@@ -340,7 +339,7 @@ const BulletinStack = () => {
                     </TouchableOpacity>
                     </View>
                 </View>
-            </View>
+            {/* </View> */}
 
             {/* Write Modal */}
             <WriteModal

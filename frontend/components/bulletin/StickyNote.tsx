@@ -116,8 +116,8 @@ const styles = StyleSheet.create({
         borderRadius: 3,
     },
     stickyNote: {
-        width: 180,
-        height: 180,
+        width: 160,
+        height: 160,
         borderRadius: 3,
         padding: 15,
         justifyContent: 'flex-start',
@@ -126,13 +126,12 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
-        color: '#373737',
+        color: '#1D1D1D',
         textAlign: 'left',
-        fontWeight: 'bold',
     },
     image: {
-        width: 140,
-        height: 120,
+        width: 130,
+        height: 110,
         marginBottom: 8,
         borderRadius: 5,
         resizeMode: 'cover',

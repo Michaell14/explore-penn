@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import {
   View, KeyboardAvoidingView, StyleSheet, Dimensions, Platform, TouchableWithoutFeedback,
   Keyboard,
+  Image,
 } from 'react-native';
 import MapView from 'react-native-maps';
 import { PROVIDER_GOOGLE } from 'react-native-maps';
@@ -177,6 +178,7 @@ const HomeScreen: React.FC = () => {
             <SearchBar placeholder="Search for locations..." onSearch={handleSearch} />
           </View>*/}
           {/* Map Section */}
+          <Image source={require("../../assets/images/penn-pins-logo.png")} style={styles.logo} />
           <MapView
             ref={mapViewRef}
             style={styles.map}
@@ -273,6 +275,15 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },
+  logo: {
+    position: 'absolute',
+    top: 45,
+    left: Dimensions.get('window').width / 2 - 100,
+    width: 200,
+    height: 75, 
+    objectFit: 'contain',
+    zIndex: 10,
+  }
 });
 
 export default HomeScreen;
