@@ -195,8 +195,7 @@ const BulletinStack = () => {
             isUserPost={item.isUserPost}
             imageUri={item.picture ?? undefined}
             onMove={(x, y) => handleMove(item.id, x, y)}
-            onDelete={() => handleDelete(item.id)} id={''}
-        />
+            onDelete={() => handleDelete(item.id)} id={''} rotation={item.rotation}        />
     );
 
     // Unified render function for FlatList
