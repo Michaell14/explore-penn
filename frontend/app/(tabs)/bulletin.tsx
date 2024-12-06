@@ -248,67 +248,170 @@ const BulletinStack = () => {
         }
     };
 
-    return (
+//     return (
+//         <View style={{ flex: 1, backgroundColor: '#BFBFEE' }}>
+//         <ScrollView
+//             style={{ flex: 1, backgroundColor: '#BFBFEE' }}
+//             contentContainerStyle={{
+//                 flexGrow: 1,
+//                 alignItems: 'center',
+//                 paddingTop: 16,
+//                 paddingBottom: 32,
+//             }}
+//         >
+//             {/* Close Button */}
+//             <TouchableOpacity
+//                 onPress={handleClose}
+//                 className="absolute z-10 top-[62px] right-8"
+//             >
+//                 <Image
+//                     source={require('../../assets/images/logout.png')}
+//                     className="w-5 h-5 object-contain mt-2"
+//                 />
+//             </TouchableOpacity>
+
+//             {/* Title and Decorative Elements */}
+//             {/* <View className="flex justify-center items-center w-full aspect-[11/21] bg-[#BFBFEE] pt-14 pb-3 overflow-hidden"> */}
+//                 <View className="w-full h-full bg-[#FAFAFA] mt-10 px-8 pt-10 rounded-lg border-1 border-white relative overflow-hidden">
+//                     {/* Top Bar */}
+//                     <View className="absolute -top-[50px] px-20 left-0 right-0 items-center">
+//                         <View className="w-full h-[60px] bg-[#BFBFEE] opacity-100 rounded-full" />
+//                     </View>
+
+//                     {/* Title Section */}
+//                     <Text className="text-2xl font-bold text-[#535353] pt-5">
+//                             {selectedPin?.header}
+//                     </Text>
+//                     <View className="z-10 flex-row justify-start gap-2 border-b border-gray-300 pb-2">
+//                     <Text className="text-xs text-red-500">{selectedPin?.start_time} - {selectedPin?.end_time} | Penn Spark</Text>
+//                     </View>
+
+//                     {/* Organization Name */}
+//                     <Text className="text-sm text-[#373737] mb-4 mt-2">{selectedPin?.description}</Text>
+
+//                     {/* Corner Dots */}
+//                     <Image
+//                         source={require('../../assets/images/bulletincircle.png')}
+//                         className="absolute top-6 left-6 w-2 h-2"
+//                     />
+//                     <Image
+//                         source={require('../../assets/images/bulletincircle.png')}
+//                         className="absolute bottom-3 left-3 w-2 h-2"
+//                     />
+//                     <Image
+//                         source={require('../../assets/images/bulletincircle.png')}
+//                         className="absolute bottom-3 right-3 w-2 h-2"
+//                     />
+//                     {/* Dotted Background */}
+//                     <View className='relative h-full w-full top-20 pb-40'>
+//                     <View className="absolute inset-0">
+//                         {Array.from({ length: Math.ceil(flatListHeight / 30) }).map((_, rowIndex) => (
+//                             <View key={rowIndex} className="flex-row justify-center">
+//                                 {Array.from({ length: 18 }).map((_, colIndex) => (
+//                                     <View
+//                                         key={colIndex}
+//                                         className="w-[0.5vw] h-[0.5vw] bg-gray-300 rounded-full mx-[2.1vw] my-[2.1vw]"
+//                                     />
+//                                 ))}
+//                             </View>
+//                         ))}
+//                     </View>
+
+//                     {/* Horizontal Scrolling Sticky Notes */}
+//                         <FlatList
+//                             data={posts}
+//                             keyExtractor={(item) => item.id}
+//                             renderItem={renderStickyNote}
+//                             onEndReachedThreshold={0.5}
+//                             contentContainerStyle={{
+//                                 height: flatListHeight,
+//                                 marginHorizontal: 20,
+//                                 borderColor: 'red',
+//                                 borderWidth: 1,
+//                             }}
+//                             style={{
+//                                 overflow: 'visible',
+//                             }}
+//                         />
+//                         </View>
+                                    
+//                     </View>
+//             {/* </View> */}
+
+//             {/* Write Modal */}
+//             <WriteModal
+//                 isVisible={isModalVisible}
+//                 text={text}
+//                 pin_id={selectedPin?.id ?? 'undefined pin'}
+//                 setText={setText}
+//                 onClose={toggleModal}
+//                 onPin={handlePin}
+//             />
+//         </ScrollView>
+//                     {/* Add Post Button */}
+//                     <TouchableOpacity
+//                             onPress={() => setModalVisible(true)}
+//                             className="z-10 absolute -bottom-[65px] right-0 bg-[#FE8BC0] w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
+//                         >
+//                             <Text className="text-white text-2xl font-bold">+</Text>
+//                         </TouchableOpacity>
+//         </View>
+//     );
+// };
+
+return (
+    <View style={{ flex: 1, backgroundColor: '#5261FF' }}>
         <ScrollView
-            style={{ flex: 1, backgroundColor: '#BFBFEE' }}
+            style={{ flex: 1, backgroundColor: '#5261FF' }}
             contentContainerStyle={{
                 flexGrow: 1,
                 alignItems: 'center',
                 paddingTop: 16,
-                paddingBottom: 24
+                paddingBottom: 32,
             }}
         >
             {/* Close Button */}
             <TouchableOpacity
                 onPress={handleClose}
-                className="absolute z-10 top-[62px] right-8"
+                style={{
+                    position: 'absolute',
+                    top: 68,
+                    right: 20,
+                    zIndex: 10,
+                }}
             >
                 <Image
-                    source={require('../../assets/images/x-out.png')}
-                    className="w-10 h-10"
+                    source={require('../../assets/images/logout.png')}
+                    style={{ width: 20, height: 20 }}
                 />
             </TouchableOpacity>
 
             {/* Title and Decorative Elements */}
-            {/* <View className="flex justify-center items-center w-full aspect-[11/21] bg-[#BFBFEE] pt-14 pb-3 overflow-hidden"> */}
-                <View className="w-full h-full bg-[#FAFAFA] mt-10 px-6 pt-10 rounded-lg border-1 border-white relative overflow-hidden">
-                    {/* Top Bar */}
-                    <View className="absolute -top-[50px] px-20 left-0 right-0 items-center">
-                        <View className="w-full h-[60px] bg-[#BFBFEE] opacity-100 rounded-full" />
-                    </View>
+            <View className="w-full h-full bg-[#FAFAFA] mt-10 px-8 pt-10 rounded-lg border-1 border-white relative overflow-hidden">
+                {/* Top Bar */}
+                <View className="absolute -top-[50px] px-20 left-0 right-0 items-center">
+//                         <View className="w-full h-[60px] bg-[#5261FF] opacity-100 rounded-full" />
+                </View>
 
-                    {/* Title Section */}
-                    <View className="z-10 flex-row justify-between border-b border-gray-300 pb-2 py-4">
-                        <Text className="text-xl font-bold text-[#535353]">
-                            {selectedPin?.header}
-                        </Text>
-                        <View className="flex items-center justify-center">
-                            <View className="px-3 py-1 bg-[#EF6A56] rounded-full">
-                                <Text className="text-white text-xs">{selectedPin?.start_time}</Text>
-                            </View>
-                        </View>
-                    </View>
+                {/* Title Section */}
+                <Text className="text-2xl font-bold text-[#535353] pt-5">
+                    {selectedPin?.header}
+                </Text>
+                <View className="z-10 flex-row justify-start gap-2 border-b border-gray-300 py-1">
+                    <Text style={{ fontSize: 12, color: 'red' }}>
+                        {selectedPin?.start_time} - {selectedPin?.end_time} | Penn Spark
+                    </Text>
+                </View>
 
-                    {/* Organization Name */}
-                    <Text className="text-sm text-[#373737] mb-4">org name</Text>
+                {/* Organization Name */}
+                <Text className="text-sm text-[#373737] mb-4 mt-3">
+                    {selectedPin?.description}
+                </Text>
 
-                    {/* Corner Dots */}
-                    <Image
-                        source={require('../../assets/images/bulletincircle.png')}
-                        className="absolute top-6 left-6 w-2 h-2"
-                    />
-                    <Image
-                        source={require('../../assets/images/bulletincircle.png')}
-                        className="absolute bottom-3 left-3 w-2 h-2"
-                    />
-                    <Image
-                        source={require('../../assets/images/bulletincircle.png')}
-                        className="absolute bottom-3 right-3 w-2 h-2"
-                    />
-
-                    {/* Dotted Background */}
-                    <View className="absolute inset-0 top-40">
-                        {Array.from({ length: 35 }).map((_, rowIndex) => (
+                {/* Dotted Background */}
+                <View style={{ position: 'relative', height: '100%', width: '100%', marginTop: 70, paddingBottom: 40 }}>
+                     <View className="absolute inset-0">
+                        {Array.from({ length: Math.ceil(flatListHeight / 30) }).map((_, rowIndex) => (
                             <View key={rowIndex} className="flex-row justify-center">
                                 {Array.from({ length: 18 }).map((_, colIndex) => (
                                     <View
@@ -321,30 +424,36 @@ const BulletinStack = () => {
                     </View>
 
                     {/* Horizontal Scrolling Sticky Notes */}
-                        <FlatList
-                            data={posts}
-                            keyExtractor={(item) => item.id}
-                            renderItem={renderStickyNote}
-                            onEndReachedThreshold={0.5}
-                            contentContainerStyle={{
-                                height: flatListHeight,
-                                marginHorizontal: 20,
-                                borderColor: 'red',
-                                borderWidth: 1,
-                            }}
-                            style={{
-                                overflow: 'visible',
-                            }}
-                        />
-                                    {/* Add Post Button */}
-                    <TouchableOpacity
-                        onPress={() => setModalVisible(true)}
-                        className="absolute -bottom-[65px] right-0 bg-[#FE8BC0] w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
-                    >
-                        <Text className="text-white text-2xl font-bold">+</Text>
-                    </TouchableOpacity>
-                    </View>
-            {/* </View> */}
+                    <FlatList
+                        data={posts}
+                        keyExtractor={(item) => item.id}
+                        renderItem={renderStickyNote}
+                        onEndReachedThreshold={0.5}
+                        contentContainerStyle={{
+                            height: flatListHeight,
+                            marginHorizontal: 20,
+                            borderColor: 'red',
+                            borderWidth: 1,
+                        }}
+                        style={{
+                            overflow: 'visible',
+                        }}
+                    />
+                </View>
+                     {/* Corner Dots */}
+                    <Image
+                        source={require('../../assets/images/bulletincircle.png')}
+                        className="absolute top-6 left-6 w-2 h-2"
+                    />
+                    <Image
+                        source={require('../../assets/images/bulletincircle.png')}
+                        className="absolute bottom-3 left-3 w-2 h-2"
+                    />
+                    <Image
+                        source={require('../../assets/images/bulletincircle.png')}
+                        className="absolute bottom-3 right-3 w-2 h-2"
+                    />
+            </View>
 
             {/* Write Modal */}
             <WriteModal
@@ -356,7 +465,32 @@ const BulletinStack = () => {
                 onPin={handlePin}
             />
         </ScrollView>
-    );
+
+        {/* Add Post Button */}
+        <TouchableOpacity
+            onPress={() => setModalVisible(true)}
+            style={{
+                position: 'absolute',
+                bottom: 50,
+                right: 30,
+                backgroundColor: '#FE8BC0',
+                width: 64,
+                height: 64,
+                borderRadius: 32,
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.3,
+                shadowRadius: 4,
+                elevation: 5,
+                opacity: 0.8,
+            }}
+        >
+            <Text style={{ color: 'white', fontSize: 36  }}>+</Text>
+        </TouchableOpacity>
+    </View>
+);
 };
 
 export default BulletinStack;
