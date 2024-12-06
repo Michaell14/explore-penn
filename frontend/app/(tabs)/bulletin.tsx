@@ -43,7 +43,9 @@ const BulletinStack = () => {
     const [text, setText] = useState('');
     const [posts, setPosts] = useState<PostData[]>([]);
     const [flatListHeight, setFlatListHeight] = useState(height);
-    const [stickers, setStickers] = useState<{ uri: string; x: number; y: number }[]>([]);
+    const [stickers, setStickers] = useState<{
+        id: string; uri: string; x: number; y: number 
+}[]>([]);
 
     // Fetch posts from Firestore and listen for real-time updates
     useEffect(() => {
@@ -230,9 +232,9 @@ const BulletinStack = () => {
                     transform: [
                         { translateX: '-50%' },
                         { translateY: '-50%' },
-                        { rotate: `${(item as PostData).rotation}deg` },
                     ],
                 }}
+                rotation={(item as PostData).rotation}
                 isUserPost={(item as PostData).isUserPost}
                 imageUri={(item as PostData).picture ?? undefined}
                 onMove={(x, y) => handleMove((item as PostData).id, x, y)}

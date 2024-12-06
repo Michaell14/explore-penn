@@ -20,6 +20,7 @@ interface StickyNoteProps {
     style?: ViewStyle;
     imageUri?: string; // For stickers
     isUserPost?: boolean;
+    rotation: number;
     onDelete?: (id: string) => void; // Optional for stickers
     onMove: (x: number, y: number) => void; // Triggered on drag end
     id?: string; // Optional for stickers
@@ -31,6 +32,7 @@ const StickyNote: React.FC<StickyNoteProps> = ({
     style,
     imageUri,
     isUserPost,
+    rotation,
     onDelete,
     onMove,
     id,
@@ -65,6 +67,7 @@ const StickyNote: React.FC<StickyNoteProps> = ({
         transform: [
             { translateX: translateX.value },
             { translateY: translateY.value },
+            { rotate: `${rotation}deg` },
         ],
     }));
 
@@ -97,7 +100,7 @@ const StickyNote: React.FC<StickyNoteProps> = ({
                     {imageUri ? (
                         <Image source={{ uri: imageUri }} style={styles.image} />
                     ) : (
-                        text && <Text style={styles.text}>{text}</Text>
+                        text ? <Text style={styles.text}>{text}</Text> : null
                     )}
                 </View>
             </Animated.View>
