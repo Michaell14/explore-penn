@@ -1,6 +1,8 @@
 import admin from 'firebase-admin';
 import 'dotenv/config';
 
+
+
 // Ensure Firebase Admin SDK is initialized
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -49,15 +51,17 @@ export const sendPushNotificationWithData = async (deviceToken, title, body, pin
       token: deviceToken,
       notification: {
         title,
-        body,
-      },
-      data: {
-        pins: JSON.stringify(pins), // Pins as JSON string
-      },
+        body: JSON.stringify(pins),
+      }
+      // data: {
+      //   pins: JSON.stringify(pins),
+      // },
     };
 
     await admin.messaging().send(message);
-    console.log(`Notification sent to token: ${deviceToken}`);
+    console.log(`Sending message:`, JSON.stringify(message, null, 2));
+
+    console.log(`Notification sent to token: ${deviceToken}`, message);
   } catch (error) {
     if (error.code === 'messaging/registration-token-not-registered') {
       console.error('Token is no longer valid. Remove it from your database.');
@@ -75,7 +79,7 @@ export const startPeriodicNotifications = async () => {
     try {
       // Example hardcoded token (replace with dynamic fetching from Firestore or DB)
       const deviceTokens = [
-        'dnzfA1AAm0vRjnmTUE5t7A:APA91bGIO6XOGWHYJFSd5LEbg3S-_we6u5HIXHYk5cioa2oTeSn_7hf1aKul94TuBma8vRUxO7V7l10wrQwMRse0nr-ieIK9F-aTvI72mEyXFdLdElyCQvI',
+        'di4HcI7mwErLjuJuiR-Wbv:APA91bHgvZDNzYFa8IvpwQSoMAkcfqTiWfKh5fMBUzLtj4awJWkYVm-xlDK0XI5DZo_bTFf0yi2XpqQSuxrNnDu23WFB1dFqB_vhhqr7dPa6zOWkTcmOhwI',
       ];
       const allPins = await getActivePins();
       console.log('All pins:', allPins);

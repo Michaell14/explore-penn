@@ -119,6 +119,7 @@ const HomeScreen: React.FC = () => {
 
       // Display a notification for each nearby pin
       for (const pin of nearbyPins) {
+        console.log('Scheduling notification for pin:', pin);
         await Notifications.scheduleNotificationAsync({
           content: {
             title: pin.header,
@@ -139,14 +140,21 @@ const HomeScreen: React.FC = () => {
   // Handle notifications
   useEffect(() => {
     const notificationListener = Notifications.addNotificationReceivedListener((notification) => {
-      const data = notification.request.content.data;
-      if (data && data.pins) {
-        const pins = JSON.parse(data.pins);
-        processPins(pins);
-      }
+        console.log('Notification received:', notification);
+  const data = notification.request.content.body;
+
+  if (data && data) {
+    const pins = JSON.parse(data);
+    console.log('Parsed pins:', pins);
+    pins.forEach((pin: { id: any; loc_description: any; }) => {
+      console.log(`Pin ID: ${pin.id}, Location: ${pin.loc_description}`);
     });
+  }
+  processPins(pins);
+});
 
     const responseListener = Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log('Response received:', response);
       const data = response.notification.request.content.data;
       if (data && data.pins) {
         const pins = JSON.parse(data.pins);

@@ -1,5 +1,6 @@
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Notifications from 'expo-notifications';
 
 const FCM_PUSH_TOKEN_KEY = 'fcmPushToken';
 
@@ -12,12 +13,27 @@ export const saveFcmPushToken = async (token: string) => {
 };
 
 export const getFcmPushToken = async (): Promise<string | null> => {
+  const { status: expoStatus } = await Notifications.getPermissionsAsync();
+  console.log('Expo Notification Permissions:', expoStatus);
+
+  if (expoStatus !== 'granted') {
+    const { status: newStatus } = await Notifications.requestPermissionsAsync();
+    console.log('New Expo Notification Permissions:', newStatus);
+
+    if (newStatus !== 'granted') {
+      console.error('Expo notification permissions not granted');
+      return null;
+    }
+  }
+
   try {
     return await AsyncStorage.getItem(FCM_PUSH_TOKEN_KEY);
   } catch (error) {
     console.error('Failed to get FCM push token from AsyncStorage:', error);
     return null;
   }
+
+  
 };
 
 export async function registerForFcmNotifications(): Promise<string | null> {
