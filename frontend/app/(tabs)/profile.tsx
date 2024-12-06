@@ -19,6 +19,45 @@ interface UserProfile {
     numReactions: number;
 }
 
+const GradientCircles = () => {
+    const totalRows = 20; // Static number of rows
+    const cols = Array.from({ length: 18 }); // Static number of columns
+
+    return (
+        <View style={StyleSheet.absoluteFill}>
+            {Array.from({ length: totalRows }).map((_, rowIndex) => {
+                // Calculate the opacity based on the static row count
+                const opacity = 1 - rowIndex / totalRows;
+
+                return (
+                    <View
+                        key={rowIndex}
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            opacity: Math.max(opacity, 0), // Ensure opacity doesn't go negative
+                        }}
+                    >
+                        {cols.map((_, colIndex) => (
+                            <View
+                                key={colIndex}
+                                style={{
+                                    width: 3,
+                                    height: 3,
+                                    backgroundColor: 'rgba(177, 177, 255, 0.5)', // Adjust color
+                                    borderRadius: 999,
+                                    marginHorizontal: 10,
+                                    marginVertical: 10,
+                                }}
+                            />
+                        ))}
+                    </View>
+                );
+            })}
+        </View>
+    );
+};
+
 export default function ProfileScreen() {
     //edit mode toggle
     const [isEditable, setIsEditable] = useState(true);
@@ -144,7 +183,7 @@ export default function ProfileScreen() {
         console.log('Rendering loading spinner...');
         return (
             <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color="#3D00B8" />
+                <ActivityIndicator size="large" color="#5500FF" />
             </View>
         );
     }
@@ -169,15 +208,16 @@ export default function ProfileScreen() {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View className="flex-1 bg-[#F5F5FF]">
+                <GradientCircles/>
             <SafeAreaView style={{ flex: 1 }}>
                 {/* header section */}
                 <View className="pb-16 items-center rounded-b-[40px]" style={styles.header}>
                     <Text style={{
                         fontFamily: 'Yorkmade',
                         fontSize: 40,
-                        color: '#3D00B8',
+                        color: '#5500FF',
                     }} >{username}</Text>
-                    <Text className="text-md text-[#3D00B8]">{email}</Text>
+                    <Text className="text-md text-[#5500FF]">{email}</Text>
                 </View>
 
                 {/* status section */}
@@ -185,18 +225,18 @@ export default function ProfileScreen() {
                     <Image source={require("../../assets/images/winner.png")} style={styles.winner} />
                     <TouchableOpacity className="bg-[#F0EFFD] py-5 px-2 items-center rounded-[10px] w-[100px]">
                         <View className="flex-column items-center">
-                            <Text className="text-5xl font-bold text-[#50F]">{pinCount}</Text>
-                            <Text className="text-xl text-[#50F]">Pins</Text>
-                            <Text className="text-xl text-[#50F]">posted</Text>
+                            <Text className="text-5xl font-bold text-[#5500FF]">{pinCount}</Text>
+                            <Text className="text-xl text-[#5500FF]">Pins</Text>
+                            <Text className="text-xl text-[#5500FF]">posted</Text>
                         </View>
                         {/* <Image source={require("../../assets/images/yellow-post-it.png")} className='absolute w-[180px] h-[180px] z-[-1] -rotate-[15deg] -mt-8 -left-[50px]' /> */}
                     </TouchableOpacity>
                     <View className="w-10"></View>
                     <TouchableOpacity className="bg-[#F0EFFD] py-5 px-2 items-center rounded-[10px] w-[100px]" >
                         <View className="flex-column items-center">
-                            <Text className="text-5xl font-bold text-[#50F]">{reactionCount}</Text>
-                            <Text className="text-xl text-[#50F]">Stickers</Text>
-                            <Text className="text-xl text-[#50F]">placed</Text>
+                            <Text className="text-5xl font-bold text-[#5500FF]">{reactionCount}</Text>
+                            <Text className="text-xl text-[#5500FF]">Stickers</Text>
+                            <Text className="text-xl text-[#5500FF]">placed</Text>
                         </View>
                         {/* <Image source={require("../../assets/images/yellow-post-it.png")} className='absolute w-[180px] h-[180px] z-[-1] rotate-[15deg] -mt-5 -right-10' /> */}
                     </TouchableOpacity>
@@ -205,10 +245,10 @@ export default function ProfileScreen() {
                 </View>}
 
                 {/* buttons section */}
-                {<View className="flex-1 px-10 py-16 mt-16" style={styles.container}>
+                {<View className="flex-1 px-8 py-16 mt-16" style={styles.container}>
                     <TouchableOpacity className="bg-[#F0EFFD] p-5 items-left flex-row rounded-tl-[7px] rounded-tr-[7px]" onPress={onResetPasswords}>
                         <Image source={require("../../assets/images/reset-password-icon.png")} style={styles.icon} />
-                        <Text className="text-lg text-[#50F]">Reset password</Text>
+                        <Text className="text-lg text-[#5500FF]">Reset password</Text>
                         <View
                             style={{
                             position: 'absolute',
@@ -222,7 +262,7 @@ export default function ProfileScreen() {
                     </TouchableOpacity>
                     <TouchableOpacity className="bg-[#F0EFFD] p-5 items-left flex-row" onPress={onPushNotifications}>
                         <Image source={require("../../assets/images/push-notification-bell.png")} style={styles.icon} />
-                        <Text className="text-lg text-[#50F]">Push notifications</Text>
+                        <Text className="text-lg text-[#5500FF]">Push notifications</Text>
                         <View
                             style={{
                             position: 'absolute',
