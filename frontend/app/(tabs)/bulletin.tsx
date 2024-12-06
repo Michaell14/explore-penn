@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList, Dimensions } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, Dimensions, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import WriteModal from '../../components/bulletin/WriteModal';
 import StickyNote from '../../components/bulletin/StickyNote';
@@ -12,7 +12,7 @@ import { db, storage } from '@/firebaseConfig';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import * as ImageManipulator from 'expo-image-manipulator';
 
-const { height } = Dimensions.get('window');
+const height = Dimensions.get('window').height / 2;
 const SPACING = 150;
 const POSTS_PER_PAGE = 10;
 
@@ -249,7 +249,15 @@ const BulletinStack = () => {
     };
 
     return (
-        <View className="flex-1 justify-start items-center p-5 bg-[#BFBFEE]">
+        <ScrollView
+            style={{ flex: 1, backgroundColor: '#BFBFEE' }}
+            contentContainerStyle={{
+                flexGrow: 1,
+                alignItems: 'center',
+                paddingTop: 16,
+                paddingBottom: 24
+            }}
+        >
             {/* Close Button */}
             <TouchableOpacity
                 onPress={handleClose}
@@ -263,7 +271,7 @@ const BulletinStack = () => {
 
             {/* Title and Decorative Elements */}
             {/* <View className="flex justify-center items-center w-full aspect-[11/21] bg-[#BFBFEE] pt-14 pb-3 overflow-hidden"> */}
-                <View className="w-full h-full bg-[#FAFAFA] mt-10 p-6 pt-10 rounded-lg border-1 border-white relative overflow-hidden">
+                <View className="w-full h-full bg-[#FAFAFA] mt-10 px-6 pt-10 rounded-lg border-1 border-white relative overflow-hidden">
                     {/* Top Bar */}
                     <View className="absolute -top-[50px] px-20 left-0 right-0 items-center">
                         <View className="w-full h-[60px] bg-[#BFBFEE] opacity-100 rounded-full" />
@@ -300,7 +308,7 @@ const BulletinStack = () => {
 
                     {/* Dotted Background */}
                     <View className="absolute inset-0 top-40">
-                        {Array.from({ length: 25 }).map((_, rowIndex) => (
+                        {Array.from({ length: 35 }).map((_, rowIndex) => (
                             <View key={rowIndex} className="flex-row justify-center">
                                 {Array.from({ length: 18 }).map((_, colIndex) => (
                                     <View
@@ -313,13 +321,11 @@ const BulletinStack = () => {
                     </View>
 
                     {/* Horizontal Scrolling Sticky Notes */}
-                    <View style={{ overflow: 'visible', position: 'relative', width: '100%', aspectRatio: '7/10', marginTop: 30 }}>
                         <FlatList
                             data={posts}
                             keyExtractor={(item) => item.id}
                             renderItem={renderStickyNote}
                             onEndReachedThreshold={0.5}
-                            showsVerticalScrollIndicator={true}
                             contentContainerStyle={{
                                 height: flatListHeight,
                                 marginHorizontal: 20,
@@ -338,7 +344,6 @@ const BulletinStack = () => {
                         <Text className="text-white text-2xl font-bold">+</Text>
                     </TouchableOpacity>
                     </View>
-                </View>
             {/* </View> */}
 
             {/* Write Modal */}
@@ -350,7 +355,7 @@ const BulletinStack = () => {
                 onClose={toggleModal}
                 onPin={handlePin}
             />
-        </View>
+        </ScrollView>
     );
 };
 

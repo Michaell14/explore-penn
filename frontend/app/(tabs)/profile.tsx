@@ -168,10 +168,10 @@ export default function ProfileScreen() {
     }
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View className="flex-1 bg-[#D9D9FF]">
+            <View className="flex-1 bg-[#F5F5FF]">
             <SafeAreaView style={{ flex: 1 }}>
                 {/* header section */}
-                <View className="bg-[#D9D9FF] pb-16 items-center rounded-b-[40px]" style={styles.header}>
+                <View className="pb-16 items-center rounded-b-[40px]" style={styles.header}>
                     <Text style={{
                         fontFamily: 'Yorkmade',
                         fontSize: 40,
@@ -189,6 +189,7 @@ export default function ProfileScreen() {
                             <Text className="text-xl text-[#50F]">Pins</Text>
                             <Text className="text-xl text-[#50F]">posted</Text>
                         </View>
+                        {/* <Image source={require("../../assets/images/yellow-post-it.png")} className='absolute w-[180px] h-[180px] z-[-1] -rotate-[15deg] -mt-8 -left-[50px]' /> */}
                     </TouchableOpacity>
                     <View className="w-10"></View>
                     <TouchableOpacity className="bg-[#F0EFFD] py-5 px-2 items-center rounded-[10px] w-[100px]" >
@@ -197,13 +198,14 @@ export default function ProfileScreen() {
                             <Text className="text-xl text-[#50F]">Stickers</Text>
                             <Text className="text-xl text-[#50F]">placed</Text>
                         </View>
+                        {/* <Image source={require("../../assets/images/yellow-post-it.png")} className='absolute w-[180px] h-[180px] z-[-1] rotate-[15deg] -mt-5 -right-10' /> */}
                     </TouchableOpacity>
                     <Image source={require("../../assets/images/smily-face.png")} style={styles.smilyface} />
 
                 </View>}
 
                 {/* buttons section */}
-                {<View className="flex-1 px-10 py-16" style={styles.container}>
+                {<View className="flex-1 px-10 py-16 mt-16" style={styles.container}>
                     <TouchableOpacity className="bg-[#F0EFFD] p-5 items-left flex-row rounded-tl-[7px] rounded-tr-[7px]" onPress={onResetPasswords}>
                         <Image source={require("../../assets/images/reset-password-icon.png")} style={styles.icon} />
                         <Text className="text-lg text-[#50F]">Reset password</Text>

@@ -6,10 +6,10 @@ import { Dimensions } from 'react-native';
 export default function TabLayout() {
   return (
     <Tabs
-      screenOptions={{
+      screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarStyle: styles.tabBar,
-      }}
+        tabBarStyle: ['index', 'profile'].includes(route.name) ? styles.tabBar : { display: 'none' },
+      })}
     >
       <Tabs.Screen
         name="index"
@@ -20,7 +20,7 @@ export default function TabLayout() {
               source={focused 
                 ? require('../../assets/images/map-icon-active.png') 
                 : require('../../assets/images/map-icon.png')}
-              style={{ width: 40, height: 40, overflow: 'visible' }}
+              style={{ width: 40, height: 40 }}
               resizeMode="contain"
             />
           ),
@@ -31,11 +31,7 @@ export default function TabLayout() {
         options={{
           title: '',
           tabBarIcon: ({ focused }) => (
-            <Image
-              source={require('../../assets/images/bulletin-icon.png')}
-              style={{ width: 27, height: 27 }}
-              resizeMode="contain"
-            />
+            null
           ),
         }}
       />
@@ -66,15 +62,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     bottom: 70,
-    marginLeft: Dimensions.get('window').width / 2 - 100,
-    width: 200,
+    marginLeft: 30,
+    width: 110,
     height: 60,
     paddingTop: 5,
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
     borderRadius: 16,
     backgroundColor: '#E0E0F4',
-    borderWidth: 2,
-    borderTopWidth: 2.4,
-    borderColor: 'white',
+
+    borderTopColor: "#E0E0F4"
+    // borderTopWidth: 2.4,
+    // borderColor: 'white',
   },
 });

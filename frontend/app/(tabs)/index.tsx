@@ -178,7 +178,7 @@ const HomeScreen: React.FC = () => {
             <SearchBar placeholder="Search for locations..." onSearch={handleSearch} />
           </View>*/}
           {/* Map Section */}
-          <Image source={require("../../assets/images/penn-pins-logo.png")} style={styles.logo} />
+          {/* <Image source={require("../../assets/images/penn-pins-logo.png")} style={styles.logo} /> */}
           <MapView
             ref={mapViewRef}
             style={styles.map}
