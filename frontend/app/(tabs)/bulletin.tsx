@@ -360,9 +360,9 @@ const BulletinStack = () => {
 // };
 
 return (
-    <View style={{ flex: 1, backgroundColor: '#5261FF' }}>
+    <View style={{ flex: 1, backgroundColor: '#BFBFEE' }}>
         <ScrollView
-            style={{ flex: 1, backgroundColor: '#5261FF' }}
+            style={{ flex: 1, backgroundColor: '#BFBFEE' }}
             contentContainerStyle={{
                 flexGrow: 1,
                 alignItems: 'center',
@@ -390,7 +390,7 @@ return (
             <View className="w-full h-full bg-[#FAFAFA] mt-10 px-8 pt-10 rounded-lg border-1 border-white relative overflow-hidden">
                 {/* Top Bar */}
                 <View className="absolute -top-[50px] px-20 left-0 right-0 items-center">
-//                         <View className="w-full h-[60px] bg-[#5261FF] opacity-100 rounded-full" />
+                         <View className="w-full h-[60px] bg-[#BFBFEE] opacity-100 rounded-full" />
                 </View>
 
                 {/* Title Section */}
@@ -398,7 +398,7 @@ return (
                     {selectedPin?.header}
                 </Text>
                 <View className="z-10 flex-row justify-start gap-2 border-b border-gray-300 py-1">
-                    <Text style={{ fontSize: 12, color: 'red' }}>
+                    <Text style={{ fontSize: 12, color: '#3D00B8' }}>
                         {selectedPin?.start_time} - {selectedPin?.end_time} | Penn Spark
                     </Text>
                 </View>
@@ -473,7 +473,7 @@ return (
                 position: 'absolute',
                 bottom: 50,
                 right: 30,
-                backgroundColor: '#FE8BC0',
+                backgroundColor: '#EF6A56',
                 width: 64,
                 height: 64,
                 borderRadius: 32,
