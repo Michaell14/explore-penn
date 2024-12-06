@@ -360,7 +360,7 @@ const BulletinStack = () => {
                         {selectedPin?.header}
                     </Text>
                     <View className="z-10 flex-row justify-start gap-2 border-b border-gray-300 py-1">
-                        <Text style={{ fontSize: 12, color: 'red' }}>
+                        <Text style={{ fontSize: 12, color: '#5500FF' }}>
                             {selectedPin?.start_time} - {selectedPin?.end_time} | Penn Spark
                         </Text>
                     </View>

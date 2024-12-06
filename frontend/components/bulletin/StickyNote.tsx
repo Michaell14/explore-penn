@@ -95,6 +95,7 @@ const StickyNote: React.FC<StickyNoteProps> = ({
                     style={[
                         styles.contentContainer,
                         color && { backgroundColor: color }, // Only for sticky notes
+                        isUserPost && styles.userPostBorder, // Border for user posts
                     ]}
                 >
                     {imageUri ? (
@@ -140,14 +141,20 @@ const styles = StyleSheet.create({
         top: -10,
         right: -10,
         backgroundColor: 'red',
-        borderRadius: 10,
+        borderRadius: 20,
         padding: 5,
+        paddingHorizontal: 8,
         zIndex: 10,
     },
     deleteButtonText: {
         color: 'white',
         fontWeight: 'bold',
         fontSize: 12,
+    },
+    userPostBorder: {
+        borderWidth: 2,
+        borderColor: 'white',
+        borderStyle: 'dashed',
     },
 });
 
