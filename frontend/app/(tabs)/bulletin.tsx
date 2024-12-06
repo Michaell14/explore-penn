@@ -58,7 +58,7 @@ const BulletinStack = () => {
                 x: doc.data().x ?? 0,
                 y: doc.data().y ?? 0,
                 rotation: doc.data().rotation ?? 0,
-                words: doc.data().words ?? 'Untitled',
+                words: doc.data().words ?? ' ',
                 uid: doc.data().uid,
                 picture: doc.data().picture ?? null,
                 isUserPost: doc.data().uid === user?.uid,
@@ -122,7 +122,7 @@ const BulletinStack = () => {
             x: Math.random() * 100, // Position based on index
             y: index * SPACING, // Random vertical position
             rotation: Math.random() * 40 - 20,
-            words: text.trim() || 'Untitled',
+            words: text.trim() || ' ',
             picture: downloadURL || null,
             isUserPost: true,
         };

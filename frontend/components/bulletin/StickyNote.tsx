@@ -96,13 +96,11 @@ const StickyNote: React.FC<StickyNoteProps> = ({
                         styles.contentContainer,
                         color && { backgroundColor: color }, // Only for sticky notes
                         isUserPost && styles.userPostBorder, // Border for user posts
+                        imageUri && styles.flexibleContainer,
                     ]}
                 >
-                    {imageUri ? (
-                        <Image source={{ uri: imageUri }} style={styles.image} />
-                    ) : (
-                        text ? <Text style={styles.text}>{text}</Text> : null
-                    )}
+                    {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
+                    {text && <Text style={styles.text}>{text}</Text>}
                 </View>
             </Animated.View>
         </GestureDetector>
@@ -155,6 +153,10 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'white',
         borderStyle: 'dashed',
+    },
+    flexibleContainer: {
+        width: 'auto',
+        height: 'auto',
     },
 });
 
