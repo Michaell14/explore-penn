@@ -15,14 +15,14 @@ import Animated, {
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 interface StickyNoteProps {
-    text: string;
-    color: string;
+    text?: string; // Made optional for stickers
+    color?: string; // Optional for stickers
     style?: ViewStyle;
-    imageUri?: string;
+    imageUri?: string; // For stickers
     isUserPost?: boolean;
-    onDelete: (id: string) => void;
-    onMove: (x: number, y: number) => void;
-    id: string;
+    onDelete?: (id: string) => void; // Optional for stickers
+    onMove: (x: number, y: number) => void; // Triggered on drag end
+    id?: string; // Optional for stickers
 }
 
 const StickyNote: React.FC<StickyNoteProps> = ({
@@ -73,28 +73,32 @@ const StickyNote: React.FC<StickyNoteProps> = ({
             <Animated.View
                 style={[
                     styles.shadowContainer,
-                    isUserPost && styles.userPostBorder,
                     animatedStyle,
                     style,
                 ]}
             >
                 {/* Delete Button for User Posts */}
-                {isUserPost && (
+                {isUserPost && onDelete && (
                     <TouchableOpacity
                         style={styles.deleteButton}
-                        onPress={() => onDelete(id)}
+                        onPress={() => onDelete(id!)} // `!` assumes `id` is defined for user posts
                     >
                         <Text style={styles.deleteButtonText}>X</Text>
                     </TouchableOpacity>
                 )}
 
-                {/* Sticky Note Content */}
-                <View style={[styles.stickyNote, { backgroundColor: color }]}>
-                    {imageUri && (
+                {/* Sticky Note or Sticker Content */}
+                <View
+                    style={[
+                        styles.contentContainer,
+                        color && { backgroundColor: color }, // Only for sticky notes
+                    ]}
+                >
+                    {imageUri ? (
                         <Image source={{ uri: imageUri }} style={styles.image} />
+                    ) : (
+                        text && <Text style={styles.text}>{text}</Text>
                     )}
-
-                    {text && <Text style={styles.text}>{text}</Text>}
                 </View>
             </Animated.View>
         </GestureDetector>
@@ -110,31 +114,23 @@ const styles = StyleSheet.create({
         elevation: 3,
         position: 'absolute',
     },
-    userPostBorder: {
-        borderColor: 'white',
-        borderWidth: 2,
-        borderRadius: 3,
-    },
-    stickyNote: {
+    contentContainer: {
         width: 160,
         height: 160,
-        borderRadius: 3,
-        padding: 15,
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-
+        borderRadius: 8,
+        padding: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     text: {
         fontSize: 16,
         color: '#1D1D1D',
-        textAlign: 'left',
+        textAlign: 'center',
     },
     image: {
         width: 130,
-        height: 110,
-        marginBottom: 8,
-        borderRadius: 5,
-        resizeMode: 'cover',
+        height: 130,
+        resizeMode: 'contain',
     },
     deleteButton: {
         position: 'absolute',
