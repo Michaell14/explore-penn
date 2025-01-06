@@ -16,22 +16,9 @@ const PinBottomSheet = forwardRef<Ref, Props>((props, ref) => {
 
     const snapPoints = useMemo(() => ["25%", "50%", "100%"], [])
 
-    const onPressViewBoard = async (): Promise<void> => {
-        router.push('/(tabs)/bulletin');
-        if (ref && typeof ref !== 'function') {
-            ref.current?.close();
-        }
-    }
-
     // callbacks
     const handleSheetChanges = useCallback((index: number) => {
         console.log('handleSheetChanges', index);
-        if (index === 3) {
-            router.push('/(tabs)/bulletin');
-            if (ref && typeof ref !== 'function') {
-                ref.current?.close();
-            }
-        }
     }, []);
 
     return (
@@ -52,9 +39,8 @@ const PinBottomSheet = forwardRef<Ref, Props>((props, ref) => {
                 </View>
                 <Text style={styles.time}>{pin?.start_time} - {pin?.end_time}</Text>
                 <Text style={styles.description}>{pin?.description}</Text>
-                <TouchableOpacity className="bg-[#F2F3FD] mt-4 p-5 items-left flex-row" onPress={onPressViewBoard}>
+                <TouchableOpacity className="bg-[#F2F3FD] mt-4 p-5 items-left flex-row">
                     <Image source={require("../../assets/images/down-arrow.png")} style={styles.viewBoardIcon} />
-                    <Text className="text-lg text-[#3D00B8]">View Board</Text>
                 </TouchableOpacity>
             </BottomSheetView>
         </BottomSheet>

@@ -119,9 +119,6 @@ const HomeScreen: React.FC = () => {
           const token = await registerForPushNotificationsAsync();
           console.log('Generated token:', token);
         }
-
-        // Register background fetch task
-        await startBackgroundUpdate();
       }
     };
 

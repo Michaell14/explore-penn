@@ -27,15 +27,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="bulletin"
-        options={{
-          title: '',
-          tabBarIcon: ({ focused }) => (
-            null
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="profile"
         options={{
           title: '',
