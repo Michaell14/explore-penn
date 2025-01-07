@@ -3,10 +3,10 @@ import admin from 'firebase-admin';
 
 
 export const createOrg = async(req, res) => {
-    const { name, username, password, description } = req.body;
+    const { name, username, description } = req.body;
     
-    if (!name || !username || !password || !description) {
-        return res.status(400).json({ error: 'Missing required fields: name, username, password, description' });
+    if (!name || !username || !description) {
+        return res.status(400).json({ error: 'Missing required fields: name, username, description' });
     }
     
 
@@ -18,15 +18,21 @@ export const createOrg = async(req, res) => {
             return res.status(409).json({ message: 'Organization with this name already exists' });
         }
 
+        const inReviewQuery = db.collection('unverifiedOrgs').where('name', '==', name);
+        const inReviewSnapshot = await inReviewQuery.get();
+
+        if (!inReviewSnapshot.empty) {
+            return res.status(409).json({ message: 'Organization with this name already in review' });
+        }
+
         const newOrg = {
             name,
             username,
-            password,
             description,
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
         };
 
-        const orgRef = await db.collection('organizations').add(newOrg);
+        const orgRef = await db.collection('unverifiedOrgs').add(newOrg);
         res.status(201).json({ message: 'Org created successfully', orgId: orgRef.id, org: newOrg });
 
     } catch (e){
